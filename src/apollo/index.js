@@ -8,7 +8,7 @@ import defaults from './defaults';
 
 const cache = new InMemoryCache();
 
-const httpLink = new HttpLink({ uri:'http://localhost:3000/graphql'})
+const httpLink = new HttpLink({ uri:'http://localhost:3000/graphql' })
 
 
 // https://api-euwest.graphcms.com/v1/cjj608mvq01ea01ebg82n4n7h/master

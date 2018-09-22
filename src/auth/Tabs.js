@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
-import { TabNavigator } from 'react-navigation'
+import { createBottomTabNavigator } from 'react-navigation'
 
 import { colors, fonts } from '../theme'
 import Cliente from './Cliente'
@@ -60,4 +60,4 @@ const routeConfig = {
   }
 }
 
-export default TabNavigator(routes, routeConfig)
+export default createBottomTabNavigator(routes, routeConfig)

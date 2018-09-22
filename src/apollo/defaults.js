@@ -21,6 +21,7 @@ export default {
     currentPageName: 'Card',
   },
   auth: {
+    __typename: 'Auth',
     isAuthenticating: false,
     user: {},
   }

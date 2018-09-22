@@ -11,7 +11,7 @@ import {
 import { Query } from "react-apollo";
 import { connect } from 'redux-zero/react'
 import {RkCard, RkButton, rkCardImg, rkCardHeader, rkCardContent, rkCardFooter} from 'react-native-ui-kitten';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 
 import { Header } from 'react-native-elements';
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Home = StackNavigator({
+const Home = createStackNavigator({
   'Restaurants': {
     screen: Restaurants,
     navigationOptions: {

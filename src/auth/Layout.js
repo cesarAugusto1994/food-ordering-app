@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Platform, Linking, Text, View, Image, AsyncStorage} from 'react-native';
 import { SocialIcon } from 'react-native-elements';
-import { graphql } from 'react-apollo';
+import { graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 // import SafariView from 'react-native-safari-view';
 import { NavigationActions, StackNavigator } from 'react-navigation';
@@ -18,7 +18,8 @@ import GoogleAuth from './buttons/google'
 import FacebookAuth from './buttons/facebook'
 
 class SignIn extends Component {
-  signIn = async () => {
+  signIn = async (e, findOrCreateUser) => {
+    e.preventDefault();
     try {
       const result = await Expo.Google.logInAsync({
         androidClientId: config.androidClientId,
@@ -27,11 +28,22 @@ class SignIn extends Component {
       })
 
       if (result.type === "success") {
-        this.setState({
-          signedIn: true,
-          name: result.user.name,
-          photoUrl: result.user.photoUrl
-        })
+        const user = {
+          firstName: result.user.givenName,
+          email: result.user.email,
+          lastName: result.user.familyName,
+          image: result.user.photoUrl
+        };
+        console.log('---_>', user)
+        findOrCreateUser({
+          variables: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            image: user.image
+          }
+        });
+        this.props.signOn(user);
       } else {
         console.log("cancelled")
       }
@@ -44,33 +56,51 @@ class SignIn extends Component {
     console.log('Browser ----> state', this.state)
     const {greeting, greeting2, imagePath} = this.props;
     return (
-          <View style={styles.user.container}>
-            <View style={styles.user.heading}>
-              <Image
-                source={imagePath}
-                style={styles.user.headingImage}
-                resizeMode="contain"
-              />
+      <Mutation mutation={CREATE_USER}>
+        {(findOrCreateUser, {data}) => (
+            <View style={styles.user.container}>
+              <View style={styles.user.heading}>
+                <Image
+                  source={imagePath}
+                  style={styles.user.headingImage}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={[styles.user.greeting]}>{greeting}</Text>
+              <Text style={[styles.user.greeting2]}>{greeting2}</Text>
+              <View style={styles.user.inputContainer}>
+                <FacebookAuth />
+                <GoogleAuth loginWithGoogle={async e => await this.signIn(e, findOrCreateUser)}/>
+              </View>
             </View>
-            <Text style={[styles.user.greeting]}>{greeting}</Text>
-            <Text style={[styles.user.greeting2]}>{greeting2}</Text>
-            <View style={styles.user.inputContainer}>
-              <FacebookAuth />
-              <GoogleAuth loginWithGoogle={this.signIn}/>
-            </View>
-          </View>
+        )}
+      </Mutation>
     );
   }
-}
+};
 
-
-const authedUser = gql`
-  mutation authedUser($user: User) {
-    currentUser(user: $user) {
+const CREATE_USER = gql`
+  mutation FindOrCreate(
+      $email: String!,
+      $firstName: String!,
+      $lastName: String!,
+      $image: String!
+    ) {
+    findOrCreate(
+      email: $email,
+      firstName: $firstName,
+      lastName: $lastName,
+      image: $image
+    ) {
       userId
+      firstName
+      lastName
+      image
+      email
     }
   }
 `;
 
+
 const mapToProps = ({ isAuthed, user, isUser, isOwner }) => ({ isAuthed, user, isUser, isOwner });
-export default connect(mapToProps, actions)(graphql(authedUser)(SignIn));
+export default connect(mapToProps, actions)(SignIn);

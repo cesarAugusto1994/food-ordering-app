@@ -1,5 +1,5 @@
 import React from 'react'
-import { StackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation'
 
 import Init from '../nav/Init';
 
@@ -8,7 +8,7 @@ const routeConfig = {
   Init: { screen: Init }
 }
 
-const StackNav = StackNavigator(routeConfig)
+const StackNav = createStackNavigator(routeConfig)
 
 class Nav extends React.Component {
   render() {
