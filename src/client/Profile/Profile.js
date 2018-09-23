@@ -87,8 +87,9 @@ class Profile extends React.Component {
         <LogoutButton
           onPress={
             async () => {
-              await AsyncStorage.removeItem('@app:session')
+              await AsyncStorage.clear()
               this.props.signOut()
+              this.props.navigation.navigate('Auth')
               }
           }
           iconName='sign-out'

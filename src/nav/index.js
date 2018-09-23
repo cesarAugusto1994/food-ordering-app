@@ -12,6 +12,7 @@ import Auth from '../auth/nav';
 
 // Cliente Routes
 import Cliente from './Cliente';
+import CheckAuth from './CheckAuth';
 import Food from '../client/Restaurants/Foods/Food'
 import FoodItem from '../client/Restaurants/Foods/FoodItem'
 
@@ -93,6 +94,12 @@ const AppNavigator = createStackNavigator({
       header: null
     }
   },
+  CheckAuth: {
+    screen: CheckAuth,
+    navigationOptions: {
+      header: null
+    }
+  },
   Cliente: {
     screen: ClienteScreen,
     navigationOptions: ({navigation}) => {
@@ -100,6 +107,7 @@ const AppNavigator = createStackNavigator({
       switch(navigation.state.index) {
         case 0: {
           style.title = 'Restaurantes';
+          style.headerLeft = null;
           style.headerRight = (
             <TouchableIcon
               iconName='shopping-cart'
@@ -131,6 +139,7 @@ const AppNavigator = createStackNavigator({
       switch(navigation.state.index) {
         case 0: {
           style.title = 'Meus Restaurantes';
+          style.headerLeft = null;
           style.headerRight = (
             <TouchableIcon
               iconName='plus'
@@ -159,7 +168,7 @@ const AppNavigator = createStackNavigator({
   ...OwnerSubRoutes,
   ...ClienteSubRoutes
 }, {
-  initialRouteName: 'Restaurante'
+  initialRouteName: 'CheckAuth'
 });
 
 export default AppNavigator;

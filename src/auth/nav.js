@@ -1,8 +1,8 @@
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import { colors, fonts } from '../theme'
-import Cliente from './Cliente'
-import Restaurante from './Restaurante'
+import Customer from './Cliente'
+import Owner from './Restaurante'
 
 const styles = StyleSheet.create({
   icon: {
@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
 })
 
 const routes = {
-  Cliente: {
-    screen: Cliente,
+  CustomerSignOn: {
+    screen: Customer,
     navigationOptions: {
       header: null,
       title: 'Cliente',
@@ -25,8 +25,8 @@ const routes = {
       )
     }
   },
-  Restaurante: {
-    screen: Restaurante,
+  OwnerSignOn: {
+    screen: Owner,
     navigationOptions: {
       title: 'Restaurante',
       tabBarIcon: ({ tintColor }) => (

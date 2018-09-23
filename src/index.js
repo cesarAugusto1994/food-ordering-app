@@ -17,22 +17,7 @@ import {connect} from 'redux-zero/react';
 import actions from './store/actions';
 
 import AppNavigator from './nav';
-class App extends React.Component {
-  state = {
-    isLoading: false,
-    isAuthed: false,
-    isUser: false,
-    isOwner: false
-  }
-  render() {
-    const {isLoading, isAuthed, isOwner, isUser} = this.props.store.getState();
-    // console.log('Store State --->', this.props.store.getState())
-    // console.log('App State ----->', this.state)
-    return (
-      <AppNavigator />
-    )
-  }
-};
+const App = () => <AppNavigator />;
 
 const mapToProps = ({
   isAuthed,
