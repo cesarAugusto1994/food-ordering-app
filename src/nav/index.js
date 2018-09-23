@@ -119,14 +119,17 @@ const AppNavigator = createStackNavigator({
         }
         case 1: {
           style.title = 'Procurar';
+          style.headerLeft = null;
           return style;
         }
         case 2: {
           style.title = 'Recibos';
+          style.headerLeft = null;
           return style;
         }
         case 3: {
           style.title = 'Meu Perfil';
+          style.headerLeft = null;
           return style;
         }
       }
@@ -154,10 +157,12 @@ const AppNavigator = createStackNavigator({
         }
         case 1: {
           style.title = 'Encomendas';
+          style.headerLeft = null;
           return style;
         }
         case 2: {
           style.title = 'Meu Perfil';
+          style.headerLeft = null;
           return style;
         }
       }
