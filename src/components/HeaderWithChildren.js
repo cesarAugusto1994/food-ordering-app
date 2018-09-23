@@ -7,11 +7,17 @@ export default ({
   statusBar,
   children = () => null,
   outerContainer,
-  innerContainer
+  innerContainer,
+  leftComponent,
+  centerComponent,
+  rightComponent
 }) => {
   return (
     <Header
       backgroundColor={color}
+      centerComponent={centerComponent}
+      leftComponent={leftComponent}
+      rightComponent={rightComponent}
       placement={placement}
       statusBarProps={statusBar}
       outerContainerStyles={outerContainer}

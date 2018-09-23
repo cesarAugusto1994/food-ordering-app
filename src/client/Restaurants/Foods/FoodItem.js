@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button, Image, ScrollView } from 'react-native';
-import { Header } from 'react-native-elements';
 
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag'
@@ -11,6 +10,7 @@ import actions from '../../../store/actions';
 
 import CircleButton from '../../../components/CircleButton';
 import AddToCardButton from '../../../components/Button';
+import Header from '../../../components/HeaderWithChildren';
 import BackButton from '../../../components/TouchableIcon';
 import FoodItemCard from '../../../components/FoodItem';
 
@@ -32,12 +32,9 @@ class Foods extends React.Component {
         return (
           <View style={styles.container}>
             <Header
-              backgroundColor={colors.primary}
+              color={colors.primary}
               leftComponent={
-                <BackButton
-                  imagePath={require('../../../assets/back.png')}
-                  onPress={() => goBack()}
-                />
+                <BackButton iconName='chevron-left' onPress={() => goBack()} />
               }
               centerComponent={{ text: FoodName, style: { color: '#fff' } }}
             />
@@ -86,6 +83,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white'
   }
-})
-const mapToProps = ({isAuthed, user, addToCard, card, currentUser}) => ({isAuthed, user, addToCard, card, currentUser})
-export default connect(mapToProps, actions)(Foods)
+});
+
+const mapToProps = ({
+  isAuthed,
+  user,
+  addToCard,
+  card,
+  currentUser
+}) => ({
+  isAuthed,
+  user,
+  addToCard,
+  card,
+  currentUser
+});
+
+export default connect(mapToProps, actions)(Foods);
