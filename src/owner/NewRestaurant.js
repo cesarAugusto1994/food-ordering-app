@@ -20,13 +20,12 @@ const showAlert = (nav) => () => Alert.alert(
     { cancelable: false }
 );
 
-export default ({navigation}) => {
-  const value = navigation.getParam('value');
-  console.log('------------------------------->', navigation)
+export default ({navigation: {getParam, goBack}}) => {
+  const value = getParam('value');
   return (
     <React.Fragment>
       <Header backgroundColor={colors.primary}>
-        <TouchableOpacity onPress={() => navigation.navigate('Restaurante')}>
+        <TouchableOpacity onPress={() => goBack()}>
           <Icon
             name="chevron-left"
             size={20}
@@ -40,7 +39,7 @@ export default ({navigation}) => {
           color={colors.primary}
           ownerId={value.ownerId}
           mutation={CREATE_RESTAURANTE}
-          alert={showAlert(navigation.navigate)}
+          alert={showAlert(goBack)}
           text="Adicionar"
         />
       </ScrollView>

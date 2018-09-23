@@ -25,7 +25,6 @@ import { getFoods } from '../graphql/client/foods'
 class Foods extends React.Component {
   render() {
     const {getParam, goBack} = this.props.navigation
-    console.log('--->', this.props.navigation)
     const restaurantId = getParam('restaurantId');
     return (
       <Query query={getFoods} variables={{restaurantId}}>

@@ -19,15 +19,14 @@ const showAlert = (nav) => () => Alert.alert(
   { cancelable: false }
 );
 
-export default ({navigation, image}) => {
-  const value = navigation.getParam('value');
-  const restaurantId = navigation.getParam('restaurantId');
-  const ownerId = navigation.getParam('ownerId');
-  console.log('RRRRRRRR', restaurantId)
+export default ({navigation: {getParam, goBack, navigate}, image}) => {
+  const value = getParam('value');
+  const restaurantId = getParam('restaurantId');
+  const ownerId = getParam('ownerId');
   return (
     <React.Fragment>
       <Header backgroundColor={colors.primary}>
-        <TouchableOpacity onPress={() => navigation.navigate('Restaurante')}>
+        <TouchableOpacity onPress={() => goBack()}>
           <Icon
             name="chevron-left"
             size={20}
@@ -39,7 +38,7 @@ export default ({navigation, image}) => {
         <ScrollView>
           <CardOverlay source={{uri: value.image}} />
           <View style={styles.wrapper}>
-            <TouchableOpacity onPress={() => navigation.navigate('MyFoods', {restaurantId})}>
+            <TouchableOpacity onPress={() => navigate('MyFoods', {restaurantId})}>
               <Text style={styles.text}>Ver refeições</Text>
             </TouchableOpacity>
           </View>
@@ -50,7 +49,7 @@ export default ({navigation, image}) => {
             ownerId={ownerId}
             value={value}
             mutation={EDIT_RESTAURANTE}
-            alert={showAlert(navigation.navigate)}
+            alert={showAlert(goBack)}
             text="Guardar"
           />
         </ScrollView>

@@ -101,6 +101,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
 })
-const mapToProps = ({isAuthed, user, currentUser}) => ({isAuthed, user, currentUser});
+const mapToProps = ({
+  isAuthed,
+  user,
+  currentUser
+}) => ({
+  isAuthed,
+  user,
+  currentUser
+});
 
 export default connect(mapToProps, actions)(MyRestaurants);
