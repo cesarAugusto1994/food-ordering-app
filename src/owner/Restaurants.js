@@ -35,21 +35,24 @@ class MyRestaurants extends React.Component {
         {({loading, err, data}) => {
           console.log('--->', err)
         return (
-          <React.Fragment>
+          <View style={styles.container}>
             <Header backgroundColor={colors.primary}>
               <Text style={{color: '#fff'}}>Meus Restaurantes</Text>
-              <Icon
-                name="plus"
-                size={20}
-                color="#fff"
-                onPress={
+              <TouchableOpacity onPress={
                   () => this.props.navigation.navigate('NewRestaurant', {
                     value: {ownerId}
                   })
                 }
+              >
+              <Icon
+                name="plus"
+                size={20}
+                color="#fff"
+
               />
+              </TouchableOpacity>
             </Header>
-            <ScrollView style={styles.container}>
+            <ScrollView>
             {
                 data.getMyRestaurants ?
                 data.getMyRestaurants.map(
@@ -83,7 +86,7 @@ class MyRestaurants extends React.Component {
                 : <Text>Este restaurante ainda não tem refeições disponiveis</Text>
               }
             </ScrollView>
-          </React.Fragment>
+          </View>
         )}}
       </Query>
     )

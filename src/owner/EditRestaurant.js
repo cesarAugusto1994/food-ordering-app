@@ -24,7 +24,7 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
   const restaurantId = getParam('restaurantId');
   const ownerId = getParam('ownerId');
   return (
-    <React.Fragment>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <Header backgroundColor={colors.primary}>
         <TouchableOpacity onPress={() => goBack()}>
           <Icon
@@ -53,7 +53,7 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
             text="Guardar"
           />
         </ScrollView>
-    </React.Fragment>
+    </View>
   )
 }
 

@@ -3,7 +3,7 @@ import Form from '../components/Form';
 import {Mutation} from 'react-apollo';
 import gql from 'graphql-tag';
 import {Header} from 'react-native-elements';
-import {Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {Text, ScrollView, TouchableOpacity, Alert, View} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -23,7 +23,7 @@ const showAlert = (nav) => () => Alert.alert(
 export default ({navigation: {getParam, goBack}}) => {
   const value = getParam('value');
   return (
-    <React.Fragment>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <Header backgroundColor={colors.primary}>
         <TouchableOpacity onPress={() => goBack()}>
           <Icon
@@ -43,7 +43,7 @@ export default ({navigation: {getParam, goBack}}) => {
           text="Adicionar"
         />
       </ScrollView>
-    </React.Fragment>
+    </View>
   )
 }
 
