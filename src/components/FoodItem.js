@@ -14,9 +14,9 @@ export default ({ onPress: { add, substract}, image, imagePath, description, nam
     </View>
     <Text style={[styles.price, {marginTop: 10}]}>Quantidade</Text>
     <View style={styles.quantity}>
-      <CircleButton onPress={substract} imagePath={imagePath.substract}/>
+      <CircleButton onPress={substract} iconName='minus'/>
       <Text style={[styles.price, {marginBottom: 0}]}>0</Text>
-      <CircleButton onPress={add} imagePath={imagePath.add}/>
+      <CircleButton onPress={add} iconName='plus'/>
     </View>
   </View>
 );

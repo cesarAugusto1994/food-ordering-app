@@ -9,8 +9,6 @@ import {colors} from '../theme';
 
 import CardOverlay from '../components/CardOverlay';
 import TouchableLabel from '../components/TouchableLabel';
-import BackButton from '../components/TouchableIcon';
-import Header from '../components/HeaderWithChildren';
 
 
 export default ({navigation: {getParam, goBack, navigate}, image}) => {
@@ -19,14 +17,6 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
   const ownerId = getParam('ownerId');
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <Header color={colors.primary}>
-        {() => (
-          <React.Fragment>
-            <BackButton onPress={() => goBack()} iconName="chevron-left"/>
-            <Text style={{color: '#fff'}}>Editar restaurante</Text>
-          </React.Fragment>
-        )}
-      </Header>
         <ScrollView>
           <CardOverlay source={{uri: value.image}} />
           <View style={styles.wrapper}>

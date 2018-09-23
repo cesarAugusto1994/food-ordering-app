@@ -1,6 +1,6 @@
-import React from 'react'
-import { Image, StyleSheet } from 'react-native'
-import { createBottomTabNavigator } from 'react-navigation'
+import React from 'react';
+import { Image, StyleSheet, Button } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { colors, fonts } from '../theme'
 import Restaurants from '../client/Restaurants/Restaurants'
@@ -21,10 +21,7 @@ const routes = {
     navigationOptions: {
       title: 'Restaurantes',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../assets/home.png')}
-          style={[styles.icon, { tintColor }]}
-        />
+        <Icon name='home' size={30} color={tintColor}/>
       )
     }
   },
@@ -33,10 +30,7 @@ const routes = {
     navigationOptions: {
       title: 'Procurar',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../assets/loupe.png')}
-          style={[styles.icon, { tintColor }]}
-        />
+        <Icon name='search' size={30} color={tintColor}/>
       )
     }
   },
@@ -45,23 +39,16 @@ const routes = {
     navigationOptions: {
       title: 'Recibos',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../assets/invoice.png')}
-          style={[styles.icon, { tintColor }]}
-        />
+        <Icon name='barcode' size={30} color={tintColor}/>
       )
     }
   },
   Profile: {
     screen: Profile,
     navigationOptions: {
-      header: null,
       title: 'Perfil',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../assets/boy.png')}
-          style={[styles.icon, { tintColor }]}
-        />
+        <Icon name='user' size={30} color={tintColor}/>
       )
     }
   }

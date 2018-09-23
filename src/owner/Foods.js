@@ -11,9 +11,6 @@ import {
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
-
-import { Header } from 'react-native-elements';
-import BackButton from '../components/TouchableIcon';
 import Card from '../components/Card';
 
 import { connect } from 'redux-zero/react';
@@ -31,16 +28,6 @@ class Foods extends React.Component {
         {({loading, err, data}) => {
         return (
           <View style={styles.container}>
-            <Header
-              backgroundColor={colors.primary}
-              leftComponent={
-                <BackButton
-                  onPress={() => goBack()}
-                  imagePath={require('../assets/back.png')}
-                />
-              }
-              centerComponent={{ text: 'Refeições Disponiveis', style: { color: '#fff' } }}
-            />
             <ScrollView>
               {
                 data.getRestaurantFoods ?
