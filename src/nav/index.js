@@ -57,19 +57,22 @@ const OwnerSubRoutes = {
   NewRestaurant: {
     screen: NewRestaurant,
     navigationOptions: {
-      header: null
+      title: 'Adicionar Restaurante',
+      ...navigationStyle
     }
   },
   EditRestaurant: {
     screen: EditRestaurant,
     navigationOptions: {
-      header: null
+      title: 'Editar Restaurante',
+      ...navigationStyle
     }
   },
   MyFoods: {
     screen: MyFoods,
     navigationOptions: {
-      header: null
+      title: 'Pratos',
+      ...navigationStyle
     }
   }
 };
@@ -123,8 +126,32 @@ const AppNavigator = createStackNavigator({
   },
   Restaurante: {
     screen: OwnerScreen,
-    navigationOptions: {
-      header: null
+    navigationOptions: ({navigation}) => {
+      const style = { ...navigationStyle}
+      switch(navigation.state.index) {
+        case 0: {
+          style.title = 'Meus Restaurantes';
+          style.headerRight = (
+            <TouchableIcon
+              iconName='plus'
+              onPress={() => navigation.navigate('NewRestaurant', {
+                value: { ownerId: ''}})
+              }
+              size={30} color='#fff'
+              style={{marginRight: 20}}
+            />
+          );
+          return style;
+        }
+        case 1: {
+          style.title = 'Encomendas';
+          return style;
+        }
+        case 2: {
+          style.title = 'Meu Perfil';
+          return style;
+        }
+      }
     }
   },
 
@@ -132,7 +159,7 @@ const AppNavigator = createStackNavigator({
   ...OwnerSubRoutes,
   ...ClienteSubRoutes
 }, {
-  initialRouteName: 'Cliente'
+  initialRouteName: 'Restaurante'
 });
 
 export default AppNavigator;

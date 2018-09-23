@@ -62,7 +62,7 @@ class Restaurants extends React.Component {
       </Query>
     )
   }
-}
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -11,10 +11,7 @@ import {
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
-import BackButton from '../components/Button';
 import ImageOverlay from '../components/CardOverlay';
-import AddButton from '../components/TouchableIcon';
-import Header from '../components/HeaderWithChildren';
 import Card from '../components/Card';
 
 import { connect } from 'redux-zero/react';
@@ -34,17 +31,6 @@ class MyRestaurants extends React.Component {
         {({loading, err, data}) => {
         return (
           <View style={styles.container}>
-            <Header color={colors.primary}>
-              {() => (
-                <React.Fragment>
-                  <Text style={{color: '#fff'}}>Meus Restaurantes</Text>
-                  <AddButton
-                    onPress={() => navigate('NewRestaurant', {value: {ownerId}})}
-                    iconName="plus"
-                  />
-                </React.Fragment>
-              )}
-            </Header>
             <ScrollView>
             {
                 data.getMyRestaurants ?
