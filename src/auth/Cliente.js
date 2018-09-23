@@ -8,11 +8,12 @@ import Layout from './Layout';
 const whoIs = {isUser: true, isOwner: false};
 const signOn = (props, fn) => user => fn({user, ...props})
 const mapToProps = ({ isAuthed, user, isUser, isOwner }) => ({ isAuthed, user, isUser, isOwner });
-const Cliente = ({signOnOwner}) => (
+const Cliente = ({signOnOwner, navigation}) => (
   <Layout
     greeting="Bem-vindo"
     greeting2="conecte-se para continuar"
     whoIs={whoIs}
+    navigation={navigation}
     imagePath={require('../assets/logo.png')}
     signOn={signOn({isAuthed: true, isOwner: false, isUser: true}, signOnOwner)}
   />

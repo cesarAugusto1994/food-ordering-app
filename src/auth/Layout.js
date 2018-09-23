@@ -34,7 +34,6 @@ class SignIn extends Component {
           lastName: result.user.familyName,
           image: result.user.photoUrl
         };
-        console.log('---_>', user)
         findOrCreateUser({
           variables: {
             firstName: user.firstName,
@@ -43,7 +42,13 @@ class SignIn extends Component {
             image: user.image
           }
         });
-        this.props.signOn(user);
+        // this.props.signOn(user);
+        await AsyncStorage.setItem('@app:session', JSON.stringify({user, ...this.props.whoIs}));
+        // this.props.navigation.push('Restaurante')
+        this.props.whoIs.isOwner === true
+        ? this.props.navigation.push('Restaurante')
+        : this.props.navigation.push('Cliente');
+
       } else {
         console.log("cancelled")
       }
@@ -52,8 +57,8 @@ class SignIn extends Component {
     }
   }
   render() {
-    console.log('Browser ----> props', this.props)
-    console.log('Browser ----> state', this.state)
+    // console.log('Browser ----> props', this.props)
+    // console.log('Browser ----> state', this.state)
     const {greeting, greeting2, imagePath} = this.props;
     return (
       <Mutation mutation={CREATE_USER}>
