@@ -3,7 +3,7 @@ import { Image, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from 'react-navigation'
 
 import { colors, fonts } from '../theme'
-import Restaurants from '../client/Restaurants/Restaurants'
+import MyRestaurants from '../owner/Restaurants'
 import Search from '../client/Search/Search'
 import Profile from '../client/Profile/Profile'
 import SignUp from '../auth/Restaurante'
@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
 })
 
 const routes = {
-  Restaurants: {
-    screen: Restaurants,
+  MyRestaurants: {
+    screen: MyRestaurants,
     navigationOptions: {
-      title: 'Restaurantes',
+      title: 'Meus Restaurants',
       tabBarIcon: ({ tintColor }) => (
         <Image
           source={require('../assets/home.png')}
@@ -28,22 +28,10 @@ const routes = {
       )
     }
   },
-  Search: {
-    screen: Search,
-    navigationOptions: {
-      title: 'Procurar',
-      tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../assets/loupe.png')}
-          style={[styles.icon, { tintColor }]}
-        />
-      )
-    }
-  },
-  Invoice: {
+  Orders: {
     screen: SignUp,
     navigationOptions: {
-      title: 'Recibos',
+      title: 'Encomendas',
       tabBarIcon: ({ tintColor }) => (
         <Image
           source={require('../assets/invoice.png')}
@@ -75,7 +63,6 @@ const routeConfig = {
     inactiveTintColor: 'white',
     indicatorStyle: { backgroundColor: 'white' },
     labelStyle: {
-      // fontFamily: fonts.base,
       fontSize: 12
     },
     style: {
@@ -87,4 +74,4 @@ const routeConfig = {
   }
 }
 
-export default createBottomTabNavigator(routes, routeConfig)
+export default {routes, routeConfig}

@@ -1,7 +1,5 @@
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
-import { createBottomTabNavigator } from 'react-navigation'
-
 import { colors, fonts } from '../theme'
 import Cliente from './Cliente'
 import Restaurante from './Restaurante'
@@ -49,7 +47,6 @@ const routeConfig = {
     inactiveTintColor: colors.secondary,
     indicatorStyle: { backgroundColor: colors.secondary },
     labelStyle: {
-      // fontFamily: fonts.base,
       fontSize: 12
     },
     style: {
@@ -60,4 +57,4 @@ const routeConfig = {
   }
 }
 
-export default createBottomTabNavigator(routes, routeConfig)
+export default {routes, routeConfig}

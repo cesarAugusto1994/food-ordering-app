@@ -22,8 +22,11 @@ import FoodItem from './Foods/FoodItem'
 import { colors, fonts } from '../../theme'
 const { width, height } = Dimensions.get('window')
 
-import {getRestaurants} from '../../graphql'
+import {getRestaurants} from '../../graphql/client'
 class Restaurants extends React.Component {
+  static navigationOptions = {
+    header: null
+  }
   render() {
     return (
       <Query query={getRestaurants}>
@@ -47,6 +50,7 @@ class Restaurants extends React.Component {
                             <CardRestaurant
                               onPress={() => this.props.navigation.navigate('Foods', {restaurantId})}
                               index={i}
+                              key={i}
                               name={name}
                               image={image}
                               description={description}
@@ -79,40 +83,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   }
-})
+});
 
-const Home = createStackNavigator({
-  'Restaurants': {
-    screen: Restaurants,
-    navigationOptions: {
-      header: null
-    }
-  },
-  'Foods': {
-    screen: Food,
-    navigationOptions: {
-      header: null
-    }
-  },
-  'FoodItem': {
-    screen: FoodItem,
-    navigationOptions: {
-      header: null,
-      tabBarVisible: false
-    }
-  }}, { initialRouteName: 'Restaurants' })
-
-
-class Join extends React.Component {
-  static navigationOptions = {
-    header: null
-  }
-  render() {
-    return(
-      <Home />
-    )
-  }
-}
-
-
-export default Join
+export default Restaurants;

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/react-apollo": "^2.0.1-exp.0",
+    "@expo/vector-icons": "^6.3.1",
     "apollo-cache-inmemory": "^1.2.10",
     "apollo-client": "^2.4.2",
     "apollo-link": "^1.2.3",
@@ -23,8 +24,10 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
     "react-native-ui-kitten": "^3.1.2",
+    "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^2.16.0",
     "redux-zero": "^4.13.6",
+    "tcomb-form-native": "^0.6.17",
     "whatwg-fetch": "^2.0.4"
   }
 }

@@ -13,20 +13,19 @@ import gql from 'graphql-tag';
 
 
 import { Header } from 'react-native-elements';
-import BackButton from '../../../components/BackButton';
-import Card from '../../../components/Card';
+import BackButton from '../components/BackButton';
+import Card from '../components/Card';
 
 import { connect } from 'redux-zero/react';
-import actions from '../../../store/actions';
+import actions from '../store/actions';
 
-import { colors, fonts } from '../../../theme'
-import { getFoods } from '../../../graphql/client/foods'
+import { colors, fonts } from '../theme'
+import { getFoods } from '../graphql/client/foods'
 
 class Foods extends React.Component {
   render() {
-    const {goBack} = this.props.navigation
-    const restaurantId = this.props.navigation.getParam('restaurantId');
-    console.log('---->', this.props)
+    const {getParam, goBack} = this.props.navigation
+    const restaurantId = getParam('restaurantId');
     return (
       <Query query={getFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
@@ -37,7 +36,7 @@ class Foods extends React.Component {
               leftComponent={
                 <BackButton
                   onPress={() => goBack()}
-                  imagePath={require('../../../assets/back.png')}
+                  imagePath={require('../assets/back.png')}
                 />
               }
               centerComponent={{ text: 'Refeições Disponiveis', style: { color: '#fff' } }}
@@ -49,7 +48,6 @@ class Foods extends React.Component {
                   ({name, description, price, image, foodId}) => (
                     <Card
                       description={description}
-                      key={foodId}
                       name={name}
                       price={price}
                       image={image}
@@ -74,8 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white'
   }
-});
-
+})
 const mapToProps = ({
   isAuthed,
   user,
@@ -90,4 +87,4 @@ const mapToProps = ({
   currentUser
 });
 
-export default connect(mapToProps, actions)(Foods);
+export default connect(mapToProps, actions)(Foods)
