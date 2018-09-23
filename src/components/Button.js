@@ -8,7 +8,7 @@ export default ({ onPress, imagePath, text }) => (
   <RkButton style={styles.button} onPress={onPress}>
     <Image style={styles.icon} source={imagePath}/>
     <Text style={styles.text}>{text}</Text>
-</RkButton>
+  </RkButton>
 )
 
 const styles = StyleSheet.create({

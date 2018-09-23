@@ -11,6 +11,7 @@ import Owner from './Owner';
 import Auth from '../auth/nav'
 import NewRestaurant from '../owner/NewRestaurant'
 import EditRestaurant from '../owner/EditRestaurant';
+import MyFoods from '../owner/Foods';
 
 const AuthScreen = createBottomTabNavigator(Auth.routes, Auth.routeConfig)
 
@@ -21,7 +22,8 @@ const AppNavigator = createSwitchNavigator({
   Cliente,
   Restaurante: Owner,
   NewRestaurant,
-  EditRestaurant
+  EditRestaurant,
+  MyFoods
 }, {initialRouteName: 'Restaurante'})
 
 export default AppNavigator;

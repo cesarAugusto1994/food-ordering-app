@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from '../components/Form';
 import {Header} from 'react-native-elements';
-import {Text, ScrollView, TouchableOpacity} from 'react-native';
+import {Text, ScrollView, TouchableOpacity, View, StyleSheet} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import gql from 'graphql-tag';
@@ -36,22 +36,41 @@ export default ({navigation, image}) => {
         </TouchableOpacity>
         <Text style={{color: '#fff'}}>Editar restaurante</Text>
       </Header>
-      <ScrollView>
-        <CardOverlay source={{uri: value.image}} />
-        <Form
-          color={colors.primary}
-          edit={true}
-          restaurantId={restaurantId}
-          ownerId={ownerId}
-          value={value}
-          mutation={EDIT_RESTAURANTE}
-          alert={showAlert(navigation.navigate)}
-          text="Guardar"
-        />
-      </ScrollView>
+        <ScrollView>
+          <CardOverlay source={{uri: value.image}} />
+          <View style={styles.wrapper}>
+            <TouchableOpacity onPress={() => navigation.navigate('MyFoods', {restaurantId})}>
+              <Text style={styles.text}>Ver refeições</Text>
+            </TouchableOpacity>
+          </View>
+          <Form
+            color={colors.primary}
+            edit={true}
+            restaurantId={restaurantId}
+            ownerId={ownerId}
+            value={value}
+            mutation={EDIT_RESTAURANTE}
+            alert={showAlert(navigation.navigate)}
+            text="Guardar"
+          />
+        </ScrollView>
     </React.Fragment>
   )
 }
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
+  },
+  text: {
+    fontSize: 20,
+    color: colors.primary
+  }
+});
+
 
 const EDIT_RESTAURANTE = gql`
 mutation editRestaurante(
