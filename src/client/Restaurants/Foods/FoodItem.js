@@ -11,7 +11,7 @@ import actions from '../../../store/actions';
 
 import CircleButton from '../../../components/CircleButton';
 import AddToCardButton from '../../../components/Button';
-import BackButton from '../../../components/BackButton';
+import BackButton from '../../../components/TouchableIcon';
 import FoodItemCard from '../../../components/FoodItem';
 
 import { colors, fonts } from '../../../theme'

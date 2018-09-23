@@ -10,12 +10,11 @@ import {
 } from 'react-native';
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
-import { Ionicons } from '@expo/vector-icons';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { Header } from 'react-native-elements';
 import BackButton from '../components/Button';
 import ImageOverlay from '../components/CardOverlay';
+import AddButton from '../components/TouchableIcon';
+import Header from '../components/HeaderWithChildren';
 import Card from '../components/Card';
 
 import { connect } from 'redux-zero/react';
@@ -26,31 +25,25 @@ import { myRestaurants } from '../graphql/owner/getMyRestaurants';
 
 class MyRestaurants extends React.Component {
   render() {
-    const {goBack} = this.props.navigation
+    const {goBack, navigate} = this.props.navigation
     // const ownerId = this.props.navigation.getParam('ownerId');
     const ownerId = "fejf zjf";
     console.log('---->', this.props)
     return (
       <Query query={myRestaurants} variables={{ownerId}}>
         {({loading, err, data}) => {
-          console.log('--->', err)
         return (
           <View style={styles.container}>
-            <Header backgroundColor={colors.primary}>
-              <Text style={{color: '#fff'}}>Meus Restaurantes</Text>
-              <TouchableOpacity onPress={
-                  () => this.props.navigation.navigate('NewRestaurant', {
-                    value: {ownerId}
-                  })
-                }
-              >
-              <Icon
-                name="plus"
-                size={20}
-                color="#fff"
-
-              />
-              </TouchableOpacity>
+            <Header color={colors.primary}>
+              {() => (
+                <React.Fragment>
+                  <Text style={{color: '#fff'}}>Meus Restaurantes</Text>
+                  <AddButton
+                    onPress={() => navigate('NewRestaurant', {value: {ownerId}})}
+                    iconName="plus"
+                  />
+                </React.Fragment>
+              )}
             </Header>
             <ScrollView>
             {
