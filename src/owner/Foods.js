@@ -24,7 +24,7 @@ import { getFoods } from '../graphql/client/foods'
 
 class Foods extends React.Component {
   render() {
-    const {getParam, navigate,actions} = this.props.navigation
+    const {getParam, goBack} = this.props.navigation
     console.log('--->', this.props.navigation)
     const restaurantId = getParam('restaurantId');
     return (
@@ -36,7 +36,7 @@ class Foods extends React.Component {
               backgroundColor={colors.primary}
               leftComponent={
                 <BackButton
-                  onPress={() => actions.goBack()}
+                  onPress={() => goBack()}
                   imagePath={require('../assets/back.png')}
                 />
               }
@@ -74,5 +74,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   }
 })
-const mapToProps = ({isAuthed, user, addToCard, card, currentUser}) => ({isAuthed, user, addToCard, card, currentUser})
+const mapToProps = ({
+  isAuthed,
+  user,
+  addToCard,
+  card,
+  currentUser
+}) => ({
+  isAuthed,
+  user,
+  addToCard,
+  card,
+  currentUser
+});
+
 export default connect(mapToProps, actions)(Foods)

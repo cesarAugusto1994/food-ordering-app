@@ -63,7 +63,6 @@ const routeConfig = {
     inactiveTintColor: 'white',
     indicatorStyle: { backgroundColor: 'white' },
     labelStyle: {
-      // fontFamily: fonts.base,
       fontSize: 12
     },
     style: {
@@ -75,4 +74,4 @@ const routeConfig = {
   }
 }
 
-export default createBottomTabNavigator(routes, routeConfig)
+export default {routes, routeConfig}

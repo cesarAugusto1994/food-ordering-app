@@ -49,6 +49,7 @@ class Foods extends React.Component {
                   ({name, description, price, image, foodId}) => (
                     <Card
                       description={description}
+                      key={foodId}
                       name={name}
                       price={price}
                       image={image}
@@ -73,6 +74,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white'
   }
-})
-const mapToProps = ({isAuthed, user, addToCard, card, currentUser}) => ({isAuthed, user, addToCard, card, currentUser})
-export default connect(mapToProps, actions)(Foods)
+});
+
+const mapToProps = ({
+  isAuthed,
+  user,
+  addToCard,
+  card,
+  currentUser
+}) => ({
+  isAuthed,
+  user,
+  addToCard,
+  card,
+  currentUser
+});
+
+export default connect(mapToProps, actions)(Foods);
