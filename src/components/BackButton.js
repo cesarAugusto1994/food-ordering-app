@@ -3,9 +3,9 @@ import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import { colors } from '../theme';
 
-export default ({ onPress, imagePath }) => (
-  <TouchableOpacity onPress={onPress}>
-    <Image style={styles.icon} source={imagePath}/>
+export default ({ onPress, imagePath, addStyle }) => (
+  <TouchableOpacity onPress={onPress} style={addStyle}>
+    <Image style={[styles.icon]} source={imagePath}/>
   </TouchableOpacity>
 );
 

@@ -22,7 +22,7 @@ import FoodItem from './Foods/FoodItem'
 import { colors, fonts } from '../../theme'
 const { width, height } = Dimensions.get('window')
 
-import {getRestaurants} from '../../graphql'
+import {getRestaurants} from '../../graphql/client'
 class Restaurants extends React.Component {
   render() {
     return (

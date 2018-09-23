@@ -15,7 +15,7 @@ import BackButton from '../../../components/BackButton';
 import FoodItemCard from '../../../components/FoodItem';
 
 import { colors, fonts } from '../../../theme'
-import { getFood } from '../../../graphql/foods'
+import { getFood } from '../../../graphql/client/foods'
 
 class Foods extends React.Component {
   addToCart = (foodId, userId, itemName, itemPrice) => {

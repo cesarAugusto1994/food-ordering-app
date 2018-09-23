@@ -20,7 +20,7 @@ import { connect } from 'redux-zero/react';
 import actions from '../../../store/actions';
 
 import { colors, fonts } from '../../../theme'
-import { getFoods } from '../../../graphql/foods'
+import { getFoods } from '../../../graphql/client/foods'
 
 class Foods extends React.Component {
   render() {

@@ -60,4 +60,4 @@ const routeConfig = {
   }
 }
 
-export default createBottomTabNavigator(routes, routeConfig)
+export default {routes, routeConfig}
