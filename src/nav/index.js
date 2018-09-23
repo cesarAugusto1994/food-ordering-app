@@ -95,7 +95,10 @@ const AppNavigator = createStackNavigator({
     }
   },
   CheckAuth: {
-    screen: CheckAuth
+    screen: CheckAuth,
+    navigationOptions: {
+      header: null
+    }
   },
   Cliente: {
     screen: ClienteScreen,
