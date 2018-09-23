@@ -12,8 +12,8 @@ import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
 
-import { Header } from 'react-native-elements';
-import BackButton from '../../../components/BackButton';
+import BackButton from '../../../components/TouchableIcon';
+import Header from '../../../components/HeaderWithChildren';
 import Card from '../../../components/Card';
 
 import { connect } from 'redux-zero/react';
@@ -22,23 +22,17 @@ import actions from '../../../store/actions';
 import { colors, fonts } from '../../../theme'
 import { getFoods } from '../../../graphql/client/foods'
 
-class Foods extends React.Component {
-  render() {
-    const {goBack} = this.props.navigation
-    const restaurantId = this.props.navigation.getParam('restaurantId');
-    console.log('---->', this.props)
+export default connect(mapToProps, actions)(({navigation: {getParam, navigate, goBack}}) => {
+    const restaurantId = getParam('restaurantId');
     return (
       <Query query={getFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
         return (
           <View style={styles.container}>
             <Header
-              backgroundColor={colors.primary}
+              color={colors.primary}
               leftComponent={
-                <BackButton
-                  onPress={() => goBack()}
-                  imagePath={require('../../../assets/back.png')}
-                />
+                <BackButton onPress={() => goBack()} iconName="chevron-left" />
               }
               centerComponent={{ text: 'Refeições Disponiveis', style: { color: '#fff' } }}
             />
@@ -55,7 +49,7 @@ class Foods extends React.Component {
                       image={image}
                       foodId={foodId}
                       onPress={
-                        () => this.props.navigation.navigate({routeName: 'FoodItem', params: {foodId, name}})
+                        () => navigate({routeName: 'FoodItem', params: {foodId, name}})
                       }
                     />
                   ))
@@ -66,8 +60,7 @@ class Foods extends React.Component {
         )}}
       </Query>
     )
-  }
-}
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -89,5 +82,3 @@ const mapToProps = ({
   card,
   currentUser
 });
-
-export default connect(mapToProps, actions)(Foods);

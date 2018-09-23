@@ -1,23 +1,17 @@
 import React from 'react';
 import Form from '../components/Form';
-import {Header} from 'react-native-elements';
 import {Text, ScrollView, TouchableOpacity, View, StyleSheet} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import gql from 'graphql-tag';
 import {colors} from '../theme';
-import CardOverlay from '../components/CardOverlay';
 
-const showAlert = (nav) => () => Alert.alert(
-  'Adicionado',
-  'O restaurante foi adicionado com sucesso!',
-  [
-    {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-    {text: 'OK', onPress: () => console.log('OK Pressed')},
-  ],
-  { cancelable: false }
-);
+
+import CardOverlay from '../components/CardOverlay';
+import TouchableLabel from '../components/TouchableLabel';
+import BackButton from '../components/TouchableIcon';
+import Header from '../components/HeaderWithChildren';
+
 
 export default ({navigation: {getParam, goBack, navigate}, image}) => {
   const value = getParam('value');
@@ -25,22 +19,21 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
   const ownerId = getParam('ownerId');
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <Header backgroundColor={colors.primary}>
-        <TouchableOpacity onPress={() => goBack()}>
-          <Icon
-            name="chevron-left"
-            size={20}
-            color="#fff"
-          />
-        </TouchableOpacity>
-        <Text style={{color: '#fff'}}>Editar restaurante</Text>
+      <Header color={colors.primary}>
+        {() => (
+          <React.Fragment>
+            <BackButton onPress={() => goBack()} iconName="chevron-left"/>
+            <Text style={{color: '#fff'}}>Editar restaurante</Text>
+          </React.Fragment>
+        )}
       </Header>
         <ScrollView>
           <CardOverlay source={{uri: value.image}} />
           <View style={styles.wrapper}>
-            <TouchableOpacity onPress={() => navigate('MyFoods', {restaurantId})}>
-              <Text style={styles.text}>Ver refeições</Text>
-            </TouchableOpacity>
+            <TouchableLabel
+              onPress={() => navigate('MyFoods', {restaurantId})}
+              style={styles.text}
+            />
           </View>
           <Form
             color={colors.primary}
@@ -49,7 +42,7 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
             ownerId={ownerId}
             value={value}
             mutation={EDIT_RESTAURANTE}
-            alert={showAlert(goBack)}
+            alert={() => {}}
             text="Guardar"
           />
         </ScrollView>

@@ -3,26 +3,18 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  Image,
-  Dimensions,
   ScrollView
 } from 'react-native'
 import { Query } from "react-apollo";
 import { connect } from 'redux-zero/react'
-import {RkCard, RkButton, rkCardImg, rkCardHeader, rkCardContent, rkCardFooter} from 'react-native-ui-kitten';
-import { createStackNavigator } from 'react-navigation';
 
-import { Header } from 'react-native-elements';
 
-import CardRestaurant from '../../components/CardRestaurant';
+import CardRestaurant from '../../components/CardOverlay';
+import Header from '../../components/HeaderWithChildren';
 
-import Food from './Foods/Food'
-import FoodItem from './Foods/FoodItem'
 import { colors, fonts } from '../../theme'
-const { width, height } = Dimensions.get('window')
-
 import {getRestaurants} from '../../graphql/client'
+
 class Restaurants extends React.Component {
   static navigationOptions = {
     header: null
@@ -31,36 +23,43 @@ class Restaurants extends React.Component {
     return (
       <Query query={getRestaurants}>
         {({loading, err, data}) => {
-          console.log(data)
           return (
             <React.Fragment>
-              <Header
-                backgroundColor={colors.primary}
-                leftComponent={{ icon: 'menu', color: '#fff' }}
-                centerComponent={{ text: 'Restaurantes', style: { color: '#fff' } }}
-                rightComponent={{ icon: 'home', color: '#fff' }}
+                <Header
+                  color={colors.primary}
+                  centerComponent={
+                    <Text style={{color: '#fff'}}>Restaurantes</Text>
+                  }
                 />
               <ScrollView style={styles.container}>
-                <View style={styles.homeContainer}>
-                  <View>
-                    {
-                      data && data.allRestaurants ?
-                        data.allRestaurants.map(
-                          ({name, image, description, waitTime, restaurantId}, i) => (
-                            <CardRestaurant
-                              onPress={() => this.props.navigation.navigate('Foods', {restaurantId})}
-                              index={i}
-                              key={i}
-                              name={name}
-                              image={image}
-                              description={description}
-                              waitTime={waitTime}
-                            />
-                            ))
-                      : <Text>No Restaurants to show</Text>
-                    }
-                  </View>
-                </View>
+                {
+                  data && data.allRestaurants ?
+                    data.allRestaurants.map(
+                      ({name, image, description, waitTime, restaurantId}, i) => (
+                        <CardRestaurant
+                          onPress={
+                            () => this.props.navigation.navigate('Foods', {restaurantId}
+                            )
+                          }
+                          key={restaurantId}
+                          contentPosition="center"
+                          source={{uri: image}}
+                          overlayAlpha={0.3}
+                          rounded={5}
+                        >
+                        {() => (
+                          <React.Fragment>
+                            <Text style={styles.text}>{name.toUpperCase()}</Text>
+                            <View style={styles.waitTime}>
+                              <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
+                            </View>
+                          </React.Fragment>
+
+                        )}
+                        </CardRestaurant>
+                        ))
+                  : <Text>No Restaurants to show</Text>
+                }
               </ScrollView>
             </React.Fragment>
           )
@@ -78,10 +77,24 @@ const styles = StyleSheet.create({
     borderColor: '#cccccc',
     backgroundColor: '#f7fbff'
   },
-  homeContainer: {
-    alignItems: 'center',
+  waitTime: {
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    width: '110%',
+    height: 50,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0
+  },
+  text: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  text2: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold'
   }
 });
 

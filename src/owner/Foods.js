@@ -13,7 +13,7 @@ import gql from 'graphql-tag';
 
 
 import { Header } from 'react-native-elements';
-import BackButton from '../components/BackButton';
+import BackButton from '../components/TouchableIcon';
 import Card from '../components/Card';
 
 import { connect } from 'redux-zero/react';

@@ -95,7 +95,7 @@ const AppNavigator = createStackNavigator({
   ...OwnerSubRoutes,
   ...ClienteSubRoutes
 }, {
-  initialRouteName: 'Restaurante'
+  initialRouteName: 'Cliente'
 });
 
 export default AppNavigator;
