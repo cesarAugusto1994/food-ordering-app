@@ -1,14 +1,14 @@
 import React from 'react'
 import {RkButton} from 'react-native-ui-kitten';
-import {Image,Text,StyleSheet} from 'react-native'
-
+import {Image,Text,StyleSheet, TouchableOpacity} from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { fonts, colors } from '../theme'
 
-export default ({ onPress, imagePath, text }) => (
-  <RkButton style={styles.button} onPress={onPress}>
-    <Image style={styles.icon} source={imagePath}/>
+export default ({ onPress, iconName, text, color = '#fff', size = 30}) => (
+  <TouchableOpacity style={styles.button} onPress={onPress}>
+    <Icon name={iconName} size={size} color={color}/>
     <Text style={styles.text}>{text}</Text>
-  </RkButton>
+  </TouchableOpacity>
 )
 
 const styles = StyleSheet.create({
@@ -25,7 +25,12 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginBottom: 5,
     color: '#fff',
+    height: 50,
+    borderRadius: 5,
     backgroundColor: colors.primary,
-    width: '80%'
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });

@@ -12,8 +12,6 @@ import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
 
-import BackButton from '../../../components/TouchableIcon';
-import Header from '../../../components/HeaderWithChildren';
 import Card from '../../../components/Card';
 
 import { connect } from 'redux-zero/react';
@@ -29,13 +27,6 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
         {({loading, err, data}) => {
         return (
           <View style={styles.container}>
-            <Header
-              color={colors.primary}
-              leftComponent={
-                <BackButton onPress={() => goBack()} iconName="chevron-left" />
-              }
-              centerComponent={{ text: 'Refeições Disponiveis', style: { color: '#fff' } }}
-            />
             <ScrollView>
               {
                 data.getRestaurantFoods ?
@@ -43,7 +34,7 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
                   ({name, description, price, image, foodId}) => (
                     <Card
                       description={description}
-                      key={foodId}
+                      index={foodId}
                       name={name}
                       price={price}
                       image={image}

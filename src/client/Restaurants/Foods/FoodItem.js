@@ -10,8 +10,6 @@ import actions from '../../../store/actions';
 
 import CircleButton from '../../../components/CircleButton';
 import AddToCardButton from '../../../components/Button';
-import Header from '../../../components/HeaderWithChildren';
-import BackButton from '../../../components/TouchableIcon';
 import FoodItemCard from '../../../components/FoodItem';
 
 import { colors, fonts } from '../../../theme'
@@ -31,13 +29,6 @@ class Foods extends React.Component {
         {({loading, err, data}) => {
         return (
           <View style={styles.container}>
-            <Header
-              color={colors.primary}
-              leftComponent={
-                <BackButton iconName='chevron-left' onPress={() => goBack()} />
-              }
-              centerComponent={{ text: FoodName, style: { color: '#fff' } }}
-            />
               <ScrollView>
                 {data.getFood ?
                   (
@@ -68,7 +59,7 @@ class Foods extends React.Component {
                       data.getFood.name
                     )
                 }
-                imagePath={require('../../../assets/shopping-cart.png')}
+                iconName='shopping-cart'
                 text=" Adicionar ao carrinho"
               />
           </View>

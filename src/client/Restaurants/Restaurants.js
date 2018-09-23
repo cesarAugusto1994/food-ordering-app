@@ -3,34 +3,28 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Button
 } from 'react-native'
 import { Query } from "react-apollo";
 import { connect } from 'redux-zero/react'
 
 
 import CardRestaurant from '../../components/CardOverlay';
-import Header from '../../components/HeaderWithChildren';
+import ShoppingCart from '../../components/TouchableIcon';
 
 import { colors, fonts } from '../../theme'
 import {getRestaurants} from '../../graphql/client'
 
 class Restaurants extends React.Component {
-  static navigationOptions = {
-    header: null
-  }
+
+
   render() {
     return (
       <Query query={getRestaurants}>
         {({loading, err, data}) => {
           return (
             <React.Fragment>
-                <Header
-                  color={colors.primary}
-                  centerComponent={
-                    <Text style={{color: '#fff'}}>Restaurantes</Text>
-                  }
-                />
               <ScrollView style={styles.container}>
                 {
                   data && data.allRestaurants ?
@@ -41,6 +35,7 @@ class Restaurants extends React.Component {
                             () => this.props.navigation.navigate('Foods', {restaurantId}
                             )
                           }
+                          index={restaurantId}
                           key={restaurantId}
                           contentPosition="center"
                           source={{uri: image}}
@@ -48,7 +43,7 @@ class Restaurants extends React.Component {
                           rounded={5}
                         >
                         {() => (
-                          <React.Fragment>
+                          <React.Fragment key={restaurantId}>
                             <Text style={styles.text}>{name.toUpperCase()}</Text>
                             <View style={styles.waitTime}>
                               <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>

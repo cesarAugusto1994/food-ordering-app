@@ -51,7 +51,7 @@ class MyRestaurants extends React.Component {
                 data.getMyRestaurants.map(
                   ({name, description, image, waitTime, speciality, location, restaurantId}) => (
                       <ImageOverlay
-                        key={restaurantId}
+                        index={restaurantId}
                         source={{uri: image}}
                         onPress={
                           () => this.props.navigation.navigate('EditRestaurant', {

@@ -24,10 +24,6 @@ class Search extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header
-          backgroundColor={colors.primary}
-          centerComponent={{ text: 'Procurar', style: { color: '#fff' } }}
-        />
         <SearchBar
           lightTheme={true}
           onChangeText={() => {}}

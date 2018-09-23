@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
 import {
   createStackNavigator,
   createSwitchNavigator,
   createBottomTabNavigator
-} from 'react-navigation'
+} from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 //Auth Routes
@@ -21,22 +22,33 @@ import NewRestaurant from '../owner/NewRestaurant'
 import EditRestaurant from '../owner/EditRestaurant';
 import MyFoods from '../owner/Foods';
 
+import {colors} from '../theme'
+import TouchableIcon from '../components/TouchableIcon'
 
-
+const navigationStyle = {
+  headerStyle: {
+    backgroundColor: colors.primary,
+  },
+  headerTintColor: '#fff',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  }
+}
 
 const ClienteSubRoutes = {
   'Foods': {
     screen: Food,
     navigationOptions: {
-      header: null
+      title: 'Refeições',
+      ...navigationStyle
     }
   },
   'FoodItem': {
     screen: FoodItem,
-    navigationOptions: {
-      header: null,
-      tabBarVisible: false
-    }
+    navigationOptions: ({navigation}) => console.log('NAVVVV', {navigation}) || ({
+      title: navigation.state.params.name,
+      ...navigationStyle
+    })
   }
 };
 
@@ -80,8 +92,33 @@ const AppNavigator = createStackNavigator({
   },
   Cliente: {
     screen: ClienteScreen,
-    navigationOptions: {
-      header: null
+    navigationOptions: ({navigation}) => {
+      const style = { ...navigationStyle}
+      switch(navigation.state.index) {
+        case 0: {
+          style.title = 'Restaurantes';
+          style.headerRight = (
+            <TouchableIcon
+              iconName='shopping-cart'
+              size={30} color='#fff'
+              style={{marginRight: 20}}
+            />
+          );
+          return style;
+        }
+        case 1: {
+          style.title = 'Procurar';
+          return style;
+        }
+        case 2: {
+          style.title = 'Recibos';
+          return style;
+        }
+        case 3: {
+          style.title = 'Meu Perfil';
+          return style;
+        }
+      }
     }
   },
   Restaurante: {

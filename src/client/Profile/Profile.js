@@ -60,10 +60,6 @@ class Profile extends React.Component {
     ]
     return (
       <View style={styles.container}>
-        <Header
-          backgroundColor={colors.primary}
-          centerComponent={{ text: 'Meu Perfil', style: { color: '#fff' } }}
-        />
         <View style={styles.info}>
           <Avatar
             xlarge
@@ -95,7 +91,7 @@ class Profile extends React.Component {
               this.props.signOut()
               }
           }
-          imagePath={require('../../assets/logout.png')}
+          iconName='sign-out'
           text="Terminar sessão"
         />
       </View>
