@@ -9,12 +9,7 @@ import gql from 'graphql-tag';
 
 const Form = t.form.Form;
 
-// here we are: define your domain model
 const Person = t.struct({
-  // name: t.String,              // a required string
-  // surname: t.maybe(t.String),  // an optional string
-  // age: t.Number,               // a required number
-  // rememberMe: t.Boolean        // a boolean
   name: t.String,
   description: t.String,
   location: t.String,
@@ -29,25 +24,23 @@ export default class _Form extends React.Component {
       name: '',
       description: '',
       location: '',
-      waitTime: 33,
+      waitTime: 0,
       speciality: '',
       image: ''
     }
   }
 
   onChange = (value) => {
-    console.log('idfnapifneipfne', value)
     this.setState({value})
   }
 
   mutate  = (e, mutationFn) => {
     e.preventDefault();
-    // let data = {...this.state.value};
-    // data = edit === true ? {...data, restaurantId} : {...data};
+    let data = {...this.state.value};
+    data = this.props.edit === true ? {...data, restaurantId: this.props.restaurantId} : {...data};
     mutationFn({
       variables: {
-        // ...data,
-        ...this.state.value,
+        ...data,
         ownerId: this.props.ownerId
       }
     })
@@ -55,9 +48,16 @@ export default class _Form extends React.Component {
     .catch(err => console.error(err))
   }
   render() {
-    console.log('FORM STATE ------>', this.state)
-    // console.log('FORM props ------>', this.props)
-    const {type, options, color, value = this.state.value, mutation, text, alert, edit = false, restaurantId = null} = this.props;
+    const {
+      type,
+      options,
+      color,
+      value = this.state.value,
+      mutation,
+      text,
+      alert,
+    } = this.props;
+
     return (
       <Mutation mutation={mutation}>
         {(mutationFn, {data}) => (

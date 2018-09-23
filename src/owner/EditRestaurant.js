@@ -22,6 +22,7 @@ const showAlert = (nav) => () => Alert.alert(
 export default ({navigation, image}) => {
   const value = navigation.getParam('value');
   const restaurantId = navigation.getParam('restaurantId');
+  const ownerId = navigation.getParam('ownerId');
   console.log('RRRRRRRR', restaurantId)
   return (
     <React.Fragment>
@@ -41,10 +42,11 @@ export default ({navigation, image}) => {
           color={colors.primary}
           edit={true}
           restaurantId={restaurantId}
+          ownerId={ownerId}
           value={value}
           mutation={EDIT_RESTAURANTE}
-          text="Guardar"
           alert={showAlert(navigation.navigate)}
+          text="Guardar"
         />
       </ScrollView>
     </React.Fragment>

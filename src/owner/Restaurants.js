@@ -60,8 +60,8 @@ class MyRestaurants extends React.Component {
                         onPress={
                           () => this.props.navigation.navigate('EditRestaurant', {
                             restaurantId,
+                            ownerId,
                             value: {
-                              ownerId,
                               name,
                               description,
                               location,
