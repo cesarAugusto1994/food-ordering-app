@@ -6,22 +6,22 @@ import {
   ScrollView,
   Button
 } from 'react-native'
-import { Query, graphql } from "react-apollo";
+import { Query } from "react-apollo";
 import { connect } from 'redux-zero/react'
 
 
 import CardRestaurant from '../../components/CardOverlay';
 import ShoppingCart from '../../components/TouchableIcon';
 
-import { colors, fonts } from '../../theme'
-import {getRestaurants} from '../../graphql/client'
+import { colors, fonts } from '../../theme';
+import {getRestaurants} from '../../graphql/client';
+
 
 class Restaurants extends React.Component {
   render() {
     return (
-      <Query query={getRestaurants}>
+      <Query query={getRestaurants} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
-          console.log('----->', {data, err})
           return (
             <React.Fragment>
               <ScrollView style={styles.container}>

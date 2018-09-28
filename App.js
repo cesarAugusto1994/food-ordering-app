@@ -8,6 +8,7 @@ import App from './src/';
 import store from './src/store';
 import {client} from './src/apollo/index';
 
+console.ignoredYellowBox = ['Remote', 'Warning']
 export default () => (
   <Provider store={store}>
     <ApolloProvider client={client}>
