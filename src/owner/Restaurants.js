@@ -27,47 +27,48 @@ class MyRestaurants extends React.Component {
     const ownerId = "fejf zjf";
     console.log('---->', this.props)
     return (
-      <Query query={myRestaurants} variables={{ownerId}}>
-        {({loading, err, data}) => {
-        return (
-          <View style={styles.container}>
-            <ScrollView>
-            {
-                data.getMyRestaurants ?
-                data.getMyRestaurants.map(
-                  ({name, description, image, waitTime, speciality, location, restaurantId}) => (
-                      <ImageOverlay
-                        index={restaurantId}
-                        source={{uri: image}}
-                        onPress={
-                          () => this.props.navigation.navigate('EditRestaurant', {
-                            restaurantId,
-                            ownerId,
-                            value: {
-                              name,
-                              description,
-                              location,
-                              waitTime,
-                              speciality,
-                              image
-                            }
-                          })
-                        }
-                        contentPosition="center"
-                        overlayAlpha={0.3}
-                        rounded={5}
-                      >
-                      {() => (
-                        <Text style={styles.text}>{name.toUpperCase()}</Text>
-                      )}
-                      </ImageOverlay>
-                  ))
-                : <Text>Este restaurante ainda não tem refeições disponiveis</Text>
-              }
-            </ScrollView>
-          </View>
-        )}}
-      </Query>
+      <Text>Hey</Text>
+      // <Query query={myRestaurants} variables={{ownerId}}>
+      //   {({loading, err, data}) => {
+      //   return (
+      //     <View style={styles.container}>
+      //       <ScrollView>
+      //       {
+      //           data.getMyRestaurants ?
+      //           data.getMyRestaurants.map(
+      //             ({name, description, image, waitTime, speciality, location, restaurantId}) => (
+      //                 <ImageOverlay
+      //                   index={restaurantId}
+      //                   source={{uri: image}}
+      //                   onPress={
+      //                     () => this.props.navigation.navigate('EditRestaurant', {
+      //                       restaurantId,
+      //                       ownerId,
+      //                       value: {
+      //                         name,
+      //                         description,
+      //                         location,
+      //                         waitTime,
+      //                         speciality,
+      //                         image
+      //                       }
+      //                     })
+      //                   }
+      //                   contentPosition="center"
+      //                   overlayAlpha={0.3}
+      //                   rounded={5}
+      //                 >
+      //                 {() => (
+      //                   <Text style={styles.text}>{name.toUpperCase()}</Text>
+      //                 )}
+      //                 </ImageOverlay>
+      //             ))
+      //           : <Text>Este restaurante ainda não tem refeições disponiveis</Text>
+      //         }
+      //       </ScrollView>
+      //     </View>
+      //   )}}
+      // </Query>
     )
   }
 }

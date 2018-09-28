@@ -6,7 +6,7 @@ import {
   ScrollView,
   Button
 } from 'react-native'
-import { Query } from "react-apollo";
+import { Query, graphql } from "react-apollo";
 import { connect } from 'redux-zero/react'
 
 
@@ -17,18 +17,17 @@ import { colors, fonts } from '../../theme'
 import {getRestaurants} from '../../graphql/client'
 
 class Restaurants extends React.Component {
-
-
   render() {
     return (
       <Query query={getRestaurants}>
         {({loading, err, data}) => {
+          console.log('----->', {data, err})
           return (
             <React.Fragment>
               <ScrollView style={styles.container}>
                 {
-                  data && data.allRestaurants ?
-                    data.allRestaurants.map(
+                  data && data.listRestaurants ?
+                    data.listRestaurants.items.map(
                       ({name, image, description, waitTime, restaurantId}, i) => (
                         <CardRestaurant
                           onPress={
