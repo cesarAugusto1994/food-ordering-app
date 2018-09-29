@@ -2,9 +2,8 @@
 
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import {Mutation} from 'react-apollo';
+import {Mutation, graphql} from 'react-apollo';
 import t from 'tcomb-form-native';
-import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const Form = t.form.Form;
@@ -18,7 +17,7 @@ const Person = t.struct({
   image: t.String
 });
 
-export default class _Form extends React.Component {
+class _Form extends React.Component {
   state = {
     value: {
       name: '',
@@ -36,16 +35,45 @@ export default class _Form extends React.Component {
 
   mutate  = (e, mutationFn) => {
     e.preventDefault();
-    let data = {...this.state.value};
-    data = this.props.edit === true ? {...data, restaurantId: this.props.restaurantId} : {...data};
+    const {
+      props: {
+        restaurantId,
+        ownerId,
+        mutationName,
+        edit
+      },
+      state:{ value },
+      getVariables
+    } = this;
+
+    const variables = getVariables({
+      condition: edit === true,
+      data: { ...value},
+      restaurantId,
+      ownerId
+    });
+
+    console.log({variables})
     mutationFn({
-      variables: {
-        ...data,
-        ownerId: this.props.ownerId
-      }
+      variables,
+      optimisticResponse: () => ({
+        [mutationName]: { ...variables, __typename: 'Restaurant' },
+        __typename: 'Mutation'
+      }, {}),
     })
-    .then(data => alert())
-    .catch(err => console.error(err))
+    .then(data => console.log('post', {data}))
+    .catch(err => console.error({err}))
+  }
+
+  getVariables = ({condition, data, restaurantId, ownerId}) => {
+    if(condition) {
+      return {
+        ...data,
+        restaurantId,
+        ownerId
+      };
+    }
+    return { ...data};
   }
   render() {
     const {
@@ -57,10 +85,11 @@ export default class _Form extends React.Component {
       text,
       alert,
     } = this.props;
-
+    console.log('post state', this.state)
+    console.log('post ---->', this.props)
     return (
       <Mutation mutation={mutation}>
-        {(mutationFn, {data}) => (
+        {(mutationFn, {client, data, error, loading}) => console.log('----->do', {mutationFn, client}) || (
           <View style={styles.container}>
             {/* display */}
             <Form
@@ -107,3 +136,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+// const CREATE_RESTAURANTE = gql`
+//   mutation {
+//     createRestaurant(input: {
+//       ownerId: "$ownerId",
+//       name: "$name",
+//       image: "$image",
+//       description: "$description",
+//       waitTime: 4,
+//       speciality: "$speciality",
+//       location: "$location",
+//       restaurantId: "$restaurantId4"
+//     }) {
+//       image
+//       restaurantId
+//       location
+//       waitTime
+//       description
+//       ownerId
+//       speciality
+//       name
+//     }
+//   }
+// `;
+
+
+
+export default _Form;

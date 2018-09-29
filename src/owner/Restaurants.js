@@ -18,57 +18,57 @@ import { connect } from 'redux-zero/react';
 import actions from '../store/actions';
 
 import { colors, fonts } from '../theme';
-import { myRestaurants } from '../graphql/owner/getMyRestaurants';
+import { myRestaurants } from '../graphql/owner';
 
 class MyRestaurants extends React.Component {
   render() {
-    const {goBack, navigate} = this.props.navigation
+    const {goBack, navigate, getParam} = this.props.navigation
     // const ownerId = this.props.navigation.getParam('ownerId');
-    const ownerId = "fejf zjf";
+    const ownerId = "oifezzeifgzoegehnzio";
     console.log('---->', this.props)
     return (
-      <Text>Hey</Text>
-      // <Query query={myRestaurants} variables={{ownerId}}>
-      //   {({loading, err, data}) => {
-      //   return (
-      //     <View style={styles.container}>
-      //       <ScrollView>
-      //       {
-      //           data.getMyRestaurants ?
-      //           data.getMyRestaurants.map(
-      //             ({name, description, image, waitTime, speciality, location, restaurantId}) => (
-      //                 <ImageOverlay
-      //                   index={restaurantId}
-      //                   source={{uri: image}}
-      //                   onPress={
-      //                     () => this.props.navigation.navigate('EditRestaurant', {
-      //                       restaurantId,
-      //                       ownerId,
-      //                       value: {
-      //                         name,
-      //                         description,
-      //                         location,
-      //                         waitTime,
-      //                         speciality,
-      //                         image
-      //                       }
-      //                     })
-      //                   }
-      //                   contentPosition="center"
-      //                   overlayAlpha={0.3}
-      //                   rounded={5}
-      //                 >
-      //                 {() => (
-      //                   <Text style={styles.text}>{name.toUpperCase()}</Text>
-      //                 )}
-      //                 </ImageOverlay>
-      //             ))
-      //           : <Text>Este restaurante ainda não tem refeições disponiveis</Text>
-      //         }
-      //       </ScrollView>
-      //     </View>
-      //   )}}
-      // </Query>
+      <Query query={myRestaurants} variables={{ownerId}} fetchPolicy='cache-and-network'>
+        {({loading, err, data}) => {
+          console.log('------> owner', {data})
+        return (
+          <View style={styles.container}>
+            <ScrollView>
+              {
+                  data.listRestaurants ?
+                  data.listRestaurants.items.map(
+                    ({name, description, image, waitTime, speciality, location, restaurantId}) => (
+                        <ImageOverlay
+                          index={restaurantId}
+                          source={{uri: image}}
+                          onPress={
+                            () => this.props.navigation.navigate('EditRestaurant', {
+                              restaurantId,
+                              ownerId,
+                              value: {
+                                name,
+                                description,
+                                location,
+                                waitTime,
+                                speciality,
+                                image
+                              }
+                            })
+                          }
+                          contentPosition="center"
+                          overlayAlpha={0.3}
+                          rounded={5}
+                        >
+                        {() => (
+                          <Text style={styles.text}>{name.toUpperCase()}</Text>
+                        )}
+                        </ImageOverlay>
+                    ))
+                  : <Text>Este restaurante ainda não tem refeições disponiveis</Text>
+              }
+            </ScrollView>
+          </View>
+        )}}
+      </Query>
     )
   }
 }

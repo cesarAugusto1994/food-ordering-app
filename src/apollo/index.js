@@ -7,11 +7,11 @@ import AWSAppSyncClient from 'aws-appsync';
 // import AppSyncConfig from './aws-exports';
 import config from '../../config';
 
-import defaults from './defaults';
+// import defaults from './defaults';
 
-const cache = new InMemoryCache();
+// const cache = new InMemoryCache();
 
-const httpLink = new HttpLink({ uri:'http://localhost:3000/graphql' })
+// const httpLink = new HttpLink({ uri:'http://localhost:3000/graphql' })
 
 
 // https://api-euwest.graphcms.com/v1/cjj608mvq01ea01ebg82n4n7h/master
@@ -29,6 +29,15 @@ const httpLink = new HttpLink({ uri:'http://localhost:3000/graphql' })
 //   ]),
 // })
 
+const options = {
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    }
+  }
+};
+
+
 export const client = new AWSAppSyncClient({
   url: config.appSyncApiUrl,
   region: config.appSyncRegion,
@@ -37,4 +46,4 @@ export const client = new AWSAppSyncClient({
     apiKey: config.appSyncApiKey,
     // jwtToken: async () => token, // Required when you use Cognito UserPools OR OpenID Connect. token object is obtained previously
   },
-});
+}, options);
