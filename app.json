@@ -21,7 +21,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.foodApp.foodApp"
+    },
+    "android": {
+      "package": "com.foodApp.foodApp"
+    },
+    "facebookScheme": "fb1029457293903156",
+    "facebookAppId": "1029457293903156",
+    "facebookDisplayName": "FoodApp 2"
   }
 }

@@ -8,7 +8,7 @@ import { NavigationActions, StackNavigator } from 'react-navigation';
 
 import { connect } from 'redux-zero/react';
 import actions from '../store/actions';
-import Expo from "expo"
+import Expo from "expo";
 
 
 import styles from './styles';
@@ -73,7 +73,7 @@ const findOrCreateUser = (
 }
 
 class SignIn extends Component {
-  signIn = async (e, {client, mutationFn,data, dddd}) => {
+  googleSignIn = async (e, {client, mutationFn}) => {
     e.preventDefault();
     const {query, queryName, mutation, mutationName, mutationModel, whoIs} = this.props;
     try {
@@ -119,6 +119,47 @@ class SignIn extends Component {
       console.log("error", e)
     }
   }
+  facebookSignIn = async (e, {client, mutationFn}) =>  {
+    e.preventDefault();
+    const {query, queryName, mutation, mutationName, mutationModel, whoIs} = this.props;
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(config.facebookAppId, {
+        permissions: ['public_profile', 'email'],
+        behavior: 'web'
+      });
+    if (type === 'success') {
+      // Get the user's name using Facebook's Graph API
+      const result = await (await fetch(
+        `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture,first_name,last_name`)).json();
+      const user = {
+        firstName: result.first_name,
+        email: result.email,
+        lastName: result.last_name,
+        image: 'http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png'
+      };
+      const id = whoIs.isUser ? 'userId' : 'ownerId';
+      findOrCreateUser(
+        client,
+        mutationFn,
+        {
+          ...user,
+          [id]: uuid()
+        }, {
+          query,
+          queryName,
+          mutation,
+          mutationName,
+          mutationModel,
+          id
+      })
+        .then(async d => {
+          await AsyncStorage.setItem('@app:session', JSON.stringify({user, ...this.props.whoIs}));
+          this.props.whoIs.isOwner === true
+          ? this.props.navigation.push('Restaurante')
+          : this.props.navigation.push('Cliente');
+        })
+        .catch(err => ({err}));
+    }
+  }
   render() {
     const { greeting, greeting2, imagePath, mutation } = this.props;
     return (
@@ -135,8 +176,8 @@ class SignIn extends Component {
               <Text style={[styles.user.greeting]}>{greeting}</Text>
               <Text style={[styles.user.greeting2]}>{greeting2}</Text>
               <View style={styles.user.inputContainer}>
-                <FacebookAuth />
-                <GoogleAuth loginWithGoogle={async e => await this.signIn(e, {mutationFn, client, data, dddd})}/>
+                <FacebookAuth loginWithFacebook={async e => await this.facebookSignIn(e, {mutationFn, client})}/>
+                <GoogleAuth loginWithGoogle={async e => await this.googleSignIn(e, {mutationFn, client})}/>
               </View>
             </View>
         )}
