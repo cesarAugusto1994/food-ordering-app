@@ -138,6 +138,7 @@ const AppNavigator = createStackNavigator({
   Restaurante: {
     screen: OwnerScreen,
     navigationOptions: ({navigation}) => {
+      console.log('----> navvv', navigation)
       const style = { ...navigationStyle}
       switch(navigation.state.index) {
         case 0: {
@@ -147,7 +148,7 @@ const AppNavigator = createStackNavigator({
             <TouchableIcon
               iconName='plus'
               onPress={() => navigation.navigate('NewRestaurant', {
-                value: { ownerId: ''}})
+                value: { ownerId: 'kokokooko'}})
               }
               size={30} color='#fff'
               style={{marginRight: 20}}

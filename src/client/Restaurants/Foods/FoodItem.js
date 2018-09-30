@@ -12,8 +12,8 @@ import CircleButton from '../../../components/CircleButton';
 import AddToCardButton from '../../../components/Button';
 import FoodItemCard from '../../../components/FoodItem';
 
-import { colors, fonts } from '../../../theme'
-import { getFood } from '../../../graphql/client/foods'
+import { colors, fonts } from '../../../theme';
+import { getFood } from '../../../graphql/owner';
 
 class Foods extends React.Component {
   addToCart = (foodId, userId, itemName, itemPrice) => {
@@ -46,7 +46,7 @@ class Foods extends React.Component {
                         substract: () => {}
                       }}
                     />
-                    )
+                  )
                   : <Text style={styles.price}>Hey</Text>
                 }
               </ScrollView>

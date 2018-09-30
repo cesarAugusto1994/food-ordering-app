@@ -2,9 +2,8 @@
 
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import {Mutation} from 'react-apollo';
+import {Mutation, graphql} from 'react-apollo';
 import t from 'tcomb-form-native';
-import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const Form = t.form.Form;
@@ -36,16 +35,30 @@ export default class _Form extends React.Component {
 
   mutate  = (e, mutationFn) => {
     e.preventDefault();
-    let data = {...this.state.value};
-    data = this.props.edit === true ? {...data, restaurantId: this.props.restaurantId} : {...data};
+    const {
+      props: {
+        restaurantId,
+        ownerId,
+        mutationName,
+        edit
+      },
+      state:{ value }
+    } = this;
+    const variables = {
+      ...value,
+      restaurantId,
+      ownerId
+    };
+
     mutationFn({
-      variables: {
-        ...data,
-        ownerId: this.props.ownerId
-      }
+      variables,
+      optimisticResponse: () => ({
+        [mutationName]: { ...variables, __typename: 'Restaurant' },
+        __typename: 'Mutation'
+      }, {}),
     })
-    .then(data => alert())
-    .catch(err => console.error(err))
+    .then(data => console.log('post', {data}))
+    .catch(err => console.error({err}))
   }
   render() {
     const {
@@ -57,10 +70,9 @@ export default class _Form extends React.Component {
       text,
       alert,
     } = this.props;
-
     return (
       <Mutation mutation={mutation}>
-        {(mutationFn, {data}) => (
+        {(mutationFn, {client, data, error, loading}) => (
           <View style={styles.container}>
             {/* display */}
             <Form

@@ -16,22 +16,22 @@ import Card from '../components/Card';
 import { connect } from 'redux-zero/react';
 import actions from '../store/actions';
 
-import { colors, fonts } from '../theme'
-import { getFoods } from '../graphql/client/foods'
+import { colors, fonts } from '../theme';
+import { getRestaurantsFoods } from '../graphql/owner';
 
 class Foods extends React.Component {
   render() {
     const {getParam, goBack} = this.props.navigation
     const restaurantId = getParam('restaurantId');
     return (
-      <Query query={getFoods} variables={{restaurantId}}>
+      <Query query={getRestaurantsFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
         return (
           <View style={styles.container}>
             <ScrollView>
               {
-                data.getRestaurantFoods ?
-                data.getRestaurantFoods.map(
+                data.listFoods ?
+                data.listFoods.items.map(
                   ({name, description, price, image, foodId}) => (
                     <Card
                       description={description}
@@ -74,4 +74,4 @@ const mapToProps = ({
   currentUser
 });
 
-export default connect(mapToProps, actions)(Foods)
+export default connect(mapToProps, actions)(Foods);

@@ -9,6 +9,7 @@ import {colors} from '../theme';
 
 import CardOverlay from '../components/CardOverlay';
 import TouchableLabel from '../components/TouchableLabel';
+import {EDIT_RESTAURANTE} from '../graphql/owner/';
 
 
 export default ({navigation: {getParam, goBack, navigate}, image}) => {
@@ -16,7 +17,7 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
   const restaurantId = getParam('restaurantId');
   const ownerId = getParam('ownerId');
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={styles.container}>
         <ScrollView>
           <CardOverlay source={{uri: value.image}} />
           <View style={styles.wrapper}>
@@ -32,6 +33,7 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
             ownerId={ownerId}
             value={value}
             mutation={EDIT_RESTAURANTE}
+            mutationName='updateRestaurant'
             alert={() => {}}
             text="Guardar"
           />
@@ -41,6 +43,10 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
+  },
   wrapper: {
     flex: 1,
     justifyContent: 'center',
@@ -52,26 +58,3 @@ const styles = StyleSheet.create({
     color: colors.primary
   }
 });
-
-
-const EDIT_RESTAURANTE = gql`
-mutation editRestaurante(
-  $name: String,
-  $image: String,
-  $description: String,
-  $restaurantId: String!,
-  $waitTime: Int,
-  $speciality: String!,
-  $location: String) {
-    editRestaurant(
-      name: $name,
-      description: $description,
-      restaurantId: $restaurantId,
-      image: $image,
-      waitTime: $waitTime,
-      speciality: $speciality,
-      location: $location
-      )  {
-      ownerId
-    }
-}`;
