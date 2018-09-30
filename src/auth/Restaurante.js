@@ -4,7 +4,7 @@ import { connect } from 'redux-zero/react';
 
 import actions from '../store/actions';
 import Layout from './Layout';
-import {CREATE_OWNER, GET_OWNER} from '../graphql/owner'
+import {CREATE_OWNER, GET_OWNER} from '../graphql/owner';
 
 const whoIs = {isUser: false, isOwner: true};
 const signOn = (props, fn) => user => fn({user, ...props})

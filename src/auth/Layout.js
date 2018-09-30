@@ -33,10 +33,8 @@ const findOrCreateUser = (
 
   const variables= { ...userData};
   const {email} = userData;
-  console.log('---->', {email})
   return client.query({query: query, variables: {email: email}})
     .then(response => {
-      console.log('---->', {response: response, queryName})
       if (
         response.data
         && response.data[queryName]
@@ -50,30 +48,30 @@ const findOrCreateUser = (
           }
         } = response;
         console.log('----> items', items)
-        return items[0];
+        return Promise.resolve(items[0]);
       }
-      // return mutationFn({
-      //   mutation,
-      //   variables,
-      //   optimisticResponse: {
-      //     [mutationName]: { ...variables, __typename: mutationModel },
-      //     __typename: 'Mutation'
-      //   },
-      // })
-      //   .then(response => {
-      //     const {data} = response;
-      //     console.log('-----> createedUser', {data})
-      //     return {
-      //       email: data[mutationName].email,
-      //       [id]: data[mutationName][id],
-      //       firstName: data[mutationName].firstName,
-      //       lastName: data[mutationName].lastName,
-      //       image: data[mutationName].image
-      //     }
-      //   })
-      //   .catch(err => console.log('------> error creating user', {err}))
+      return mutationFn({
+        mutation,
+        variables,
+        optimisticResponse: {
+          [mutationName]: { ...variables, __typename: mutationModel },
+          __typename: 'Mutation'
+        },
+      })
+        .then(response => {
+          console.log('------> mutation', response)
+          const {data} = response;
+          return {
+            email: data[mutationName].email,
+            [id]: data[mutationName][id],
+            firstName: data[mutationName].firstName,
+            lastName: data[mutationName].lastName,
+            image: data[mutationName].image
+          }
+        })
+        .catch(err => ({err, message: 'Could not create a user'}))
     })
-    .catch(error => console.log('----> findorcreate error', {error}))
+    .catch(error => ({err, message: 'Could not find a user'}))
 }
 
 class SignIn extends Component {
@@ -112,6 +110,7 @@ class SignIn extends Component {
             id
         })
           .then(async d => {
+            console.log('[[[[[[[[[[[[[[', {d})
             await AsyncStorage.setItem('@app:session', JSON.stringify({user, ...this.props.whoIs}));
             this.props.whoIs.isOwner === true
             ? this.props.navigation.push('Restaurante')
@@ -152,7 +151,7 @@ class SignIn extends Component {
 };
 
 export const GET_OWNER = gql`
-  query getOwner($email: String!) {
+  query listOwners($email: String!) {
     listOwners(
       filter: {
         email: {eq: $email}
@@ -169,31 +168,6 @@ export const GET_OWNER = gql`
     }
   }
 `;
-
-// export const CREATE_OWNER = gql`
-//   mutation createOwner(
-//     $email: String!,
-//     $ownerId: String!,
-//     $firstName: String!,
-//     $lastName: String!,
-//     $image: String!
-//     ) {
-//       createOwner(input: {
-//         email: $email
-//         ownerId: $ownerId
-//         firstName: $firstName
-//         lastName: $lastName
-//         image: $image
-//       }){
-//         ownerId
-//         email
-//         firstName
-//         lastName
-//         image
-//       }
-//   }
-// `;
-
 
 const mapToProps = ({ isAuthed, user, isUser, isOwner }) => ({ isAuthed, user, isUser, isOwner });
 export default connect(mapToProps, actions)(SignIn);
