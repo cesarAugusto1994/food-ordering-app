@@ -14,6 +14,7 @@ import gql from 'graphql-tag';
 
 import Card from '../../../components/Card';
 import Spinner from '../../../components/Spinner';
+import Error from '../../../components/Error';
 
 import { connect } from 'redux-zero/react';
 import actions from '../../../store/actions';
@@ -27,6 +28,12 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
           if(loading) return <Spinner text="Carregando as refeiçoes ..."/>
+          if(err) return (
+            <Error
+              emoji='😰'
+              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de refeiçoes. Feche e volte a abrir a aplicaçao!`}
+            />
+          )
           return (
             <View style={styles.container}>
               <ScrollView>

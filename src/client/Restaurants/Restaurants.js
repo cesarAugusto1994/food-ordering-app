@@ -13,6 +13,7 @@ import { connect } from 'redux-zero/react'
 import CardRestaurant from '../../components/CardOverlay';
 import ShoppingCart from '../../components/TouchableIcon';
 import Spinner from '../../components/Spinner';
+import Error from '../../components/Error';
 
 import { colors, fonts } from '../../theme';
 import {getRestaurants} from '../../graphql/client';
@@ -24,6 +25,12 @@ class Restaurants extends React.Component {
       <Query query={getRestaurants} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
           if(loading) return <Spinner text="Carregando os restaurantes ..."/>
+          if(err) return (
+            <Error
+              emoji='😰'
+              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a list de restaurantes. Feche e volte a abrir a aplicaçao!`}
+            />
+          )
           return (
             <React.Fragment>
               <ScrollView style={styles.container}>

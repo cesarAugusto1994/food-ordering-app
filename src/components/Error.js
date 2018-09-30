@@ -5,12 +5,12 @@ export default ({
   containerStyle,
   textStyle,
   text,
-  size = 'large',
-  color = '#fff'
+  emoji,
+  emojiStyle
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
-      <ActivityIndicator size={size} color={color} />
+      <Text style={[styles.emoji, emojiStyle]}>{emoji}</Text>
       <Text style={[styles.text, textStyle]}>{text}</Text>
     </View>
   )
@@ -19,11 +19,14 @@ export default ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#002835',
+    backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  emoji: {
+    fontSize: 60
+  },
   text: {
-    color: '#fff'
+    color: '#000'
   }
 });

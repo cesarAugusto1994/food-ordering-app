@@ -13,6 +13,7 @@ import gql from 'graphql-tag';
 
 import Card from '../components/Card';
 import Spinner from '../components/Spinner';
+import Error from '../components/Error';
 
 import { connect } from 'redux-zero/react';
 import actions from '../store/actions';
@@ -28,6 +29,12 @@ class Foods extends React.Component {
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
           if(loading) return <Spinner text="Carregando as suas refeiçoes ..."/>
+          if(err) return (
+            <Error
+              emoji='😰'
+              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos os seus dados. Feche e volte a abrir a aplicaçao!`}
+            />
+          )
           return (
             <View style={styles.container}>
               <ScrollView>
