@@ -14,8 +14,8 @@ import Expo from "expo"
 import styles from './styles';
 import config from '../../config';
 
-import GoogleAuth from './buttons/google'
-import FacebookAuth from './buttons/facebook'
+import GoogleAuth from './buttons/google';
+import FacebookAuth from './buttons/facebook';
 
 
 const findOrCreateUser = (
@@ -47,7 +47,6 @@ const findOrCreateUser = (
             }
           }
         } = response;
-        console.log('----> items', items)
         return Promise.resolve(items[0]);
       }
       return mutationFn({
@@ -59,7 +58,6 @@ const findOrCreateUser = (
         },
       })
         .then(response => {
-          console.log('------> mutation', response)
           const {data} = response;
           return {
             email: data[mutationName].email,
@@ -78,8 +76,6 @@ class SignIn extends Component {
   signIn = async (e, {client, mutationFn,data, dddd}) => {
     e.preventDefault();
     const {query, queryName, mutation, mutationName, mutationModel, whoIs} = this.props;
-    console.log('-------->, props', this.props)
-    console.log('-------->, client', {client, data, dddd})
     try {
       const result = await Expo.Google.logInAsync({
         androidClientId: config.androidClientId,
@@ -110,13 +106,12 @@ class SignIn extends Component {
             id
         })
           .then(async d => {
-            console.log('[[[[[[[[[[[[[[', {d})
             await AsyncStorage.setItem('@app:session', JSON.stringify({user, ...this.props.whoIs}));
             this.props.whoIs.isOwner === true
             ? this.props.navigation.push('Restaurante')
             : this.props.navigation.push('Cliente');
           })
-          .catch(err => console.log('----->', {err}));
+          .catch(err => ({err}));
       } else {
         console.log("cancelled")
       }
@@ -149,25 +144,6 @@ class SignIn extends Component {
     );
   }
 };
-
-export const GET_OWNER = gql`
-  query listOwners($email: String!) {
-    listOwners(
-      filter: {
-        email: {eq: $email}
-      },
-      limit: 1
-    ) {
-      items {
-        ownerId
-        email
-        firstName
-        lastName
-        image
-      }
-    }
-  }
-`;
 
 const mapToProps = ({ isAuthed, user, isUser, isOwner }) => ({ isAuthed, user, isUser, isOwner });
 export default connect(mapToProps, actions)(SignIn);

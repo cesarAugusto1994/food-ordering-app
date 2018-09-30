@@ -100,6 +100,33 @@ export const GET_OWNER = gql`
     }
   }
 `;
+export const getRestaurantsFoods = gql`
+  query getMyFoods($restaurantId: String!) {
+    listFoods(filter: {restaurantId: {eq: $restaurantId} }) {
+      items {
+        image
+        name
+        foodId
+        restaurantId
+        price
+        description
+      }
+    }
+  }
+`;
+
+export const getFood = gql`
+  query getFood($foodId: String!) {
+    getFood(foodId: $foodId) {
+      image
+      name
+      foodId
+      restaurantId
+      price
+      description
+    }
+  }
+`;
 
 export const CREATE_OWNER = gql`
   mutation createOwner(

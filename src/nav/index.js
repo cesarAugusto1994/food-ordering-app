@@ -148,7 +148,7 @@ const AppNavigator = createStackNavigator({
             <TouchableIcon
               iconName='plus'
               onPress={() => navigation.navigate('NewRestaurant', {
-                value: { ownerId: ''}})
+                value: { ownerId: 'kokokooko'}})
               }
               size={30} color='#fff'
               style={{marginRight: 20}}

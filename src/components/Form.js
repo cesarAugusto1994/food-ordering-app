@@ -17,7 +17,7 @@ const Person = t.struct({
   image: t.String
 });
 
-class _Form extends React.Component {
+export default class _Form extends React.Component {
   state = {
     value: {
       name: '',
@@ -42,18 +42,14 @@ class _Form extends React.Component {
         mutationName,
         edit
       },
-      state:{ value },
-      getVariables
+      state:{ value }
     } = this;
-
-    const variables = getVariables({
-      condition: edit === true,
-      data: { ...value},
+    const variables = {
+      ...value,
       restaurantId,
       ownerId
-    });
+    };
 
-    console.log({variables})
     mutationFn({
       variables,
       optimisticResponse: () => ({
@@ -63,17 +59,6 @@ class _Form extends React.Component {
     })
     .then(data => console.log('post', {data}))
     .catch(err => console.error({err}))
-  }
-
-  getVariables = ({condition, data, restaurantId, ownerId}) => {
-    if(condition) {
-      return {
-        ...data,
-        restaurantId,
-        ownerId
-      };
-    }
-    return { ...data};
   }
   render() {
     const {
@@ -85,11 +70,9 @@ class _Form extends React.Component {
       text,
       alert,
     } = this.props;
-    console.log('post state', this.state)
-    console.log('post ---->', this.props)
     return (
       <Mutation mutation={mutation}>
-        {(mutationFn, {client, data, error, loading}) => console.log('----->do', {mutationFn, client}) || (
+        {(mutationFn, {client, data, error, loading}) => (
           <View style={styles.container}>
             {/* display */}
             <Form
@@ -136,30 +119,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
-// const CREATE_RESTAURANTE = gql`
-//   mutation {
-//     createRestaurant(input: {
-//       ownerId: "$ownerId",
-//       name: "$name",
-//       image: "$image",
-//       description: "$description",
-//       waitTime: 4,
-//       speciality: "$speciality",
-//       location: "$location",
-//       restaurantId: "$restaurantId4"
-//     }) {
-//       image
-//       restaurantId
-//       location
-//       waitTime
-//       description
-//       ownerId
-//       speciality
-//       name
-//     }
-//   }
-// `;
-
-
-
-export default _Form;

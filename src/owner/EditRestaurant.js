@@ -16,7 +16,6 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
   const value = getParam('value');
   const restaurantId = getParam('restaurantId');
   const ownerId = getParam('ownerId');
-  console.log('---->', {ownerId, restaurantId});
   return (
     <View style={styles.container}>
         <ScrollView>
