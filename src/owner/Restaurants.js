@@ -13,6 +13,8 @@ import gql from 'graphql-tag';
 
 import ImageOverlay from '../components/CardOverlay';
 import Card from '../components/Card';
+import Spinner from '../components/Spinner';
+import Error from '../components/Error';
 
 import { connect } from 'redux-zero/react';
 import actions from '../store/actions';
@@ -29,12 +31,17 @@ class MyRestaurants extends React.Component {
     return (
       <Query query={myRestaurants} variables={{ownerId}} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
-          console.log('------> owner', {data})
-        return (
-          <View style={styles.container}>
-            <ScrollView>
-              {
-                  data.listRestaurants ?
+          if(loading) return <Spinner text="Carregando os seus restaurantes ..."/>
+          if(err) return (
+            <Error
+              emoji='😰'
+              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de seus restaurantes. Feche e volte a abrir a aplicaçao!`}
+            />
+          )
+          return (
+            <View style={styles.container}>
+              <ScrollView>
+                {
                   data.listRestaurants.items.map(
                     ({name, description, image, waitTime, speciality, location, restaurantId}) => (
                         <ImageOverlay
@@ -63,11 +70,10 @@ class MyRestaurants extends React.Component {
                         )}
                         </ImageOverlay>
                     ))
-                  : <Text>Este restaurante ainda não tem refeições disponiveis</Text>
-              }
-            </ScrollView>
-          </View>
-        )}}
+                }
+              </ScrollView>
+            </View>
+          )}}
       </Query>
     )
   }

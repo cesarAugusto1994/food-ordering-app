@@ -12,7 +12,7 @@ console.ignoredYellowBox = ['Remote', 'Warning']
 export default () => (
   <Provider store={store}>
     <ApolloProvider client={client}>
-        <App />
+      <App />
     </ApolloProvider>
   </Provider>
 );

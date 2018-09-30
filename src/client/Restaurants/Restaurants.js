@@ -12,6 +12,8 @@ import { connect } from 'redux-zero/react'
 
 import CardRestaurant from '../../components/CardOverlay';
 import ShoppingCart from '../../components/TouchableIcon';
+import Spinner from '../../components/Spinner';
+import Error from '../../components/Error';
 
 import { colors, fonts } from '../../theme';
 import {getRestaurants} from '../../graphql/client';
@@ -22,37 +24,43 @@ class Restaurants extends React.Component {
     return (
       <Query query={getRestaurants} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
+          if(loading) return <Spinner text="Carregando os restaurantes ..."/>
+          if(err) return (
+            <Error
+              emoji='😰'
+              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a list de restaurantes. Feche e volte a abrir a aplicaçao!`}
+            />
+          )
           return (
             <React.Fragment>
               <ScrollView style={styles.container}>
                 {
-                  data && data.listRestaurants ?
-                    data.listRestaurants.items.map(
-                      ({name, image, description, waitTime, restaurantId}, i) => (
-                        <CardRestaurant
-                          onPress={
-                            () => this.props.navigation.navigate('Foods', {restaurantId}
-                            )
-                          }
-                          index={restaurantId}
-                          key={restaurantId}
-                          contentPosition="center"
-                          source={{uri: image}}
-                          overlayAlpha={0.3}
-                          rounded={5}
-                        >
-                        {() => (
-                          <React.Fragment key={restaurantId}>
-                            <Text style={styles.text}>{name.toUpperCase()}</Text>
-                            <View style={styles.waitTime}>
-                              <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
-                            </View>
-                          </React.Fragment>
+                  data.listRestaurants.items.map(
+                    ({name, image, description, waitTime, restaurantId}, i) => (
+                      <CardRestaurant
+                        onPress={
+                          () => this.props.navigation.navigate('Foods', {restaurantId}
+                          )
+                        }
+                        index={restaurantId}
+                        key={restaurantId}
+                        contentPosition="center"
+                        source={{uri: image}}
+                        overlayAlpha={0.3}
+                        rounded={5}
+                      >
+                      {() => (
+                        <React.Fragment key={restaurantId}>
+                          <Text style={styles.text}>{name.toUpperCase()}</Text>
+                          <View style={styles.waitTime}>
+                            <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
+                          </View>
+                        </React.Fragment>
 
-                        )}
-                        </CardRestaurant>
-                        ))
-                  : <Text>No Restaurants to show</Text>
+                      )}
+                      </CardRestaurant>
+                    )
+                  )
                 }
               </ScrollView>
             </React.Fragment>

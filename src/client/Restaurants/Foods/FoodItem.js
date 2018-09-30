@@ -11,6 +11,8 @@ import actions from '../../../store/actions';
 import CircleButton from '../../../components/CircleButton';
 import AddToCardButton from '../../../components/Button';
 import FoodItemCard from '../../../components/FoodItem';
+import Spinner from '../../../components/Spinner';
+import Error from '../../../components/Error';
 
 import { colors, fonts } from '../../../theme';
 import { getFood } from '../../../graphql/owner';
@@ -27,43 +29,45 @@ class Foods extends React.Component {
     return (
       <Query query={getFood} variables={{foodId}}>
         {({loading, err, data}) => {
-        return (
-          <View style={styles.container}>
-              <ScrollView>
-                {data.getFood ?
-                  (
-                    <FoodItemCard
-                      description={data.getFood.description}
-                      name={data.getFood.name}
-                      price={data.getFood.price}
-                      image={data.getFood.image}
-                      imagePath={{
-                        add: require('../../../assets/add.png'),
-                        substract: require('../../../assets/substract.png')
-                      }}
-                      onPress={{
-                        add: () => {},
-                        substract: () => {}
-                      }}
-                    />
-                  )
-                  : <Text style={styles.price}>Hey</Text>
-                }
-              </ScrollView>
-              <AddToCardButton
-                onPress={
-                  () => this.addToCart(
-                      foodId,
-                      userId,
-                      data.getFood.name,
-                      data.getFood.name
-                    )
-                }
-                iconName='shopping-cart'
-                text=" Adicionar ao carrinho"
-              />
-          </View>
-        )}}
+          if(loading) return <Spinner text="Carregando as refeiçoes ..."/>
+          if(err) return (
+            <Error
+              emoji='😰'
+              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos esta refeiçao. Feche e volte a abrir a aplicaçao!`}
+            />
+          )
+          return (
+            <View style={styles.container}>
+                <ScrollView>
+                  <FoodItemCard
+                    description={data.getFood.description}
+                    name={data.getFood.name}
+                    price={data.getFood.price}
+                    image={data.getFood.image}
+                    imagePath={{
+                      add: require('../../../assets/add.png'),
+                      substract: require('../../../assets/substract.png')
+                    }}
+                    onPress={{
+                      add: () => {},
+                      substract: () => {}
+                    }}
+                  />
+                </ScrollView>
+                <AddToCardButton
+                  onPress={
+                    () => this.addToCart(
+                        foodId,
+                        userId,
+                        data.getFood.name,
+                        data.getFood.name
+                      )
+                  }
+                  iconName='shopping-cart'
+                  text=" Adicionar ao carrinho"
+                />
+            </View>
+          )}}
       </Query>
     )
   }

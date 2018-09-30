@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'redux-zero/react';
 import actions from '../store/actions';
+import Spinner from '../components/Spinner';
 
 class CheckAuth extends Component {
   constructor() {
@@ -34,10 +35,7 @@ class CheckAuth extends Component {
   render() {
     // console.log('PROPS', this.props)
     return (
-      <View style={[styles.container]}>
-        <ActivityIndicator size="large" color="#fff" />
-        <Text style={styles.text}>Carregando ...</Text>
-      </View>
+      <Spinner />
     )
   }
 }
