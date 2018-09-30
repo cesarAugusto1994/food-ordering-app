@@ -18,7 +18,7 @@ import GoogleAuth from './buttons/google';
 import FacebookAuth from './buttons/facebook';
 
 
-const findOrCreateUser = (
+const findOrCreateUser = async (
   client,
   mutationFn,
   userData,
@@ -33,6 +33,7 @@ const findOrCreateUser = (
 
   const variables= { ...userData};
   const {email} = userData;
+  await client.resetStore();
   return client.query({query: query, variables: {email: email}})
     .then(response => {
       if (
@@ -127,7 +128,6 @@ class SignIn extends Component {
         behavior: 'web'
       });
     if (type === 'success') {
-      // Get the user's name using Facebook's Graph API
       const result = await (await fetch(
         `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture,first_name,last_name`)).json();
       const user = {
