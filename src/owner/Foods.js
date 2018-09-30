@@ -12,6 +12,7 @@ import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
 import Card from '../components/Card';
+import Spinner from '../components/Spinner';
 
 import { connect } from 'redux-zero/react';
 import actions from '../store/actions';
@@ -26,29 +27,29 @@ class Foods extends React.Component {
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
-        return (
-          <View style={styles.container}>
-            <ScrollView>
-              {
-                data.listFoods ?
-                data.listFoods.items.map(
-                  ({name, description, price, image, foodId}) => (
-                    <Card
-                      description={description}
-                      name={name}
-                      price={price}
-                      image={image}
-                      foodId={foodId}
-                      onPress={
-                        () => this.props.navigation.navigate({routeName: 'FoodItem', params: {foodId, name}})
-                      }
-                    />
-                  ))
-                : <Text>Este restaurante ainda não tem refeições disponiveis</Text>
-              }
-            </ScrollView>
-          </View>
-        )}}
+          if(loading) return <Spinner text="Carregando as suas refeiçoes ..."/>
+          return (
+            <View style={styles.container}>
+              <ScrollView>
+                {
+                  data.listFoods.items.map(
+                    ({name, description, price, image, foodId}) => (
+                      <Card
+                        description={description}
+                        name={name}
+                        price={price}
+                        image={image}
+                        foodId={foodId}
+                        onPress={
+                          () => this.props.navigation.navigate({routeName: 'FoodItem', params: {foodId, name}})
+                        }
+                      />
+                    )
+                  )
+                }
+              </ScrollView>
+            </View>
+          )}}
       </Query>
     )
   }

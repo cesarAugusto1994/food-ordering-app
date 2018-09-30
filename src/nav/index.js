@@ -46,7 +46,7 @@ const ClienteSubRoutes = {
   },
   'FoodItem': {
     screen: FoodItem,
-    navigationOptions: ({navigation}) => console.log('NAVVVV', {navigation}) || ({
+    navigationOptions: ({navigation}) => ({
       title: navigation.state.params.name,
       ...navigationStyle
     })
@@ -138,7 +138,7 @@ const AppNavigator = createStackNavigator({
   Restaurante: {
     screen: OwnerScreen,
     navigationOptions: ({navigation}) => {
-      console.log('----> navvv', navigation)
+      console.log('----> rest nav', navigation)
       const style = { ...navigationStyle}
       switch(navigation.state.index) {
         case 0: {
