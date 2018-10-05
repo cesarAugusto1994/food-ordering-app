@@ -25,6 +25,7 @@
     "react-apollo": "^2.1.11",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
+    "react-native-super-grid": "^2.4.3",
     "react-native-ui-kitten": "^3.1.2",
     "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^2.16.0",
