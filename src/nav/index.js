@@ -118,7 +118,7 @@ const AppNavigator = createStackNavigator({
           return style;
         }
         case 1: {
-          style.title = 'Procurar';
+          style.title = 'Categorias';
           style.headerLeft = null;
           return style;
         }

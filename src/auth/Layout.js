@@ -108,6 +108,7 @@ class SignIn extends Component {
         })
           .then(async d => {
             await AsyncStorage.setItem('@app:session', JSON.stringify({user, ...this.props.whoIs}));
+            this.props.signOn(user);
             this.props.whoIs.isOwner === true
             ? this.props.navigation.push('Restaurante')
             : this.props.navigation.push('Cliente');
@@ -153,6 +154,7 @@ class SignIn extends Component {
       })
         .then(async d => {
           await AsyncStorage.setItem('@app:session', JSON.stringify({user, ...this.props.whoIs}));
+          this.props.signOn(user);
           this.props.whoIs.isOwner === true
           ? this.props.navigation.push('Restaurante')
           : this.props.navigation.push('Cliente');

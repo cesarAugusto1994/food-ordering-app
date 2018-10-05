@@ -7,13 +7,13 @@ import Layout from './Layout';
 import {CREATE_OWNER, GET_OWNER} from '../graphql/owner';
 
 const whoIs = {isUser: false, isOwner: true};
-const signOn = (props, fn) => user => fn({user, ...props})
-const mapToProps = ({ isAuthed, user, isUser, isOwner }) => ({ isAuthed, user, isUser, isOwner });
+const signOn = (props, fn) => user => fn({user, ...props});
+const mapToProps = ({ signOnUser }) => ({ signOnUser });
 const mutationName = 'createOwner';
 const mutationModel = 'Owner';
 const queryName = 'listOwners';
 
-const Owner = ({signOnOwner, navigation}) => (
+const Owner = ({signOnUser, navigation}) => (
   <Layout
     greeting="Bem-vindo 2"
     greeting2="conecte-se para continuar 2"
@@ -25,7 +25,7 @@ const Owner = ({signOnOwner, navigation}) => (
     mutationName={mutationName}
     mutationModel={mutationModel}
     navigation={navigation}
-    signOn={signOn({isAuthed: true, isOwner: true, isUser: false}, signOnOwner)}
+    signOn={signOn({isAuthed: true, isOwner: true, isUser: false}, signOnUser)}
   />
 );
 

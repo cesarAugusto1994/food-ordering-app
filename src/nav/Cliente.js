@@ -28,9 +28,9 @@ const routes = {
   Search: {
     screen: Search,
     navigationOptions: {
-      title: 'Procurar',
+      title: 'Categorias',
       tabBarIcon: ({ tintColor }) => (
-        <Icon name='search' size={30} color={tintColor}/>
+        <Icon name='filter' size={30} color={tintColor}/>
       )
     }
   },
