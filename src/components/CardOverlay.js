@@ -10,10 +10,10 @@ import {
 
 
 
-export default ({source, onPress, children = () => null, index}) => (
+export default ({source, onPress, children = () => null, index, imageStyle, wrapperStyle}) => (
   <TouchableOpacity onPress={onPress} key={index}>
-    <ImageBackground source={source} style={styles.image}>
-      <View style={styles.wrapper}/>
+    <ImageBackground source={source} style={[styles.image, imageStyle]}>
+      <View style={[styles.wrapper, wrapperStyle]}/>
       {children()}
     </ImageBackground>
   </TouchableOpacity>
