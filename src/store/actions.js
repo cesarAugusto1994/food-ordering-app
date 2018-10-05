@@ -1,16 +1,12 @@
 export default actions = store => ({
-  signOnCliente: (state, value) =>
-    console.log('Cliente Login', {value}) || ({
+  signOnUser: (state, value) => console.log('----> actions', {value}) || ({
       isAuthed: value.isAuthed,
       user: value.user,
       isUser: value.isUser,
-      isOwner: false
+      isOwner: value.isOwner
     }),
-  signOnOwner: (state, value) =>
-    console.log('Owner Login --_>', {value}) || ({ ...value }),
   signOut: (state) => ({user: {}, isAuthed: false, isOwner: false, isUser: false}),
   currentUser: state => {
-    console.log('state', {state})
     if(state.isAuthed) {
       return {
         user: state.user,
@@ -26,5 +22,14 @@ export default actions = store => ({
       isUser: false
     };
   },
-  addToCard: (state, item) => ({ ...state, card: [...state.card, item]})
+  addToCard: (state, {item, quantity}) => {
+    if(quantity === 1) {
+      return {...state, card: [...state.card, item]}
+    }
+    const card = [];
+    for(let i = 0; i < quantity; i++) {
+      card.push(item);
+    }
+    return {...state, card: [...state.card, ...card]}
+  }
 })

@@ -16,11 +16,13 @@ import Spinner from '../../components/Spinner';
 import Error from '../../components/Error';
 
 import { colors, fonts } from '../../theme';
+import actions from '../../store/actions';
 import {getRestaurants} from '../../graphql/client';
 
 
 class Restaurants extends React.Component {
   render() {
+    console.log('---> props rest', this.props)
     return (
       <Query query={getRestaurants} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
@@ -100,4 +102,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Restaurants;
+const mapToProps = ({
+  isAuthed,
+  user,
+  isUser,
+  isOwner,
+  signOnUser
+}) => ({
+  isAuthed,
+  user,
+  isUser,
+  isOwner,
+  signOnUser
+});
+
+export default connect(mapToProps, actions)(Restaurants);

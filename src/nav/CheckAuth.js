@@ -17,19 +17,21 @@ class CheckAuth extends Component {
     this._bootstrapAsync();
   }
   _bootstrapAsync = async () => {
-    console.log('DID')
+    console.log('DID');
       const value = await AsyncStorage.getItem('@app:session');
       if (value !== null) {
         const user = JSON.parse(value);
         console.log('UUU', user);
         if(user && user.isUser === true) {
+          this.props.signOnUser({...user, isAuthed: true});
           this.props.navigation.navigate('Cliente');
         }
         if(user && user.isOwner === true) {
+          this.props.signOnUser({...user, isAuthed: true});
           this.props.navigation.navigate('Restaurante');
         }
       } else {
-        this.props.navigation.navigate('Auth')
+        this.props.navigation.navigate('Auth');
       }
   }
   render() {
@@ -52,16 +54,6 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapToProps = ({
-  isAuthed,
-  isOwner,
-  isUser,
-  user
-}) => ({
-  isAuthed,
-  isOwner,
-  isUser,
-  user
-});
+const mapToProps = ({signOnUser}) => ({signOnUser});
 
 export default connect(mapToProps, actions)(CheckAuth);
