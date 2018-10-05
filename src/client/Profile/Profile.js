@@ -12,7 +12,9 @@ import {
 import { Query } from "react-apollo";
 import gql from 'graphql-tag';
 
-import { Header, SearchBar, Avatar, List, ListItem } from 'react-native-elements';
+import { Header, SearchBar, Avatar, List, ListItem, Divider} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { connect } from 'redux-zero/react';
 import actions from '../../store/actions';
 
@@ -22,42 +24,10 @@ import LogoutButton from '../../components/Button';
 class Profile extends React.Component {
   static navigationOptions = {
     header: null
-  };
-
-  renderComponent(type) {
-    switch (type) {
-      case 'Logout':
-        return (
-          <Text onPress={this.logout.bind(this)} style={styles.welcome}>Logout</Text>
-        )
-      default:
-        return (
-          <Text>Hey</Text>
-        )
-
-    }
   }
   render() {
     const user = this.props.user
     console.log('Profile props', this.props)
-    const list = [
-      {
-        title: 'Definições',
-        icon: 'settings'
-      },
-      {
-        title: 'Pagamento',
-        icon: 'payment'
-      },
-      {
-        title: 'Ajuda',
-        icon: 'help'
-      },
-      {
-        title: 'Actualizações',
-        icon: 'update'
-      }
-    ]
     return (
       <View style={styles.container}>
         <View style={styles.info}>
@@ -68,22 +38,26 @@ class Profile extends React.Component {
             onPress={() => console.log("Works!")}
             activeOpacity={0.7}
           />
-          <Text style={styles.nameText}>{user.firstName} {user.lastName}</Text>
         </View>
-        <ScrollView>
-          <List>
-            {
-              list.map((item) => (
-                <ListItem
-                  key={item.title}
-                  title={item.title}
-                  onPress={() => this.renderComponent(item.title)}
-                  leftIcon={{name: item.icon}}
-                />
-              ))
-            }
-          </List>
-        </ScrollView>
+
+        <View style={styles.wrapper}>
+          <View style={styles.el}>
+            <Icon name='account-box-outline' size={25} color='#FB28' />
+            <Text style={styles.keys}>{' First Name: '.toUpperCase()}</Text>
+            <Text style={styles.text}>My Name</Text>
+          </View>
+          <View style={styles.el}>
+            <Icon name='account-box-outline' size={25} color='#FB28' />
+            <Text style={styles.keys}>{' Last Name: '.toUpperCase()}</Text>
+            <Text style={styles.text}>My Last Name</Text>
+          </View>
+          <View style={styles.el}>
+            <Icon name='email' size={25} color='#FB28' />
+            <Text style={styles.keys}>{' Email: '.toUpperCase()}</Text>
+            <Text style={styles.text}>My Email</Text>
+          </View>
+        </View>
+
         <LogoutButton
           onPress={
             async () => {
@@ -103,46 +77,44 @@ class Profile extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderBottomWidth: 0.3,
-    borderColor: '#cccccc',
-    backgroundColor: '#f7fbff'
+    backgroundColor: '#fff'
   },
   info: {
     padding: 10,
+    marginTop: 50,
     marginLeft: 10,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    borderColor: '#cccccc',
     alignItems: 'center',
-    backgroundColor: '#f7fbff'
   },
-  nameText: {
-    fontSize: 30,
-    padding: 10
+  wrapper: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10
   },
-  textLogout: {
-    color: '#fff'
+  text: {
+    textAlign: 'left',
+    fontWeight: "700"
   },
-  image: {
-    padding: 5,
-    paddingLeft: 3,
-    height: 70,
-    width: 80,
-    borderRadius: 10,
+  keys: {
+    textAlign: 'left',
+    fontWeight: "500"
   },
-  icon: {
-    width: 26,
-    height: 26,
-    marginRight: 5,
-    tintColor: '#fff'
-  },
-  logout: {
-    margin: 0,
-    marginLeft: 40,
-    marginBottom: 5,
-    color: '#fff',
-    backgroundColor: colors.primary,
-    width: '80%'
+  el: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+    padding: 10,
+    width: '80%',
+    height: 60,
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    shadowOpacity: 0.30,
+    shadowRadius: 2,
+    shadowColor: 'black',
+    shadowOffset: { height: 0, width: 0 },
   }
 })
 
