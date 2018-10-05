@@ -4,7 +4,7 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import { colors } from '../theme';
 import CircleButton from './CircleButton';
 
-export default ({ onPress: { add, substract}, image, imagePath, description, name, price}) => (
+export default ({ onPress: { add, substract}, image, imagePath, description, name, price, quantity = 0}) => (
   <View style={styles.infoContainer}>
     <Image style={styles.image} source={{uri: image}} />
     <View style={styles.info}>
@@ -15,7 +15,7 @@ export default ({ onPress: { add, substract}, image, imagePath, description, nam
     <Text style={[styles.price, {marginTop: 10}]}>Quantidade</Text>
     <View style={styles.quantity}>
       <CircleButton onPress={substract} iconName='minus'/>
-      <Text style={[styles.price, {marginBottom: 0}]}>0</Text>
+      <Text style={[styles.price, {marginBottom: 0}]}>{quantity}</Text>
       <CircleButton onPress={add} iconName='plus'/>
     </View>
   </View>

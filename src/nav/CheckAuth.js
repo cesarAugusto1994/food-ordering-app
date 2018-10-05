@@ -23,11 +23,11 @@ class CheckAuth extends Component {
         const user = JSON.parse(value);
         console.log('UUU', user);
         if(user && user.isUser === true) {
-          this.props.signOnUser({...user, isAuthed: true});
+          this.props.signOnUser({...user, isAuthed: true, userId: user.userId});
           this.props.navigation.navigate('Cliente');
         }
         if(user && user.isOwner === true) {
-          this.props.signOnUser({...user, isAuthed: true});
+          this.props.signOnUser({...user, isAuthed: true, userId: user.userId});
           this.props.navigation.navigate('Restaurante');
         }
       } else {

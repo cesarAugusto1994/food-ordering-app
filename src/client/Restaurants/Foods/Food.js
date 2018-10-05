@@ -22,7 +22,8 @@ import actions from '../../../store/actions';
 import { colors, fonts } from '../../../theme';
 import { getRestaurantsFoods } from '../../../graphql/owner';
 
-export default connect(mapToProps, actions)(({navigation: {getParam, navigate, goBack}}) => {
+export default connect(mapToProps, actions)(({navigation: {getParam, navigate, goBack}, ...props}) => {
+    console.log('okokokok', {props})
     const restaurantId = getParam('restaurantId');
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
