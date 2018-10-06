@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   View,
   Text,
@@ -9,36 +9,43 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { Query } from "react-apollo";
-import gql from 'graphql-tag'
-import { connect } from 'redux-zero/react'
-import {RkCard, RkButton, rkCardImg, rkCardHeader, rkCardContent, rkCardFooter} from 'react-native-ui-kitten';
-import { Header, SearchBar } from 'react-native-elements';
+import gql from 'graphql-tag';
+import { connect } from 'redux-zero/react';
+import actions from '../../store/actions';
+import Card from '../../components/Card';
+import OrderButton from '../../components/Button';
 
-import { colors, fonts } from '../../theme'
-
-const BackButton = (props) => (
-  <TouchableOpacity onPress={() => { props.navigation.goBack() }}>
-    <Image style={styles.icon} source={require('../../assets/backward.png')}/>
-  </TouchableOpacity>
-)
+import { colors, fonts } from '../../theme';
 
 class Search extends React.Component {
-  static navigationOptions = {
-    header: null
-  };
   render() {
+    console.log('current State --->', this.state);
+    console.log('current props --->', this.props.store.getState());
+    const {card} = this.props.store.getState();
+
     return (
       <View style={styles.container}>
-        <Header
-          backgroundColor={colors.primary}
-          centerComponent={{ text: 'Procurar', style: { color: '#fff' } }}
-        />
-        <SearchBar
-          lightTheme={true}
-          onChangeText={() => {}}
-          onClearText={() => {}}
-          placeholder='Procurar restaurantes ou refeiçoes' />
         <Text>Este restaurante ainda não tem refeições disponiveis</Text>
+        <ScrollView>
+          {
+            card.map(
+              ({itemName, itemPrice, foodId}) => (
+                <Card
+                  description=''
+                  index={foodId}
+                  name={itemName}
+                  price={itemPrice}
+                  foodId={foodId}
+                />
+              )
+            )
+          }
+        </ScrollView>
+        <OrderButton
+          onPress={() => {}}
+          iconName='sign-out'
+          text="Encomendar"
+        />
       </View>
     )
   }
@@ -87,4 +94,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Search
+const mapToProps = ({ card }) => ({ card })
+
+export default connect(mapToProps, actions)(Search);

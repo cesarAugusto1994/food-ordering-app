@@ -13,8 +13,9 @@ import Auth from '../auth/nav';
 // Cliente Routes
 import Cliente from './Cliente';
 import CheckAuth from './CheckAuth';
-import Food from '../client/Restaurants/Foods/Food'
-import FoodItem from '../client/Restaurants/Foods/FoodItem'
+import Food from '../client/Restaurants/Foods/Food';
+import Cart from '../client/Orders/Order';
+import FoodItem from '../client/Restaurants/Foods/FoodItem';
 
 
 //Owner Routes
@@ -50,6 +51,13 @@ const ClienteSubRoutes = {
       title: navigation.state.params.name,
       ...navigationStyle
     })
+  },
+  'Cart': {
+    screen: Cart,
+    navigationOptions: {
+      title: 'Carrinho',
+      ...navigationStyle
+    }
   }
 };
 
@@ -111,6 +119,9 @@ const AppNavigator = createStackNavigator({
           style.headerRight = (
             <TouchableIcon
               iconName='shopping-cart'
+              onPress={() => navigation.navigate('Cart', {
+                value: { ownerId: 'kokokooko'}})
+              }
               size={30} color='#fff'
               style={{marginRight: 20}}
             />

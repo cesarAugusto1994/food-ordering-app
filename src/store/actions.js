@@ -22,44 +22,11 @@ export default actions = store => ({
       isUser: false
     };
   },
-  // addToCard: (state, {item, quantity}) => {
-  //   if(quantity === 1) {
-  //     return {...state, card: [...state.card, item]}
-  //   }
-  //   const card = [];
-  //   for(let i = 0; i < quantity; i++) {
-  //     card.push(item);
-  //   }
-  //   return {...state, card: [...state.card, ...card]}
-  // },
   addToCard: (state, {item, quantity}) => {
     const allEqual = (card, restaurantId) => card.every(food => food.restaurantId === restaurantId);
     if(allEqual(state.card, item.restaurantId)) {
-      if(quantity === 1) {
-        return {...state, card: [...state.card, item]};
-      }
-      const card = [];
-      for(let i = 0; i < quantity; i++) {
-        card.push(item);
-      }
-      return {...state, card: [...state.card, ...card]};
+      return {...state, card: [...state.card, { ...item, quantity}]};
     }
     return;
   }
 })
-
-
-// const shouldAdd = (state, item, quantity) => {
-//   const allEqual = (card, restaurantId) => card.every(food.restaurantId => food.restaurantId === restaurantId);
-//   if(allEqual(state.card, item.restaurantId)) {
-//     if(quantity === 1) {
-//       return {...state, card: [...state.card, item]};
-//     }
-//     const card = [];
-//     for(let i = 0; i < quantity; i++) {
-//       card.push(item);
-//     }
-//     return {...state, card: [...state.card, ...card]};
-//   }
-//   return;
-// }
