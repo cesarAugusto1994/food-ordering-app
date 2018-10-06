@@ -6,21 +6,18 @@ import { connect } from 'redux-zero/react';
 import actions from '../../store/actions';
 import Card from '../../components/OrderItem';
 import OrderButton from '../../components/Button';
+import Message from '../../components/Error';
 
 import { colors, fonts } from '../../theme';
 
 class Search extends React.Component {
   render() {
-    console.log('current State --->', this.state);
-    console.log('current props --->', this.props.store.getState());
     const {card} = this.props.store.getState();
-
     return (
       <View style={styles.container}>
-        <Text>Este restaurante ainda não tem refeições disponiveis</Text>
         <ScrollView>
           {
-            card.map(
+            card.length !== 0 ? card.map(
               ({itemName, itemPrice, foodId, quantity}) => (
                 <Card
                   index={foodId}
@@ -31,6 +28,7 @@ class Search extends React.Component {
                 />
               )
             )
+            : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
           }
         </ScrollView>
         <OrderButton
@@ -49,40 +47,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 0.3,
     borderColor: '#cccccc'
-  },
-  info: {
-    paddingTop: 0,
-    marginLeft: 10,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-  },
-  infoContainer: {
-    flex: 1,
-    padding: 10,
-    borderBottomWidth: 0.3,
-    borderColor: '#cccccc',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  image: {
-    padding: 5,
-    paddingLeft: 3,
-    height: 70,
-    width: 80,
-    borderRadius: 10,
-  },
-  nameText: {
-    fontSize: 16,
-    color: '#0c0e11',
-    textAlign: 'left'
-  },
-  priceText: {
-      color: colors.primary,
-  },
-  icon: {
-    width: 26,
-    height: 26,
-    tintColor: '#fff'
   }
 })
 
