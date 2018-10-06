@@ -18,12 +18,12 @@ import { colors, fonts } from '../../../theme';
 import { getFood } from '../../../graphql/owner';
 
 class Foods extends React.Component {
-  addToCart = (foodId, userId, itemName, itemPrice, quantity) => {
-    this.props.addToCard({item:{foodId, userId, itemName, itemPrice}, quantity})
+  addToCart = (foodId, userId, itemName, itemPrice,restaurantId, quantity) => {
+    this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId}, quantity})
     this.props.navigation.goBack()
   }
   state = {
-    quantity: 0
+    quantity: 1
   }
 
   addQuantity = () => {
@@ -31,7 +31,7 @@ class Foods extends React.Component {
     this.setState(prevState => ({quantity: prevState.quantity + 1}))
   }
   substractQuantity = () => {
-    if(this.state.quantity === 0) return;
+    if(this.state.quantity === 1) return;
     this.setState(prevState => ({quantity: prevState.quantity - 1}))
   }
   render() {
@@ -74,7 +74,8 @@ class Foods extends React.Component {
                         foodId,
                         userId,
                         data.getFood.name,
-                        data.getFood.name,
+                        data.getFood.price,
+                        data.getFood.restaurantId,
                         this.state.quantity
                       )
                   }

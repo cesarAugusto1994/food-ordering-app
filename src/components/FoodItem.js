@@ -4,7 +4,7 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import { colors } from '../theme';
 import CircleButton from './CircleButton';
 
-export default ({ onPress: { add, substract}, image, imagePath, description, name, price, quantity = 0}) => (
+export default ({ onPress: { add, substract}, image, imagePath, description, name, price, quantity = 1}) => (
   <View style={styles.infoContainer}>
     <Image style={styles.image} source={{uri: image}} />
     <View style={styles.info}>
