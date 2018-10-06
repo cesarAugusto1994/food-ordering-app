@@ -1,18 +1,10 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Image,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native'
-import { Query } from "react-apollo";
-import gql from 'graphql-tag';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'redux-zero/react';
+
+
 import actions from '../../store/actions';
-import Card from '../../components/Card';
+import Card from '../../components/OrderItem';
 import OrderButton from '../../components/Button';
 
 import { colors, fonts } from '../../theme';
@@ -29,13 +21,13 @@ class Search extends React.Component {
         <ScrollView>
           {
             card.map(
-              ({itemName, itemPrice, foodId}) => (
+              ({itemName, itemPrice, foodId, quantity}) => (
                 <Card
-                  description=''
                   index={foodId}
                   name={itemName}
-                  price={itemPrice}
+                  quantity={quantity}
                   foodId={foodId}
+                  onDelete={() => this.props.removeFromCard(foodId)}
                 />
               )
             )
@@ -43,8 +35,8 @@ class Search extends React.Component {
         </ScrollView>
         <OrderButton
           onPress={() => {}}
-          iconName='sign-out'
-          text="Encomendar"
+          iconName='shopping-cart'
+          text=" Encomendar"
         />
       </View>
     )

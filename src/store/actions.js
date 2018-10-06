@@ -24,9 +24,38 @@ export default actions = store => ({
   },
   addToCard: (state, {item, quantity}) => {
     const allEqual = (card, restaurantId) => card.every(food => food.restaurantId === restaurantId);
-    if(allEqual(state.card, item.restaurantId)) {
+    const inArray = (arr, item) => arr.some(el => el.foodId === item.foodId);
+
+    const addOrMerge = (card, item) => {
+      if (inArray(card, item)) {
+        return card.map(el => {
+          if(el.foodId === item.foodId){
+            el.quantity += item.quantity;
+            return el;
+          }
+          return el;
+        })
+      }
+      card.push(item);
+      return card
+    };
+
+    if(state.card.length === 0) {
       return {...state, card: [...state.card, { ...item, quantity}]};
     }
+
+    if(allEqual(state.card, item.restaurantId)) {
+      return {...state, card: [ ...addOrMerge(state.card, { ...item, quantity}) ] };
+    }
+
     return;
+  },
+  removeFromCard: (state, foodId) => {
+    const newCard = state.card.filter(el => {
+      if(el.foodId === foodId) return;
+      return el;
+    });
+
+    return {...state, card: [ ...newCard]};
   }
-})
+});
