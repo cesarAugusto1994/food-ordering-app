@@ -6,7 +6,7 @@ import DeleteButton from './TouchableIcon';
 
 export default ({ key, quantity, name, foodId, onDelete }) => (
     <View style={styles.infoContainer} key={foodId}>
-      <View>
+      <View style={styles.quantityWrapper}>
         <Text style={styles.quantity}>{quantity}</Text>
       </View>
       <View style={styles.info}>
@@ -42,6 +42,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#0c0e11',
     textAlign: 'left'
+  },
+  quantityWrapper: {
+    borderWidth: 2,
+    padding: 10
   },
   quantity: {
       fontSize: 18,

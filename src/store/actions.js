@@ -1,5 +1,5 @@
 export default actions = store => ({
-  signOnUser: (state, value) => console.log('----> actions', {value}) || ({
+  signOnUser: (state, value) => ({
       isAuthed: value.isAuthed,
       user: value.user,
       isUser: value.isUser,
@@ -55,7 +55,9 @@ export default actions = store => ({
       if(el.foodId === foodId) return;
       return el;
     });
-
     return {...state, card: [ ...newCard]};
+  },
+  resetCard: (state) => {
+    return {...state, card: []};
   }
 });

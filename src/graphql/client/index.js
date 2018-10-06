@@ -58,3 +58,39 @@ export const CREATE_CLIENT = gql`
       }
   }
 `;
+
+export const CREATE_ORDER = gql`
+  mutation createOrders(
+    $orderId: String!,
+    $userId: String!,
+    $restaurantId: String!,
+    $itemName: String!,
+    $itemPrice: Int!,
+    $userWillPay: Int!,
+    $additionalInfo: String!,
+    $phoneNumber: String!,
+    $quantity: Int!
+  ) {
+    createOrders(input: {
+      orderId: $orderId
+      userId: $userId
+      restaurantId: $restaurantId
+      itemName: $itemName
+      itemPrice: $itemPrice
+      userWillPay: $userWillPay
+      additionalInfo: $additionalInfo
+      phoneNumber: $phoneNumber
+      quantity: $quantity
+    }) {
+      orderId
+      userId
+      restaurantId
+      itemName
+      itemPrice
+      userWillPay
+      additionalInfo
+      phoneNumber
+      quantity
+    }
+  }
+`
