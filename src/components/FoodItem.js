@@ -10,7 +10,7 @@ export default ({ onPress: { add, substract}, image, imagePath, description, nam
     <View style={styles.info}>
       <Text style={styles.nameText}>{name}</Text>
       <Text>{description}</Text>
-      <Text style={styles.price}>Preço: <Text style={styles.priceText}>{price}00</Text> Kzs</Text>
+      <Text style={styles.priceText}>AOA {price}</Text>
     </View>
     <Text style={[styles.price, {marginTop: 10}]}>Quantidade</Text>
     <View style={styles.quantity}>
@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
   },
   priceText: {
       color: colors.primary,
+      fontSize: 17,
+      marginTop: 10,
+      marginBottom: 10,
+      textAlign: 'left',
+      fontWeight: 'bold'
   },
   quantity: {
     padding: 10,

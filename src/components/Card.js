@@ -5,14 +5,24 @@ import { colors } from '../theme';
 
 export default ({ onPress, key, description, name, image, price, foodId }) => (
   <TouchableOpacity onPress={onPress} key={foodId}>
+
     <View style={styles.infoContainer}>
+
       <Image style={styles.image} source={{uri: image}} />
+
       <View style={styles.info}>
+
         <Text style={styles.nameText}>{name}</Text>
-        <Text>{description}</Text>
-        <Text>Preço: <Text style={styles.priceText}>{price}00</Text> Kzs</Text>
+
+        <Text style={styles.description}>{description}</Text>
+
       </View>
+      <View>
+        <Text style={styles.priceText}>AOA {price}</Text>
+      </View>
+
     </View>
+
   </TouchableOpacity>
 );
 
@@ -33,6 +43,11 @@ const styles = StyleSheet.create({
     borderColor: '#cccccc',
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  description: {
+    color: '#505050',
+    padding: 5,
+    paddingLeft: 0
   },
   image: {
     padding: 5,
