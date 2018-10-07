@@ -1,3 +1,5 @@
+import { showMessage, hideMessage } from "react-native-flash-message";
+
 export default actions = store => ({
   signOnUser: (state, value) => ({
       isAuthed: value.isAuthed,
@@ -22,7 +24,7 @@ export default actions = store => ({
       isUser: false
     };
   },
-  addToCard: (state, {item, quantity}) => {
+  addToCard: async (state, {item, quantity}, cb) => {
     const allEqual = (card, restaurantId) => card.every(food => food.restaurantId === restaurantId);
     const inArray = (arr, item) => arr.some(el => el.foodId === item.foodId);
 
@@ -47,8 +49,7 @@ export default actions = store => ({
     if(allEqual(state.card, item.restaurantId)) {
       return {...state, card: [ ...addOrMerge(state.card, { ...item, quantity}) ] };
     }
-
-    return;
+    return Promise.reject();
   },
   removeFromCard: (state, foodId) => {
     const newCard = state.card.filter(el => {

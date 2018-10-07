@@ -22,11 +22,14 @@ import { getFood } from '../../../graphql/owner';
 class Foods extends React.Component {
   addToCart = (foodId, userId, itemName, itemPrice,restaurantId, quantity) => {
     this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId}, quantity})
-    showMessage({
-      message: "Item adicionado ao carrinho!",
-      type: "success",
-    })
-    this.props.navigation.goBack()
+      .then(success => {
+        showMessage({
+          message: "Item adicionado ao carrinho!",
+          type: "success",
+        })
+        this.props.navigation.goBack()
+      })
+      .catch(err => showMessage({type: 'warning', message: 'So é possivel encomendar em um unico restaurante!'}))
   }
   state = {
     quantity: 1
