@@ -2,35 +2,27 @@ import React from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import { colors } from '../theme';
+import DeleteButton from './TouchableIcon';
 
-export default ({ onPress, key, description, name, image, price, foodId }) => (
-  <TouchableOpacity onPress={onPress} key={foodId}>
-
-    <View style={styles.infoContainer}>
-
-      <Image style={styles.image} source={{uri: image}} />
-
+export default ({ key, quantity, name, foodId, onDelete }) => (
+    <View style={styles.infoContainer} key={foodId}>
+      <View style={styles.quantityWrapper}>
+        <Text style={styles.quantity}>{quantity}</Text>
+      </View>
       <View style={styles.info}>
-
         <Text style={styles.nameText}>{name}</Text>
-
-        <Text style={styles.description}>{description}</Text>
-
       </View>
       <View>
-        <Text style={styles.priceText}>AOA {price}</Text>
+        <DeleteButton onPress={onDelete} iconName='remove' color={colors.primary} size={30}/>
       </View>
-
     </View>
-
-  </TouchableOpacity>
 );
 
 
 const styles = StyleSheet.create({
   info: {
     paddingTop: 0,
-    marginLeft: 10,
+    margin: 10,
     flex: 1,
     alignSelf: 'stretch',
     flexDirection: 'column',
@@ -42,25 +34,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.3,
     borderColor: '#cccccc',
     flexDirection: 'row',
-    alignItems: 'center'
-  },
-  description: {
-    color: '#505050',
-    padding: 5,
-    paddingLeft: 0
-  },
-  image: {
-    padding: 5,
-    paddingLeft: 3,
-    height: 70,
-    width: 80
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   nameText: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
     color: '#0c0e11',
     textAlign: 'left'
   },
-  priceText: {
+  quantityWrapper: {
+    borderWidth: 2,
+    padding: 10
+  },
+  quantity: {
+      fontSize: 18,
+      fontWeight: 'bold',
       color: colors.primary,
   }
 });

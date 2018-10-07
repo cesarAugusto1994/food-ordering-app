@@ -4,18 +4,18 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import { colors } from '../theme';
 import CircleButton from './CircleButton';
 
-export default ({ onPress: { add, substract}, image, imagePath, description, name, price}) => (
+export default ({ onPress: { add, substract}, image, imagePath, description, name, price, quantity = 1}) => (
   <View style={styles.infoContainer}>
     <Image style={styles.image} source={{uri: image}} />
     <View style={styles.info}>
       <Text style={styles.nameText}>{name}</Text>
       <Text>{description}</Text>
-      <Text style={styles.price}>Preço: <Text style={styles.priceText}>{price}00</Text> Kzs</Text>
+      <Text style={styles.priceText}>AOA {price}</Text>
     </View>
     <Text style={[styles.price, {marginTop: 10}]}>Quantidade</Text>
     <View style={styles.quantity}>
       <CircleButton onPress={substract} iconName='minus'/>
-      <Text style={[styles.price, {marginBottom: 0}]}>0</Text>
+      <Text style={[styles.price, {marginBottom: 0}]}>{quantity}</Text>
       <CircleButton onPress={add} iconName='plus'/>
     </View>
   </View>
@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
   },
   priceText: {
       color: colors.primary,
+      fontSize: 17,
+      marginTop: 10,
+      marginBottom: 10,
+      textAlign: 'left',
+      fontWeight: 'bold'
   },
   quantity: {
     padding: 10,

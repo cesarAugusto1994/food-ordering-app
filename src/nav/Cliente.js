@@ -2,11 +2,11 @@ import React from 'react';
 import { Image, StyleSheet, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { colors, fonts } from '../theme'
-import Restaurants from '../client/Restaurants/Restaurants'
-import Search from '../client/Search/Search'
-import Profile from '../client/Profile/Profile'
-import SignUp from '../auth/Restaurante'
+import { colors, fonts } from '../theme';
+import Restaurants from '../client/Restaurants/Restaurants';
+import Search from '../client/Search/Search';
+import Profile from '../client/Profile/Profile';
+import SignUp from '../auth/Restaurante';
 
 const styles = StyleSheet.create({
   icon: {

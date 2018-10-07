@@ -1,5 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button, Image, ScrollView } from 'react-native';
+import { showMessage, hideMessage } from "react-native-flash-message";
+
 
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag'
@@ -18,12 +20,32 @@ import { colors, fonts } from '../../../theme';
 import { getFood } from '../../../graphql/owner';
 
 class Foods extends React.Component {
-  addToCart = (foodId, userId, itemName, itemPrice) => {
-    this.props.addToCard({foodId, userId, itemName, itemPrice})
-    this.props.navigation.goBack()
+  addToCart = (foodId, userId, itemName, itemPrice,restaurantId, quantity) => {
+    this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId}, quantity})
+      .then(success => {
+        showMessage({
+          message: "Item adicionado ao carrinho!",
+          type: "success",
+        })
+        this.props.navigation.goBack()
+      })
+      .catch(err => showMessage({type: 'warning', message: 'So é possivel encomendar em um unico restaurante!'}))
+  }
+  state = {
+    quantity: 1
+  }
+
+  addQuantity = () => {
+    if(this.state.quantity === 20) return;
+    this.setState(prevState => ({quantity: prevState.quantity + 1}))
+  }
+  substractQuantity = () => {
+    if(this.state.quantity === 1) return;
+    this.setState(prevState => ({quantity: prevState.quantity - 1}))
   }
   render() {
-    const {user: {user:userId}, navigation} = this.props;
+    console.log('foood', this.props)
+    const {user: {userId}, navigation} = this.props;
     const {goBack, state} = navigation;
     const {foodId, name: FoodName} = state.params;
     return (
@@ -44,13 +66,14 @@ class Foods extends React.Component {
                     name={data.getFood.name}
                     price={data.getFood.price}
                     image={data.getFood.image}
+                    quantity={this.state.quantity}
                     imagePath={{
                       add: require('../../../assets/add.png'),
                       substract: require('../../../assets/substract.png')
                     }}
                     onPress={{
-                      add: () => {},
-                      substract: () => {}
+                      add: this.addQuantity,
+                      substract: this.substractQuantity
                     }}
                   />
                 </ScrollView>
@@ -60,7 +83,9 @@ class Foods extends React.Component {
                         foodId,
                         userId,
                         data.getFood.name,
-                        data.getFood.name
+                        data.getFood.price,
+                        data.getFood.restaurantId,
+                        this.state.quantity
                       )
                   }
                   iconName='shopping-cart'
@@ -81,13 +106,11 @@ const styles = StyleSheet.create({
 });
 
 const mapToProps = ({
-  isAuthed,
   user,
   addToCard,
   card,
   currentUser
 }) => ({
-  isAuthed,
   user,
   addToCard,
   card,

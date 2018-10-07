@@ -106,9 +106,9 @@ class SignIn extends Component {
             mutationModel,
             id
         })
-          .then(async d => {
-            await AsyncStorage.setItem('@app:session', JSON.stringify({user, ...this.props.whoIs}));
-            this.props.signOn(user);
+          .then(async response => {
+            await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, userId: response.userId}, ...this.props.whoIs}));
+            this.props.signOn({...user, userId: response.userId});
             this.props.whoIs.isOwner === true
             ? this.props.navigation.push('Restaurante')
             : this.props.navigation.push('Cliente');
@@ -152,9 +152,9 @@ class SignIn extends Component {
           mutationModel,
           id
       })
-        .then(async d => {
-          await AsyncStorage.setItem('@app:session', JSON.stringify({user, ...this.props.whoIs}));
-          this.props.signOn(user);
+        .then(async response => {
+          await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, userId: response.userId}, ...this.props.whoIs}));
+          this.props.signOn({...user, userId: response.userId});
           this.props.whoIs.isOwner === true
           ? this.props.navigation.push('Restaurante')
           : this.props.navigation.push('Cliente');
@@ -166,7 +166,7 @@ class SignIn extends Component {
     const { greeting, greeting2, imagePath, mutation } = this.props;
     return (
       <Mutation mutation={mutation}>
-        {(mutationFn, {data, client}, dddd) => (
+        {(mutationFn, {data, client}) => (
             <View style={styles.user.container}>
               <View style={styles.user.heading}>
                 <Image
