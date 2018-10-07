@@ -119,9 +119,7 @@ const AppNavigator = createStackNavigator({
           style.headerRight = (
             <TouchableIcon
               iconName='shopping-cart'
-              onPress={() => navigation.navigate('Cart', {
-                value: { ownerId: 'kokokooko'}})
-              }
+              onPress={() => navigation.navigate('Cart')}
               size={30} color='#fff'
               style={{marginRight: 20}}
             />
@@ -149,7 +147,6 @@ const AppNavigator = createStackNavigator({
   Restaurante: {
     screen: OwnerScreen,
     navigationOptions: ({navigation}) => {
-      console.log('----> rest nav', navigation)
       const style = { ...navigationStyle}
       switch(navigation.state.index) {
         case 0: {
@@ -158,9 +155,7 @@ const AppNavigator = createStackNavigator({
           style.headerRight = (
             <TouchableIcon
               iconName='plus'
-              onPress={() => navigation.navigate('NewRestaurant', {
-                value: { ownerId: 'kokokooko'}})
-              }
+              onPress={() => navigation.navigate('NewRestaurant')}
               size={30} color='#fff'
               style={{marginRight: 20}}
             />
