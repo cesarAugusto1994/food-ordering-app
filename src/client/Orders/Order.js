@@ -13,32 +13,15 @@ import RenderIf from '../../components/RenderIf';
 import { colors, fonts } from '../../theme';
 import { Mutation } from 'react-apollo';
 import { CREATE_ORDER } from '../../graphql/client';
-import OrderForm from '../../components/OrderForm'
+import OrderForm from '../../components/OrderForm';
 
-// orderId: $orderId
-// userId: $userId
-// restaurantId: $restaurantId
-// itemName: $itemName
-// itemPrice: $itemPrice
-// userWillPay: $userWillPay
-// additionalInfo: $additionalInfo
-// phoneNumber: $phoneNumber
-// quantity: $quantity
 
-// mutation,
-// variables,
-// optimisticResponse: {
-//   [mutationName]: { ...variables, __typename: mutationModel },
-//   __typename: 'Mutation'
-// },
-// }
 const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNumber}) => {
   const orderId = uuidv4();
-  const {user: userId} = state;
   state.card.forEach(order => {
     const variables = {
       orderId,
-      userId,
+      userId: state.user.userId,
       restaurantId: order.restaurantId,
       itemPrice: order.itemPrice,
       itemName: order.itemName,
@@ -48,7 +31,6 @@ const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNum
       userWillPay: order.quantity * order.itemPrice
     };
 
-    console.log('-----> ', {variables})
     return mutationFn({
       mutation,
       variables,
@@ -69,7 +51,6 @@ class Order extends React.Component {
     }
   }
   onChange = (value) => {
-    console.log('----> onchange')
     this.setState({value})
   }
 
@@ -81,8 +62,6 @@ class Order extends React.Component {
   }
 
   render() {
-    console.log('adding', this.state)
-    console.log('props order', this.props)
     const {card, user} = this.props.store.getState();
     return (
       <Mutation mutation={CREATE_ORDER}>
