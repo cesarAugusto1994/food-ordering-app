@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, TextInput, Text, KeyboardAvoidingView } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'redux-zero/react';
-
+import uuidv4 from 'uuid/v4';
 
 import actions from '../../store/actions';
 import Card from '../../components/OrderItem';
@@ -23,12 +24,69 @@ import OrderForm from '../../components/OrderForm'
 // additionalInfo: $additionalInfo
 // phoneNumber: $phoneNumber
 // quantity: $quantity
-class Search extends React.Component {
+
+// mutation,
+// variables,
+// optimisticResponse: {
+//   [mutationName]: { ...variables, __typename: mutationModel },
+//   __typename: 'Mutation'
+// },
+// }
+const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNumber}) => {
+  const orderId = uuidv4();
+  const {user: userId} = state;
+  state.card.forEach(order => {
+    const variables = {
+      orderId,
+      userId,
+      restaurantId: order.restaurantId,
+      itemPrice: order.itemPrice,
+      itemName: order.itemName,
+      phoneNumber,
+      additionalInfo,
+      quantity: order.quantity,
+      userWillPay: order.quantity * order.itemPrice
+    };
+
+    console.log('-----> ', {variables})
+    return mutationFn({
+      mutation,
+      variables,
+      optimisticResponse: {
+        createOrders: { ...variables, __typename: 'Orders' },
+        __typename: 'Mutation'
+      }
+    })
+      .then(succ => console.log({succ}))
+      .catch(err => console.log({err}))
+  })
+}
+class Order extends React.Component {
+  state = {
+    value: {
+      phoneNumber: '923302679',
+      additionalInfo: 'OKozkzokdko'
+    }
+  }
+  onChange = (value) => {
+    console.log('----> onchange')
+    this.setState({value})
+  }
+
+  _createOrder = (fn, state) => {
+    const {phoneNumber, additionalInfo} = this.state.value;
+    createOrder(fn, CREATE_ORDER, state, {phoneNumber, additionalInfo})
+      .then(success => console.log({success}))
+      .catch(error => console.log({error}))
+  }
+
   render() {
-    const {card} = this.props.store.getState();
+    console.log('adding', this.state)
+    console.log('props order', this.props)
+    const {card, user} = this.props.store.getState();
     return (
       <Mutation mutation={CREATE_ORDER}>
-        {() => (
+        {(mutationFn, {data, client}) => (
           <View style={styles.container}>
             <ScrollView style={styles.scroll}>
               {
@@ -49,10 +107,13 @@ class Search extends React.Component {
             <RenderIf
               condition={card.length !== 0}
               children={() => (
-                <OrderForm
-                  onOrder={() => {}}
-                  amount={getTotalAmount(card)}
-                />
+                  <OrderForm
+                    onOrder={() => {}}
+                    value={this.state.value}
+                    onChange={this.onChange.bind(this)}
+                    onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
+                    amount={getTotalAmount(card)}
+                  />
               )}
             />
 
@@ -88,12 +149,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 5
   },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   textArea: {
     height: 150,
     justifyContent: "flex-start"
   }
 })
 
-const mapToProps = ({ card }) => ({ card })
+const mapToProps = ({ card, user }) => ({ card, user })
 
-export default connect(mapToProps, actions)(Search);
+export default connect(mapToProps, actions)(Order);

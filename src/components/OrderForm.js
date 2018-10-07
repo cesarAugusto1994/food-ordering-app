@@ -10,9 +10,9 @@ const Form = t.form.Form;
 const formStylesheet = _.cloneDeep(t.form.Form.stylesheet);
 formStylesheet.textbox.normal.height = 100;
 
-const Person = t.struct({
+const OrderInfo = t.struct({
   additionalInfo: t.String,
-  phoneNumber: t.String
+  phoneNumber: t.Number
 });
 
 const options = {
@@ -28,9 +28,9 @@ const options = {
   }
 };
 
-export default ({ onOrder, amount = 0}) => (
+export default ({ onOrder, amount = 0, value, onChange }) => (
   <View style={styles.container}>
-    <Form type={Person} options={options} />
+    <Form type={OrderInfo} options={options} value={value} onChange={onChange}/>
     <View>
       <View style={styles.infoContainer}>
         <View style={styles.info}>

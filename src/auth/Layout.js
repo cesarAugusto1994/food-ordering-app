@@ -166,7 +166,7 @@ class SignIn extends Component {
     const { greeting, greeting2, imagePath, mutation } = this.props;
     return (
       <Mutation mutation={mutation}>
-        {(mutationFn, {data, client}, dddd) => (
+        {(mutationFn, {data, client}) => (
             <View style={styles.user.container}>
               <View style={styles.user.heading}>
                 <Image
