@@ -25,9 +25,7 @@ import { myRestaurants } from '../graphql/owner';
 class MyRestaurants extends React.Component {
   render() {
     const {goBack, navigate, getParam} = this.props.navigation
-    // const ownerId = this.props.navigation.getParam('ownerId');
-    const ownerId = "oifezzeifgzoegehnzio";
-    console.log('---->', this.props)
+    const {ownerId} = this.props.user;
     return (
       <Query query={myRestaurants} variables={{ownerId}} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
@@ -90,14 +88,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
 })
-const mapToProps = ({
-  isAuthed,
-  user,
-  currentUser
-}) => ({
-  isAuthed,
-  user,
-  currentUser
-});
-
+const mapToProps = ({user}) => ({user});
 export default connect(mapToProps, actions)(MyRestaurants);

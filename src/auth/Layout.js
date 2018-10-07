@@ -4,7 +4,7 @@ import { SocialIcon } from 'react-native-elements';
 import { graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import uuid from 'uuid/v4';
-import { NavigationActions, StackNavigator } from 'react-navigation';
+import { NavigationActions, StackNavigator, StackActions } from 'react-navigation';
 
 import { connect } from 'redux-zero/react';
 import actions from '../store/actions';
@@ -74,6 +74,9 @@ const findOrCreateUser = async (
 }
 
 class SignIn extends Component {
+  state = {
+    processing: false
+  }
   googleSignIn = async (e, {client, mutationFn}) => {
     e.preventDefault();
     const {query, queryName, mutation, mutationName, mutationModel, whoIs} = this.props;
@@ -107,11 +110,11 @@ class SignIn extends Component {
             id
         })
           .then(async response => {
-            await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, userId: response.userId}, ...this.props.whoIs}));
-            this.props.signOn({...user, userId: response.userId});
+            await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, [id]: whoIs.isOwner ? response[id] : response[id]}, ...whoIs}));
+            this.props.signOn({...user, [id]: whoIs.isOwner ? response[id] : response[id]});
             this.props.whoIs.isOwner === true
             ? this.props.navigation.push('Restaurante')
-            : this.props.navigation.push('Cliente');
+            : this.props.navigation.push('Cliente')
           })
           .catch(err => ({err}));
       } else {
@@ -153,8 +156,8 @@ class SignIn extends Component {
           id
       })
         .then(async response => {
-          await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, userId: response.userId}, ...this.props.whoIs}));
-          this.props.signOn({...user, userId: response.userId});
+          await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, [id]: whoIs.isOwner ? response[id] : response[id]}, ...whoIs}));
+          this.props.signOn({...user, [id]: whoIs.isOwner ? response[id] : response[id]});
           this.props.whoIs.isOwner === true
           ? this.props.navigation.push('Restaurante')
           : this.props.navigation.push('Cliente');
@@ -167,21 +170,21 @@ class SignIn extends Component {
     return (
       <Mutation mutation={mutation}>
         {(mutationFn, {data, client}) => (
-            <View style={styles.user.container}>
-              <View style={styles.user.heading}>
-                <Image
-                  source={imagePath}
-                  style={styles.user.headingImage}
-                  resizeMode="contain"
-                />
-              </View>
-              <Text style={[styles.user.greeting]}>{greeting}</Text>
-              <Text style={[styles.user.greeting2]}>{greeting2}</Text>
-              <View style={styles.user.inputContainer}>
-                <FacebookAuth loginWithFacebook={async e => await this.facebookSignIn(e, {mutationFn, client})}/>
-                <GoogleAuth loginWithGoogle={async e => await this.googleSignIn(e, {mutationFn, client})}/>
-              </View>
+          <View style={styles.user.container}>
+            <View style={styles.user.heading}>
+              <Image
+                source={imagePath}
+                style={styles.user.headingImage}
+                resizeMode="contain"
+              />
             </View>
+            <Text style={[styles.user.greeting]}>{greeting}</Text>
+            <Text style={[styles.user.greeting2]}>{greeting2}</Text>
+            <View style={styles.user.inputContainer}>
+              <FacebookAuth loginWithFacebook={async e => await this.facebookSignIn(e, {mutationFn, client})}/>
+              <GoogleAuth loginWithGoogle={async e => await this.googleSignIn(e, {mutationFn, client})}/>
+            </View>
+          </View>
         )}
       </Mutation>
     );

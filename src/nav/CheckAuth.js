@@ -27,7 +27,7 @@ class CheckAuth extends Component {
           this.props.navigation.navigate('Cliente');
         }
         if(user && user.isOwner === true) {
-          this.props.signOnUser({...user, isAuthed: true, userId: user.userId});
+          this.props.signOnUser({...user, isAuthed: true, ownerId: user.ownerId});
           this.props.navigation.navigate('Restaurante');
         }
       } else {

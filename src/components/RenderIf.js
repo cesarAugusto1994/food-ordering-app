@@ -1,2 +1,2 @@
-const RenderIf = ({condition, children = () => null}) => condition ? children() : null
+const RenderIf = ({condition, children = () => null, fallback = () => null}) => condition ? children() : fallback()
 export default RenderIf;

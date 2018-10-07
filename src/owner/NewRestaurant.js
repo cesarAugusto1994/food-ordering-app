@@ -6,9 +6,12 @@ import uuidv4 from 'uuid/v4';
 
 import {colors} from '../theme';
 import {CREATE_RESTAURANTE} from '../graphql/owner/';
+import { connect } from 'redux-zero/react';
+import actions from '../store/actions';
 
-export default ({navigation: {getParam, goBack}}) => {
-  const {ownerId} = getParam('value');
+const mapToPros = ({user}) => ({user});
+export default connect(mapToPros, actions)(({navigation: {getParam, goBack}, user}) => {
+  const {ownerId} = user;
   const restaurantId = uuidv4();
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -25,4 +28,4 @@ export default ({navigation: {getParam, goBack}}) => {
       </ScrollView>
     </View>
   )
-};
+});
