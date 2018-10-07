@@ -80,7 +80,7 @@ const OwnerSubRoutes = {
   },
   MyFoods: {
     screen: MyFoods,
-    navigationOptions: ({navigation, ...props}) => console.log('----> myfoods', {navigation, props}) || ({
+    navigationOptions: ({navigation, ...props}) => ({
       title: 'Pratos',
       ...navigationStyle,
       headerRight: (

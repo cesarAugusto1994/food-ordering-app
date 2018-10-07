@@ -15,7 +15,6 @@ const FoodType = t.struct({
   description: t.String,
   price: t.Number,
   image: t.String,
-  foodId: t.String
 });
 
 export default class _Form extends React.Component {
@@ -25,8 +24,6 @@ export default class _Form extends React.Component {
       description: '',
       price: 0,
       image: '',
-      restaurantId: '',
-      foodId: ''
     }
   }
 
@@ -39,6 +36,7 @@ export default class _Form extends React.Component {
     const {
       props: {
         restaurantId,
+        foodId,
         mutationName,
         edit
       },
@@ -46,7 +44,8 @@ export default class _Form extends React.Component {
     } = this;
     const variables = {
       ...value,
-      restaurantId
+      restaurantId,
+      foodId
     };
 
     if(!this.props.edit) {
@@ -66,7 +65,7 @@ export default class _Form extends React.Component {
     mutationFn({
       variables,
       optimisticResponse: () => ({
-        [mutationName]: { ...variables, __typename: 'Restaurant' },
+        [mutationName]: { ...variables, __typename: 'Food' },
         __typename: 'Mutation'
       }, {}),
     })
