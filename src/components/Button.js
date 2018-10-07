@@ -4,8 +4,8 @@ import {Image,Text,StyleSheet, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { fonts, colors } from '../theme'
 
-export default ({ onPress, iconName, text, color = '#fff', size = 30}) => (
-  <TouchableOpacity style={styles.button} onPress={onPress}>
+export default ({ onPress, iconName, text, color = '#fff', size = 30, buttonStyle}) => (
+  <TouchableOpacity style={[styles.button, buttonStyle]} onPress={onPress}>
     <Icon name={iconName} size={size} color={color}/>
     <Text style={styles.text}>{text}</Text>
   </TouchableOpacity>

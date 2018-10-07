@@ -1,10 +1,11 @@
 import React from 'react';
-import Form from '../components/Form';
+import EditRestaurant from '../components/CreateAndEditRestaurant';
 import {Text, ScrollView, TouchableOpacity, View, StyleSheet} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import gql from 'graphql-tag';
 import {colors} from '../theme';
+import FlashMessage from 'react-native-flash-message';
 
 
 import CardOverlay from '../components/CardOverlay';
@@ -26,18 +27,20 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
               style={styles.text}
             />
           </View>
-          <Form
-            color={colors.primary}
+          <EditRestaurant
             edit={true}
             restaurantId={restaurantId}
             ownerId={ownerId}
             value={value}
             mutation={EDIT_RESTAURANTE}
             mutationName='updateRestaurant'
-            alert={() => {}}
+            goBack={goBack}
             text="Guardar"
+            formStyle={styles.formStyle}
+            containerStyle={styles.containerStyle}
           />
         </ScrollView>
+        <FlashMessage position='top'/>
     </View>
   )
 }
@@ -56,5 +59,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: colors.primary
+  },
+  formStyle: {
+    marginTop: 0
+  },
+  containerStyle: {
+    marginTop: 0
   }
 });
