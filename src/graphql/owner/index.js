@@ -151,3 +151,57 @@ export const CREATE_OWNER = gql`
       }
   }
 `;
+
+export const CREATE_FOOD = gql`
+  mutation createFood(
+    $name: String!,
+    $description: String!,
+    $price: Int!,
+    $image: String!,
+    $restaurantId: String!,
+    $foodId: String!
+  ) {
+    createFood(input: {
+      name: $name
+      description: $description
+      price: $price
+      image: $image
+      restaurantId: $restaurantId
+      foodId: $foodId
+    }){
+      name
+      description
+      price
+      image
+      restaurantId
+      foodId
+    }
+  }
+`;
+
+export const EDIT_FOOD = gql`
+  mutation updateFood(
+    $name: String!,
+    $description: String!,
+    $price: Int!,
+    $image: String!,
+    $restaurantId: String!,
+    $foodId: String!
+  ) {
+    updateFood(input: {
+      name: $name
+      description: $description
+      price: $price
+      image: $image
+      restaurantId: $restaurantId
+      foodId: $foodId
+    }){
+      name
+      description
+      price
+      image
+      restaurantId
+      foodId
+    }
+  }
+`;

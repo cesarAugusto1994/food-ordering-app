@@ -22,6 +22,7 @@ import FoodItem from '../client/Restaurants/Foods/FoodItem';
 import Owner from './Owner';
 import NewRestaurant from '../owner/NewRestaurant'
 import EditRestaurant from '../owner/EditRestaurant';
+import NewFood from '../owner/NewFood';
 import MyFoods from '../owner/Foods';
 
 import {colors} from '../theme'
@@ -79,9 +80,24 @@ const OwnerSubRoutes = {
   },
   MyFoods: {
     screen: MyFoods,
-    navigationOptions: {
+    navigationOptions: ({navigation, ...props}) => console.log('----> myfoods', {navigation, props}) || ({
       title: 'Pratos',
-      ...navigationStyle
+      ...navigationStyle,
+      headerRight: (
+        <TouchableIcon
+          iconName='plus'
+          onPress={() => navigation.navigate('NewFood')}
+          size={30} color='#fff'
+          style={{marginRight: 20}}
+        />
+      )
+    })
+  },
+  NewFood: {
+    screen: NewFood,
+    navigationOptions: {
+      title: 'Prato',
+      ...navigationStyle,
     }
   }
 };

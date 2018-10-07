@@ -13,6 +13,7 @@ import gql from 'graphql-tag';
 
 import Card from '../components/Card';
 import Spinner from '../components/Spinner';
+import TouchableIcon from '../components/TouchableIcon';
 import Error from '../components/Error';
 
 import { connect } from 'redux-zero/react';
@@ -22,9 +23,13 @@ import { colors, fonts } from '../theme';
 import { getRestaurantsFoods } from '../graphql/owner';
 
 class Foods extends React.Component {
+  componentDidMount() {
+    this.props.setTempRestaurantId(this.props.navigation.getParam('restaurantId'));
+  }
   render() {
     const {getParam, goBack} = this.props.navigation
     const restaurantId = getParam('restaurantId');
+    console.log('----->', this.props)
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
@@ -69,17 +74,15 @@ const styles = StyleSheet.create({
   }
 })
 const mapToProps = ({
-  isAuthed,
   user,
-  addToCard,
   card,
-  currentUser
+  setTempRestaurantId,
+  restaurantId
 }) => ({
-  isAuthed,
   user,
-  addToCard,
   card,
-  currentUser
+  setTempRestaurantId,
+  restaurantId
 });
 
 export default connect(mapToProps, actions)(Foods);

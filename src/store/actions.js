@@ -60,5 +60,6 @@ export default actions = store => ({
   },
   resetCard: (state) => {
     return {...state, card: []};
-  }
+  },
+  setTempRestaurantId: (state, restaurantId) => ({...state, restaurantId})
 });
