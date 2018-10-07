@@ -1,5 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button, Image, ScrollView } from 'react-native';
+import { showMessage, hideMessage } from "react-native-flash-message";
+
 
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag'
@@ -20,6 +22,10 @@ import { getFood } from '../../../graphql/owner';
 class Foods extends React.Component {
   addToCart = (foodId, userId, itemName, itemPrice,restaurantId, quantity) => {
     this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId}, quantity})
+    showMessage({
+      message: "Item adicionado ao carrinho!",
+      type: "success",
+    })
     this.props.navigation.goBack()
   }
   state = {
