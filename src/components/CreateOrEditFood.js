@@ -9,6 +9,8 @@ import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import Form from './Form';
 import {showMessage} from 'react-native-flash-message';
+import Card from './Card'
+import CardOverlay from './CardOverlay'
 
 const FoodType = t.struct({
   name: t.String,
@@ -31,7 +33,7 @@ export default class _Form extends React.Component {
     this.setState({value})
   }
 
-  mutate  = (e, mutationFn) => {
+  mutate  = (e, mutationFn, client) => {
     e.preventDefault();
     const {
       props: {
@@ -70,6 +72,7 @@ export default class _Form extends React.Component {
       }, {}),
     })
     .then(data => {
+      client.resetStore();
       if(edit && !_.isEmpty(data.data.updateFood) || !_.isEmpty(data.data.createFood)) {
         showMessage({type: 'success', message: 'Item guardado com sucesso!'});
         return this.props.goBack()
@@ -101,14 +104,15 @@ export default class _Form extends React.Component {
       <Mutation mutation={mutation}>
         {(mutationFn, {client, data, error, loading}) => (
           <View style={[styles.container, containerStyle]}>
+            <CardOverlay source={value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}/>
             <Form
               type={FoodType}
               options={options}
               onChange={this.onChange}
-              formStyle={formStyle}
+              formStyle={[formStyle, styles.formStyle]}
               value={value}
               text={text}
-              onSave={async e => await this.mutate(e, mutationFn)}
+              onSave={async e => await this.mutate(e, mutationFn, client)}
             />
           </View>
         )}
@@ -120,8 +124,11 @@ export default class _Form extends React.Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: 20,
     padding: 20,
     backgroundColor: '#fff',
+  },
+  formStyle: {
+    marginTop: 5
   }
 });

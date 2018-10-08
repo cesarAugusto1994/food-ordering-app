@@ -28,7 +28,7 @@ export default connect(mapToPros, actions)(({navigation: {getParam, goBack}, use
           edit={true}
           goBack={goBack}
           value={{description, name, image, price}}
-          text="Salvar"
+          text="Guardar"
         />
         <FlashMessage position='top'/>
       </ScrollView>
