@@ -205,3 +205,11 @@ export const EDIT_FOOD = gql`
     }
   }
 `;
+
+export const DELETE_FOOD = gql`
+  mutation deleteFood($foodId: String!) {
+    deleteFood(input: {foodId: $foodId}) {
+      name
+    }
+  }
+`;

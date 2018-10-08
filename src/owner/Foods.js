@@ -1,38 +1,42 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Image,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
+import { View, StyleSheet, ScrollView} from 'react-native';
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
-import Card from '../components/Card';
+import Card from '../components/OwnerFoodList';
 import Spinner from '../components/Spinner';
 import TouchableIcon from '../components/TouchableIcon';
 import Error from '../components/Error';
 
 import { connect } from 'redux-zero/react';
+import {showMessage} from 'react-native-flash-message';
 import actions from '../store/actions';
 
 import { colors, fonts } from '../theme';
-import { getRestaurantsFoods } from '../graphql/owner';
+import { getRestaurantsFoods, DELETE_FOOD } from '../graphql/owner';
 
 class Foods extends React.Component {
   componentDidMount() {
     this.props.setTempRestaurantId(this.props.navigation.getParam('restaurantId'));
   }
+  deleteFood = (client, foodId) => {
+    client.mutate({mutation: DELETE_FOOD, variables: {foodId}})
+    .then(({data}) => {
+      client.resetStore();
+      return showMessage({type: 'success', message: 'Apagado com sucesso'})
+    })
+    .catch(err => showMessage({
+      type: 'danger',
+      message: 'Houve um erro ao tentar apagar este prato',
+      backgroundColor: 'red'
+    }))
+  }
   render() {
     const {getParam, goBack} = this.props.navigation
     const restaurantId = getParam('restaurantId');
-    console.log('-----> foooodos', this.props)
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
-        {({loading, err, data}) => {
+        {({loading, err, data, client}) => {
           if(loading) return <Spinner text="Carregando as suas refeiçoes ..."/>
           if(err) return (
             <Error
@@ -54,6 +58,7 @@ class Foods extends React.Component {
                           image,
                           foodId
                           }}
+                          onDelete={this.deleteFood.bind(this, client, foodId)}
                         onPress={
                           () => this.props.navigation.navigate({routeName: 'EditFood', params: {
                             foodId,

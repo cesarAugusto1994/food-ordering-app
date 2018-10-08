@@ -5,29 +5,21 @@ import { colors } from '../theme';
 
 export default ({ onPress, key, description, name, image, price, foodId }) => (
   <TouchableOpacity onPress={onPress} key={foodId}>
-
     <View style={styles.infoContainer}>
-
       <Image style={styles.image} source={{uri: image}} />
-
       <View style={styles.info}>
-
         <Text style={styles.nameText}>{name}</Text>
-
         <Text style={styles.description}>{description}</Text>
-
       </View>
       <View>
         <Text style={styles.priceText}>AOA {price}</Text>
       </View>
-
     </View>
-
   </TouchableOpacity>
 );
 
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   info: {
     paddingTop: 0,
     marginLeft: 10,
