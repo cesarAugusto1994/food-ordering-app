@@ -35,6 +35,23 @@ export const getRestaurants = gql`
 }
 `;
 
+export const filterRestaurants = gql`
+  query myRestaurants($speciality: String!) {
+    listRestaurants(filter: {speciality: { eq: $speciality }}) {
+      items {
+        image
+        restaurantId
+        location
+        waitTime
+        description
+        ownerId
+        speciality
+        name
+      }
+    }
+  }
+`;
+
 export const CREATE_CLIENT = gql`
   mutation createClient(
     $email: String!,

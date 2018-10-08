@@ -16,6 +16,7 @@ import CheckAuth from './CheckAuth';
 import Food from '../client/Restaurants/Foods/Food';
 import Cart from '../client/Orders/Order';
 import FoodItem from '../client/Restaurants/Foods/FoodItem';
+import RestaurantFilter from '../client/Search/RestaurantList';
 
 
 //Owner Routes
@@ -40,26 +41,33 @@ const navigationStyle = {
 }
 
 const ClienteSubRoutes = {
-  'Foods': {
+  Foods: {
     screen: Food,
     navigationOptions: {
       title: 'Refeições',
       ...navigationStyle
     }
   },
-  'FoodItem': {
+  FoodItem: {
     screen: FoodItem,
     navigationOptions: ({navigation}) => ({
       title: navigation.state.params.name,
       ...navigationStyle
     })
   },
-  'Cart': {
+  Cart: {
     screen: Cart,
     navigationOptions: {
       title: 'Carrinho',
       ...navigationStyle
     }
+  },
+  Filter: {
+    screen: RestaurantFilter,
+    navigationOptions: ({navigation}) => ({
+      title: navigation.state.params.name,
+      ...navigationStyle
+    })
   }
 };
 
