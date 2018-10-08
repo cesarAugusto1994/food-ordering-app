@@ -44,6 +44,11 @@ class Foods extends React.Component {
               text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos os seus dados. Feche e volte a abrir a aplicaçao!`}
             />
           )
+          if(data.listFoods.items.length === 0 ) return (
+            <Error
+              text='Oops! Não pudemos satisfazer a sua pesquisa'
+              textStyle={{fontSize: 18}}/>
+          )
           return (
             <View style={styles.container}>
               <ScrollView>

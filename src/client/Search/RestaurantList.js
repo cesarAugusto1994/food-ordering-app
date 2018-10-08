@@ -32,6 +32,11 @@ const RestaurantList = ({navigation: {navigate, state}}) => {
             text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a list de restaurantes. Feche e volte a abrir a aplicaçao!`}
           />
         )
+        if(data.listRestaurants.items.length === 0 ) return (
+          <Error
+            text='Oops! Não pudemos satisfazer a sua pesquisa'
+            textStyle={{fontSize: 18}}/>
+        )
         return (
           <React.Fragment>
             <ScrollView style={styles.container}>
