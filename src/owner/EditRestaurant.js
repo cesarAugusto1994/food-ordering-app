@@ -20,13 +20,6 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
   return (
     <View style={styles.container}>
         <ScrollView>
-          <CardOverlay source={{uri: value.image}} />
-          <View style={styles.wrapper}>
-            <TouchableLabel
-              onPress={() => navigate('MyFoods', {restaurantId})}
-              style={styles.text}
-            />
-          </View>
           <EditRestaurant
             edit={true}
             restaurantId={restaurantId}
@@ -38,6 +31,20 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
             text="Guardar"
             formStyle={styles.formStyle}
             containerStyle={styles.containerStyle}
+            children={(onDelete) => (
+              <View style={styles.wrapper}>
+                <TouchableLabel
+                  text='Ver refeiçoes'
+                  onPress={() => navigate('MyFoods', {restaurantId})}
+                  style={styles.text}
+                />
+                <TouchableLabel
+                  text='Apagar Restaurante'
+                  onPress={onDelete}
+                  style={styles.text}
+                />
+              </View>
+            )}
           />
         </ScrollView>
         <FlashMessage position='top'/>
@@ -45,14 +52,15 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
   )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff'
   },
   wrapper: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 10
   },

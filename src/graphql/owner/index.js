@@ -81,6 +81,14 @@ export const EDIT_RESTAURANTE = gql`
   }
 `;
 
+export const DELETE_RESTAURANTE = gql`
+  mutation deleteRestaurant($restaurantId: String!) {
+    deleteRestaurant(input: {restaurantId: $restaurantId}) {
+      name
+    }
+  }
+`;
+
 
 export const GET_OWNER = gql`
   query getOwner($email: String!) {
