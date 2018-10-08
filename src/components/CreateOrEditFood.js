@@ -1,3 +1,4 @@
+
 'use strict';
 
 import React from 'react';
@@ -7,17 +8,15 @@ import {Mutation, graphql} from 'react-apollo';
 import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import Form from './Form';
-import CardOverlay from './CardOverlay';
 import {showMessage} from 'react-native-flash-message';
-import {DELETE_RESTAURANTE} from '../graphql/owner/index'
+import Card from './Card'
+import CardOverlay from './CardOverlay'
 
-const RestauranteType = t.struct({
+const FoodType = t.struct({
   name: t.String,
   description: t.String,
-  location: t.String,
-  waitTime: t.Number,
-  speciality: t.String,
-  image: t.String
+  price: t.Number,
+  image: t.String,
 });
 
 export default class _Form extends React.Component {
@@ -25,10 +24,8 @@ export default class _Form extends React.Component {
     value: {
       name: '',
       description: '',
-      location: '',
-      waitTime: 0,
-      speciality: '',
-      image: ''
+      price: 0,
+      image: '',
     }
   }
 
@@ -41,7 +38,7 @@ export default class _Form extends React.Component {
     const {
       props: {
         restaurantId,
-        ownerId,
+        foodId,
         mutationName,
         edit
       },
@@ -50,17 +47,16 @@ export default class _Form extends React.Component {
     const variables = {
       ...value,
       restaurantId,
-      ownerId
+      foodId
     };
 
     if(!this.props.edit) {
       if (
         value.name === '' ||
         value.description === '' ||
-        value.location === '' ||
-        value.waitTime === 0 ||
-        value.speciality === '' ||
-        value.image === ''
+        value.price === '' ||
+        value.image === 0 ||
+        value.foodId === ''
         ) {
           return showMessage({
             type: 'warning',
@@ -71,13 +67,13 @@ export default class _Form extends React.Component {
     mutationFn({
       variables,
       optimisticResponse: () => ({
-        [mutationName]: { ...variables, __typename: 'Restaurant' },
+        [mutationName]: { ...variables, __typename: 'Food' },
         __typename: 'Mutation'
       }, {}),
     })
     .then(data => {
-      if(edit && !_.isEmpty(data.data.updateRestaurant) || !_.isEmpty(data.data.createRestaurant)) {
-        client.resetStore();
+      client.resetStore();
+      if(edit && !_.isEmpty(data.data.updateFood) || !_.isEmpty(data.data.createFood)) {
         showMessage({type: 'success', message: 'Item guardado com sucesso!'});
         return this.props.goBack()
       }
@@ -91,23 +87,9 @@ export default class _Form extends React.Component {
     .catch(err => showMessage({
       type: 'danger',
       message: 'Ocorreu-se algum errro',
-      description: 'Deve-se à um ou mais problemas com os dados do restaurante',
+      description: 'Deve-se à um ou mais problemas com os dados do item',
       backgroundColor: "red"
     }));
-  }
-
-  deleteRestaurant = (client, restaurantId) => {
-    client.mutate({mutation: DELETE_RESTAURANTE, variables: {restaurantId}})
-    .then(({data}) => {
-      client.resetStore();
-      showMessage({type: 'success', message: 'Apagado com sucesso'})
-      return this.props.goBack()
-    })
-    .catch(err => showMessage({
-      type: 'danger',
-      message: 'Houve um erro ao tentar apagar este restaurante',
-      backgroundColor: 'red'
-    }))
   }
   render() {
     const {
@@ -116,20 +98,18 @@ export default class _Form extends React.Component {
       text,
       value = this.state.value,
       containerStyle,
-      formStyle,
-      children = () => null
+      formStyle
     } = this.props;
     return (
       <Mutation mutation={mutation}>
         {(mutationFn, {client, data, error, loading}) => (
           <View style={[styles.container, containerStyle]}>
             <CardOverlay source={value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}/>
-            {children(this.deleteRestaurant.bind(this, client, this.props.restaurantId))}
             <Form
-              type={RestauranteType}
+              type={FoodType}
               options={options}
               onChange={this.onChange}
-              formStyle={formStyle}
+              formStyle={[formStyle, styles.formStyle]}
               value={value}
               text={text}
               onSave={async e => await this.mutate(e, mutationFn, client)}
@@ -144,8 +124,11 @@ export default class _Form extends React.Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: 20,
     padding: 20,
     backgroundColor: '#fff',
+  },
+  formStyle: {
+    marginTop: 5
   }
 });

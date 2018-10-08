@@ -81,6 +81,14 @@ export const EDIT_RESTAURANTE = gql`
   }
 `;
 
+export const DELETE_RESTAURANTE = gql`
+  mutation deleteRestaurant($restaurantId: String!) {
+    deleteRestaurant(input: {restaurantId: $restaurantId}) {
+      name
+    }
+  }
+`;
+
 
 export const GET_OWNER = gql`
   query getOwner($email: String!) {
@@ -149,5 +157,67 @@ export const CREATE_OWNER = gql`
         lastName
         image
       }
+  }
+`;
+
+export const CREATE_FOOD = gql`
+  mutation createFood(
+    $name: String!,
+    $description: String!,
+    $price: Int!,
+    $image: String!,
+    $restaurantId: String!,
+    $foodId: String!
+  ) {
+    createFood(input: {
+      name: $name
+      description: $description
+      price: $price
+      image: $image
+      restaurantId: $restaurantId
+      foodId: $foodId
+    }){
+      name
+      description
+      price
+      image
+      restaurantId
+      foodId
+    }
+  }
+`;
+
+export const EDIT_FOOD = gql`
+  mutation updateFood(
+    $name: String!,
+    $description: String!,
+    $price: Int!,
+    $image: String!,
+    $restaurantId: String!,
+    $foodId: String!
+  ) {
+    updateFood(input: {
+      name: $name
+      description: $description
+      price: $price
+      image: $image
+      restaurantId: $restaurantId
+      foodId: $foodId
+    }){
+      name
+      description
+      price
+      image
+      restaurantId
+      foodId
+    }
+  }
+`;
+
+export const DELETE_FOOD = gql`
+  mutation deleteFood($foodId: String!) {
+    deleteFood(input: {foodId: $foodId}) {
+      name
+    }
   }
 `;

@@ -15,7 +15,8 @@ const state = {
     { name: 'Sandwich', image: 'https://static.cuisineaz.com/400x320/i135335-sandwich-dietetique-legumes.jpeg' },
     { name: 'Others', image: 'https://static.cuisineaz.com/400x320/i50715-caldeirada-ragout-de-poisson-portugais.jpg' },
     { name: 'Others', image: 'https://static.cuisineaz.com/400x320/i50715-caldeirada-ragout-de-poisson-portugais.jpg' }
-  ]
+  ],
+  restaurantId: ''
 };
 
 const store = createStore(state);
