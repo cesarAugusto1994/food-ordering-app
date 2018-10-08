@@ -35,6 +35,11 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
               text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de refeiçoes. Feche e volte a abrir a aplicaçao!`}
             />
           )
+          if(data.listFoods.items.length === 0 ) return (
+            <Error
+              text='Oops! Não pudemos satisfazer a sua pesquisa'
+              textStyle={{fontSize: 18}}/>
+          )
           return (
             <View style={styles.container}>
               <ScrollView>
