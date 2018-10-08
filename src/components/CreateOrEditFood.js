@@ -70,15 +70,11 @@ export default class _Form extends React.Component {
       }, {}),
     })
     .then(data => {
-      if(edit && !_.isEmpty(data.data.updateFood)) {
+      if(edit && !_.isEmpty(data.data.updateFood) || !_.isEmpty(data.data.createFood)) {
         showMessage({type: 'success', message: 'Item guardado com sucesso!'});
-        this.props.goBack()
+        return this.props.goBack()
       }
-      if(!_.isEmpty(data.data.createFood)) {
-        showMessage({type: 'success', message: 'Item adicionado com sucesso!'});
-        this.props.goBack()
-      }
-      showMessage({
+      return showMessage({
         type: 'danger',
         message: 'Ocorreu-se algum errro',
         description: 'Deve-se à um problema técnico com os nossos servidores',
