@@ -104,7 +104,10 @@ export default class _Form extends React.Component {
       <Mutation mutation={mutation}>
         {(mutationFn, {client, data, error, loading}) => (
           <View style={[styles.container, containerStyle]}>
-            <CardOverlay source={value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}/>
+            <CardOverlay
+              source={value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}
+              disabled={true}
+              />
             <Form
               type={FoodType}
               options={options}

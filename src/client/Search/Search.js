@@ -33,7 +33,7 @@ class Search extends React.Component {
               <CardOverlay
                 imageStyle={styles.imageStyle}
                 wrapperStyle={styles.wrapperStyle}
-                onPress={() => {}}
+                onPress={() => this.props.navigation.navigate('Filter', {name: item.name})}
                 contentPosition="center"
                 source={{uri: item.image}}
                 overlayAlpha={0.3}
