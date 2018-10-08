@@ -3,10 +3,23 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 
 import { colors } from '../theme';
 import CircleButton from './CircleButton';
+import CardOverlay from './CardOverlay'
 
-export default ({ onPress: { add, substract}, image, imagePath, description, name, price, quantity = 1}) => (
+export default ({
+  onPress: { add, substract},
+  image,
+  imagePath,
+  description,
+  name,
+  price,
+  quantity = 1
+}) => (
   <View style={styles.infoContainer}>
-    <Image style={styles.image} source={{uri: image}} />
+    <CardOverlay
+      disabled={true}
+      imageStyle={styles.image}
+      source={image !== '' ? {uri: image} : require('../assets/placeholder.png')}
+    />
     <View style={styles.info}>
       <Text style={styles.nameText}>{name}</Text>
       <Text>{description}</Text>

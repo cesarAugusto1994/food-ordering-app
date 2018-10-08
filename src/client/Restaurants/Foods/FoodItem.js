@@ -77,6 +77,7 @@ class Foods extends React.Component {
                     }}
                   />
                 </ScrollView>
+                <View style={styles.wrapper}>
                 <AddToCardButton
                   onPress={
                     () => this.addToCart(
@@ -91,6 +92,7 @@ class Foods extends React.Component {
                   iconName='shopping-cart'
                   text=" Adicionar ao carrinho"
                 />
+                </View>
             </View>
           )}}
       </Query>
@@ -102,6 +104,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white'
+  },
+  wrapper: {
+    padding: 20
   }
 });
 
