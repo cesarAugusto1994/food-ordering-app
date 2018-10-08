@@ -23,6 +23,7 @@ import Owner from './Owner';
 import NewRestaurant from '../owner/NewRestaurant'
 import EditRestaurant from '../owner/EditRestaurant';
 import NewFood from '../owner/NewFood';
+import EditFood from '../owner/EditFood';
 import MyFoods from '../owner/Foods';
 
 import {colors} from '../theme'
@@ -96,7 +97,14 @@ const OwnerSubRoutes = {
   NewFood: {
     screen: NewFood,
     navigationOptions: {
-      title: 'Prato',
+      title: 'Adicionar novo prato',
+      ...navigationStyle,
+    }
+  },
+  EditFood: {
+    screen: EditFood,
+    navigationOptions: {
+      title: 'Editar prato',
       ...navigationStyle,
     }
   }

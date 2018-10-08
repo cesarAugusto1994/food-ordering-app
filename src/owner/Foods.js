@@ -29,7 +29,7 @@ class Foods extends React.Component {
   render() {
     const {getParam, goBack} = this.props.navigation
     const restaurantId = getParam('restaurantId');
-    console.log('----->', this.props)
+    console.log('-----> foooodos', this.props)
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
@@ -47,13 +47,21 @@ class Foods extends React.Component {
                   data.listFoods.items.map(
                     ({name, description, price, image, foodId}) => (
                       <Card
-                        description={description}
-                        name={name}
-                        price={price}
-                        image={image}
-                        foodId={foodId}
+                        { ...{
+                          description,
+                          name,
+                          price,
+                          image,
+                          foodId
+                          }}
                         onPress={
-                          () => this.props.navigation.navigate({routeName: 'FoodItem', params: {foodId, name}})
+                          () => this.props.navigation.navigate({routeName: 'EditFood', params: {
+                            foodId,
+                            description,
+                            name,
+                            price,
+                            image
+                            }})
                         }
                       />
                     )
