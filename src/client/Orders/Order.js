@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput, Text, KeyboardAvoidingView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+// import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import { connect } from 'redux-zero/react';
 import uuidv4 from 'uuid/v4';
 
@@ -64,41 +65,45 @@ class Order extends React.Component {
   render() {
     const {card, user} = this.props.store.getState();
     return (
-      <Mutation mutation={CREATE_ORDER}>
-        {(mutationFn, {data, client}) => (
-          <View style={styles.container}>
-            <ScrollView style={styles.scroll}>
-              {
-                card.length !== 0 ? card.map(
-                  ({itemName, itemPrice, foodId, quantity}) => (
-                    <Card
-                      index={foodId}
-                      name={itemName}
-                      quantity={quantity}
-                      foodId={foodId}
-                      onDelete={() => this.props.removeFromCard(foodId)}
-                    />
+      <KeyboardAwareScrollView style={styles.contain}>
+        <Mutation mutation={CREATE_ORDER}>
+          {(mutationFn, {data, client}) => (
+            <View style={styles.container}>
+              <ScrollView style={styles.scroll}>
+                {
+                  card.length !== 0 ? card.map(
+                    ({itemName, itemPrice, foodId, quantity}) => (
+                      <Card
+                        index={foodId}
+                        name={itemName}
+                        quantity={quantity}
+                        foodId={foodId}
+                        onDelete={() => this.props.removeFromCard(foodId)}
+                      />
+                    )
                   )
-                )
-                : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
-              }
-            </ScrollView>
-            <RenderIf
-              condition={card.length !== 0}
-              children={() => (
-                  <OrderForm
-                    onOrder={() => {}}
-                    value={this.state.value}
-                    onChange={this.onChange.bind(this)}
-                    onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
-                    amount={getTotalAmount(card)}
-                  />
-              )}
-            />
+                  : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
+                }
+              </ScrollView>
+              <View style={styles.keyboardAvoidingView}>
+                <RenderIf
+                  condition={card.length !== 0}
+                  children={() => (
+                      <OrderForm
+                        onOrder={() => {}}
+                        value={this.state.value}
+                        onChange={this.onChange.bind(this)}
+                        onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
+                        amount={getTotalAmount(card)}
+                      />
+                  )}
+                />
+              </View>
+            </View>
+          )}
+        </Mutation>
+        </KeyboardAwareScrollView>
 
-          </View>
-        )}
-      </Mutation>
     )
   }
 }
@@ -115,11 +120,19 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 0.3,
     justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
     borderColor: '#cccccc'
   },
+  contain: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderBottomWidth: 0.3,
+    borderColor: '#cccccc'
+  },
   scroll: {
-    width: '100%'
+    width: '100%',
+    flex: 1
   },
   textAreaContainer: {
     borderColor: 'lightgrey',
@@ -129,7 +142,9 @@ const styles = StyleSheet.create({
     padding: 5
   },
   keyboardAvoidingView: {
-    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 0,
+    width: '100%',
   },
   textArea: {
     height: 150,
