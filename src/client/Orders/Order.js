@@ -65,7 +65,7 @@ class Order extends React.Component {
   render() {
     const {card, user} = this.props.store.getState();
     return (
-      <KeyboardAwareScrollView style={styles.contain}>
+      <KeyboardAwareScrollView>
         <Mutation mutation={CREATE_ORDER}>
           {(mutationFn, {data, client}) => (
             <View style={styles.container}>
@@ -85,25 +85,24 @@ class Order extends React.Component {
                   : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
                 }
               </ScrollView>
-              <View style={styles.keyboardAvoidingView}>
-                <RenderIf
-                  condition={card.length !== 0}
-                  children={() => (
-                      <OrderForm
-                        onOrder={() => {}}
-                        value={this.state.value}
-                        onChange={this.onChange.bind(this)}
-                        onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
-                        amount={getTotalAmount(card)}
-                      />
-                  )}
-                />
+              <View style={{height: 900}}>
+              <RenderIf
+                condition={card.length !== 0}
+                children={() => (
+                    <OrderForm
+                      onOrder={() => {}}
+                      value={this.state.value}
+                      onChange={this.onChange.bind(this)}
+                      onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
+                      amount={getTotalAmount(card)}
+                    />
+                )}
+              />
               </View>
             </View>
           )}
         </Mutation>
-        </KeyboardAwareScrollView>
-
+      </KeyboardAwareScrollView>
     )
   }
 }
@@ -119,20 +118,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     borderBottomWidth: 0.3,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     flexDirection: 'column',
     alignItems: 'center',
     borderColor: '#cccccc'
   },
   contain: {
     backgroundColor: 'white',
-    flex: 1,
+    // flex: 1,
     borderBottomWidth: 0.3,
     borderColor: '#cccccc'
   },
   scroll: {
     width: '100%',
-    flex: 1
+    // flex: 1
   },
   textAreaContainer: {
     borderColor: 'lightgrey',

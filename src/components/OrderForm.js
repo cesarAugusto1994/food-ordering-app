@@ -32,6 +32,7 @@ const options = {
 const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 export default ({ onOrder, amount = 0, value, onChange }) => (
   <View style={styles.container}>
+    <KeyboardAvoidingView>
       <View>
         <Form type={OrderInfo} options={options} value={value} onChange={onChange}/>
       </View>
@@ -50,6 +51,7 @@ export default ({ onOrder, amount = 0, value, onChange }) => (
         text=" Encomendar"
       />
     </View>
+    </KeyboardAvoidingView>
   </View>
 );
 
