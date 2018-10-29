@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput, Text, KeyboardAvoidingView } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-// import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import { connect } from 'redux-zero/react';
 import uuidv4 from 'uuid/v4';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import actions from '../../store/actions';
 import Card from '../../components/OrderItem';
@@ -65,44 +64,44 @@ class Order extends React.Component {
   render() {
     const {card, user} = this.props.store.getState();
     return (
-      <KeyboardAwareScrollView>
-        <Mutation mutation={CREATE_ORDER}>
-          {(mutationFn, {data, client}) => (
-            <View style={styles.container}>
-              <ScrollView style={styles.scroll}>
-                {
-                  card.length !== 0 ? card.map(
-                    ({itemName, itemPrice, foodId, quantity}) => (
-                      <Card
-                        index={foodId}
-                        name={itemName}
-                        quantity={quantity}
-                        foodId={foodId}
-                        onDelete={() => this.props.removeFromCard(foodId)}
-                      />
-                    )
-                  )
-                  : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
-                }
-              </ScrollView>
-              <View style={{height: 900}}>
-              <RenderIf
-                condition={card.length !== 0}
-                children={() => (
-                    <OrderForm
-                      onOrder={() => {}}
-                      value={this.state.value}
-                      onChange={this.onChange.bind(this)}
-                      onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
-                      amount={getTotalAmount(card)}
+      <Mutation mutation={CREATE_ORDER}>
+        {(mutationFn, {data, client}) => (
+          <View style={styles.container}>
+            <View style={styles.scroll}>
+            <ScrollView>
+              {
+                card.length !== 0 ? card.map(
+                  ({itemName, itemPrice, foodId, quantity}) => (
+                    <Card
+                      index={foodId}
+                      name={itemName}
+                      quantity={quantity}
+                      foodId={foodId}
+                      onDelete={() => this.props.removeFromCard(foodId)}
                     />
-                )}
-              />
-              </View>
+                  )
+                )
+                : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
+              }
+            </ScrollView>
             </View>
-          )}
-        </Mutation>
-      </KeyboardAwareScrollView>
+            <RenderIf
+              condition={card.length !== 0}
+              children={() => (
+                <KeyboardAwareScrollView style={styles.keyboardAvoidingView} extraScrollHeight={100}>
+                  <OrderForm
+                    onOrder={() => {}}
+                    value={this.state.value}
+                    onChange={this.onChange.bind(this)}
+                    onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
+                    amount={getTotalAmount(card)}
+                  />
+                </KeyboardAwareScrollView>
+              )}
+            />
+          </View>
+        )}
+      </Mutation>
     )
   }
 }
@@ -119,35 +118,23 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 0.3,
     justifyContent: 'space-around',
-    flexDirection: 'column',
     alignItems: 'center',
-    borderColor: '#cccccc'
-  },
-  contain: {
-    backgroundColor: 'white',
-    // flex: 1,
-    borderBottomWidth: 0.3,
     borderColor: '#cccccc'
   },
   scroll: {
     width: '100%',
-    // flex: 1
-  },
-  textAreaContainer: {
-    borderColor: 'lightgrey',
-    width: '70%',
-    height: 120,
-    borderWidth: 1,
-    padding: 5
+    position:'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: -1
   },
   keyboardAvoidingView: {
-    justifyContent: 'flex-end',
-    marginBottom: 0,
     width: '100%',
-  },
-  textArea: {
-    height: 150,
-    justifyContent: "flex-start"
+    zIndex: 4,
+    flex: 1,
+    justifyContent: 'flex-end'
   }
 })
 
