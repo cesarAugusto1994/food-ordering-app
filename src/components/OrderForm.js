@@ -55,11 +55,9 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     marginTop: 50,
-    // marginBottom: 0,
     padding: 20,
     backgroundColor: '#ffffff',
     width: '100%',
-    // flex: 1
   },
   info: {
     paddingTop: 0,

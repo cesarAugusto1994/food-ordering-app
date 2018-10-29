@@ -67,8 +67,7 @@ class Order extends React.Component {
       <Mutation mutation={CREATE_ORDER}>
         {(mutationFn, {data, client}) => (
           <View style={styles.container}>
-            <View style={styles.scroll}>
-            <ScrollView>
+            <ScrollView style={styles.scroll}>
               {
                 card.length !== 0 ? card.map(
                   ({itemName, itemPrice, foodId, quantity}) => (
@@ -84,7 +83,6 @@ class Order extends React.Component {
                 : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
               }
             </ScrollView>
-            </View>
             <RenderIf
               condition={card.length !== 0}
               children={() => (
