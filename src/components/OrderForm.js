@@ -1,5 +1,6 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, View, TouchableHighlight }  from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, TouchableHighlight, Platform, ScrollView }  from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import t from 'tcomb-form-native';
 import _ from 'lodash';
 import OrderItem from './OrderItem';
@@ -28,25 +29,26 @@ const options = {
   }
 };
 
+const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 export default ({ onOrder, amount = 0, value, onChange }) => (
   <View style={styles.container}>
-    <Form type={OrderInfo} options={options} value={value} onChange={onChange}/>
-    <View>
-      <View style={styles.infoContainer}>
-        <View style={styles.info}>
-          <Text style={styles.total}>Total</Text>
+      <Form type={OrderInfo} options={options} value={value} onChange={onChange}/>
+      <View>
+        <View style={styles.infoContainer}>
+          <View style={styles.info}>
+            <Text style={styles.total}>Total</Text>
+          </View>
+          <View>
+            <Text style={styles.amount}>AOA {amount}</Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.amount}>AOA {amount}</Text>
-        </View>
+        <Button
+          onPress={onOrder}
+          iconName='shopping-cart'
+          text=" Encomendar"
+        />
       </View>
-      <Button
-        onPress={onOrder}
-        iconName='shopping-cart'
-        text=" Encomendar"
-      />
     </View>
-  </View>
 );
 
 const styles = StyleSheet.create({
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     padding: 20,
     backgroundColor: '#ffffff',
-    width: '100%'
+    width: '100%',
   },
   info: {
     paddingTop: 0,

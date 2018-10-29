@@ -3,14 +3,15 @@
 
 import React from 'react';
 import _ from 'lodash';
-import {StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import {Mutation, graphql} from 'react-apollo';
 import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import Form from './Form';
 import {showMessage} from 'react-native-flash-message';
-import Card from './Card'
-import CardOverlay from './CardOverlay'
+import Card from './Card';
+import CardOverlay from './CardOverlay';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const FoodType = t.struct({
   name: t.String,
@@ -108,15 +109,17 @@ export default class _Form extends React.Component {
               source={value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}
               disabled={true}
               />
-            <Form
-              type={FoodType}
-              options={options}
-              onChange={this.onChange}
-              formStyle={[formStyle, styles.formStyle]}
-              value={value}
-              text={text}
-              onSave={async e => await this.mutate(e, mutationFn, client)}
-            />
+            <ScrollView>
+              <Form
+                type={FoodType}
+                options={options}
+                onChange={this.onChange}
+                formStyle={[formStyle, styles.formStyle]}
+                value={value}
+                text={text}
+                onSave={async e => await this.mutate(e, mutationFn, client)}
+              />
+            </ScrollView>
           </View>
         )}
       </Mutation>

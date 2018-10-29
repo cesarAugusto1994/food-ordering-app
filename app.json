@@ -29,6 +29,9 @@
     },
     "facebookScheme": "fb1029457293903156",
     "facebookAppId": "1029457293903156",
-    "facebookDisplayName": "FoodApp 2"
+    "facebookDisplayName": "FoodApp 2",
+    "androidStatusBar": {
+      "backgroundColor": "#eeeeee"
+    }
   }
 }

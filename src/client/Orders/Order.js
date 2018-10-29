@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput, Text, KeyboardAvoidingView } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'redux-zero/react';
 import uuidv4 from 'uuid/v4';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import actions from '../../store/actions';
 import Card from '../../components/OrderItem';
@@ -86,6 +86,7 @@ class Order extends React.Component {
             <RenderIf
               condition={card.length !== 0}
               children={() => (
+                <KeyboardAwareScrollView style={styles.keyboardAvoidingView} extraScrollHeight={100}>
                   <OrderForm
                     onOrder={() => {}}
                     value={this.state.value}
@@ -93,9 +94,9 @@ class Order extends React.Component {
                     onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
                     amount={getTotalAmount(card)}
                   />
+                </KeyboardAwareScrollView>
               )}
             />
-
           </View>
         )}
       </Mutation>
@@ -114,26 +115,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     borderBottomWidth: 0.3,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     borderColor: '#cccccc'
   },
   scroll: {
-    width: '100%'
-  },
-  textAreaContainer: {
-    borderColor: 'lightgrey',
-    width: '70%',
-    height: 120,
-    borderWidth: 1,
-    padding: 5
+    width: '100%',
+    position:'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: -1
   },
   keyboardAvoidingView: {
+    width: '100%',
+    zIndex: 4,
     flex: 1,
-  },
-  textArea: {
-    height: 150,
-    justifyContent: "flex-start"
+    justifyContent: 'flex-end'
   }
 })
 
