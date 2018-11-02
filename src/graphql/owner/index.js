@@ -221,3 +221,19 @@ export const DELETE_FOOD = gql`
     }
   }
 `;
+
+export const ORDER_CREATE = gql`
+  subscription onCreateOrders($restaurantId: String!){
+    onCreateOrders(restaurantId: $restaurantId) {
+      quantity
+      orderId
+      userId
+      restaurantId
+      itemName
+      itemPrice
+      userWillPay
+      additionalInfo
+      phoneNumber
+    }
+  }
+`;
