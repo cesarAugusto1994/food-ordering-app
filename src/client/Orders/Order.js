@@ -18,10 +18,9 @@ import OrderForm from '../../components/OrderForm';
 
 
 const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNumber}) => {
-  const orderId = uuidv4();
   state.card.forEach(order => {
     const variables = {
-      orderId,
+      orderId: uuidv4(),
       userId: state.user.userId,
       restaurantId: order.restaurantId,
       ownerId: order.ownerId,
@@ -33,7 +32,9 @@ const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNum
       userWillPay: order.quantity * order.itemPrice
     };
 
-    return mutationFn({
+    console.log({variables})
+
+    mutationFn({
       mutation,
       variables,
       optimisticResponse: {
@@ -41,8 +42,6 @@ const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNum
         __typename: 'Mutation'
       }
     })
-      .then(succ => console.log({succ}))
-      .catch(err => console.log({err}))
   })
 }
 class Order extends React.Component {
@@ -58,7 +57,6 @@ class Order extends React.Component {
   }
 
   _createOrder = (fn, state) => {
-    console.log('okokokokokokokok', {state})
     const {phoneNumber, additionalInfo} = this.state.value;
     createOrder(fn, CREATE_ORDER, state, {phoneNumber, additionalInfo})
       .then(success => {

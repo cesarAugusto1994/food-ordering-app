@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Text, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, ScrollView, TextInput, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'redux-zero/react';
 import uuidv4 from 'uuid/v4';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Modal from 'react-native-modalbox';
 
 import actions from '../store/actions';
 import Card from '../components/OwnerOrder';
@@ -16,6 +16,15 @@ import { Subscription, Query } from 'react-apollo';
 import { ORDER_CREATE, GET_ORDER } from '../graphql/owner';
 
 class OwnerOrder extends React.Component {
+  state = {
+    isOpen: false
+  }
+  openModal = () => {
+    this.setState({isOpen: true})
+  }
+  closeModal = () => {
+    this.setState({isOpen: false})
+  }
   render() {
     const {user: {ownerId}} = this.props.store.getState();
     return (
@@ -40,15 +49,26 @@ class OwnerOrder extends React.Component {
                     <ScrollView style={styles.scroll}>
                       {
                         orders.map(order => (
-                          <Card
-                            index={order.foodId}
-                            name={order.itemName}
-                            quantity={order.quantity}
-                            foodId={order.foodId}
-                          />
+                          <TouchableOpacity onPress={this.openModal}>
+                            <Card
+                              index={order.foodId}
+                              name={order.itemName}
+                              quantity={order.quantity}
+                              foodId={order.foodId}
+                            />
+                          </TouchableOpacity>
                         ))
                       }
                     </ScrollView>
+                    <Modal
+                      style={[styles.modal, styles.modal3]}
+                      position={"center"}
+                      isOpen={this.state.isOpen}
+                      onClosed={this.closeModal}
+                    >
+                      <Text style={styles.text}>Informaçoes</Text>
+                      {/* <Text style={styles.text}>{Informaçoes}</Text> */}
+                    </Modal>
                   </View>
                 )
               }}
@@ -78,12 +98,14 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: -1
   },
-  keyboardAvoidingView: {
-    width: '100%',
-    zIndex: 4,
-    flex: 1,
-    justifyContent: 'flex-end'
-  }
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  modal3: {
+    height: 300,
+    width: 300
+  },
 })
 
 const mapToProps = ({ restaurantId, pushOrders, orders }) => ({ restaurantId, pushOrders, orders })
