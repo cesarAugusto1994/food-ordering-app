@@ -81,6 +81,7 @@ export const CREATE_ORDER = gql`
     $orderId: String!,
     $userId: String!,
     $restaurantId: String!,
+    $ownerId: String!,
     $itemName: String!,
     $itemPrice: Int!,
     $userWillPay: Int!,
@@ -92,6 +93,7 @@ export const CREATE_ORDER = gql`
       orderId: $orderId
       userId: $userId
       restaurantId: $restaurantId
+      ownerId: $ownerId
       itemName: $itemName
       itemPrice: $itemPrice
       userWillPay: $userWillPay
@@ -102,6 +104,7 @@ export const CREATE_ORDER = gql`
       orderId
       userId
       restaurantId
+      ownerId
       itemName
       itemPrice
       userWillPay

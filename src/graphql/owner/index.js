@@ -108,6 +108,8 @@ export const GET_OWNER = gql`
     }
   }
 `;
+
+
 export const getRestaurantsFoods = gql`
   query getMyFoods($restaurantId: String!) {
     listFoods(filter: {restaurantId: {eq: $restaurantId} }) {
@@ -116,6 +118,7 @@ export const getRestaurantsFoods = gql`
         name
         foodId
         restaurantId
+        ownerId
         price
         description
       }
@@ -124,12 +127,13 @@ export const getRestaurantsFoods = gql`
 `;
 
 export const getFood = gql`
-  query getFood($foodId: String!) {
-    getFood(foodId: $foodId) {
+  query getFood($foodId: String!, $restaurantId: String) {
+    getFood(foodId: $foodId, restaurantId: $restaurantId) {
       image
       name
       foodId
       restaurantId
+      ownerId
       price
       description
     }
@@ -249,6 +253,28 @@ export const ORDER_CREATE = gql`
       userWillPay
       additionalInfo
       phoneNumber
+    }
+  }
+`;
+
+export const GET_ORDER = gql`
+  query getOrder($ownerId: String!) {
+    listOrders(
+      filter: {
+        ownerId: {eq: $ownerId}
+      }) {
+      items {
+        orderId
+        userId
+        restaurantId
+        ownerId
+        itemName
+        itemPrice
+        userWillPay
+        additionalInfo
+        phoneNumber
+        quantity
+      }
     }
   }
 `;

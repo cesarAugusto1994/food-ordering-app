@@ -11,7 +11,6 @@ import Form from './Form';
 import {showMessage} from 'react-native-flash-message';
 import Card from './Card';
 import CardOverlay from './CardOverlay';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const FoodType = t.struct({
   name: t.String,

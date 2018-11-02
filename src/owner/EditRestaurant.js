@@ -60,10 +60,11 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   wrapper: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: 10
     // marginTop: 10
   },
   text: {

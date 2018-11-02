@@ -8,27 +8,51 @@ import actions from '../store/actions';
 import Card from '../components/OwnerOrder';
 import OrderButton from '../components/Button';
 import Message from '../components/Error';
+import Spinner from '../components/Spinner';
+import Error from '../components/Error';
 
 import { colors, fonts } from '../theme';
-import { Subscription } from 'react-apollo';
-import { ORDER_CREATE } from '../graphql/owner';
+import { Subscription, Query } from 'react-apollo';
+import { ORDER_CREATE, GET_ORDER } from '../graphql/owner';
 
 class OwnerOrder extends React.Component {
-  // componentDidMount()
   render() {
-    console.log({ffff: this.props.restaurantId})
-    console.log({restaurantIddddd: this.props.restaurantId})
+    const {user: {ownerId}} = this.props.store.getState();
     return (
-      <Subscription subscription={ORDER_CREATE} variables={{restaurantId: '0a794c25-7a84-4a9e-b93f-9f063276ccc2'}}>
-        {({data, loading}) => {
-          const {orders} = this.props;
-          {/* this.props.pushOrders(data && data.onCreateOrders); */}
+      <Subscription subscription={ORDER_CREATE} variables={{ownerId}}>
+        {({data: newOrder, loading}) => {
           return (
-              <View style={styles.container}>
-                <ScrollView style={styles.scroll}>
-                  hey
-                </ScrollView>
-              </View>
+            <Query query={GET_ORDER} variables={{ownerId}} fetchPolicy='cache-and-network'>
+              {({data, loading, err}) => {
+                if(loading) return <Spinner text="Carregando os seus pedidos ..."/>
+                if(err) return (
+                  <Error
+                    emoji='😰'
+                    text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de seus pedidos. Feche e volte a abrir a aplicaçao!`}
+                  />
+                )
+                let orders = data.listOrders.items;
+                if(newOrder && newOrder.onCreateOrder){
+                  orders.unshift({...newOrder.onCreateOrder})
+                }
+                return (
+                  <View style={styles.container}>
+                    <ScrollView style={styles.scroll}>
+                      {
+                        orders.map(order => (
+                          <Card
+                            index={order.foodId}
+                            name={order.itemName}
+                            quantity={order.quantity}
+                            foodId={order.foodId}
+                          />
+                        ))
+                      }
+                    </ScrollView>
+                  </View>
+                )
+              }}
+            </Query>
           )
         }}
       </Subscription>
@@ -62,6 +86,6 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapToProps = ({ restaurantId, ownerId, pushOrders, orders }) => ({ restaurantId, ownerId, pushOrders, orders })
+const mapToProps = ({ restaurantId, pushOrders, orders }) => ({ restaurantId, pushOrders, orders })
 
 export default connect(mapToProps, actions)(OwnerOrder);

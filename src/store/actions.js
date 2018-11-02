@@ -52,6 +52,7 @@ export default actions = store => ({
     return Promise.reject();
   },
   removeFromCard: (state, foodId) => {
+    console.log({fooooooo: foodId})
     const newCard = state.card.filter(el => {
       if(el.foodId === foodId) return;
       return el;
@@ -61,6 +62,5 @@ export default actions = store => ({
   resetCard: (state) => {
     return {...state, card: []};
   },
-  setTempRestaurantId: (state, restaurantId) => ({...state, restaurantId}),
-  pushOrders: (state, item) => ({ ...state, orders: [ {...item}, ...state.orders]})
+  setTempRestaurantId: (state, restaurantId) => ({...state, restaurantId})
 });

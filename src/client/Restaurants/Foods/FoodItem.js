@@ -20,8 +20,8 @@ import { colors, fonts } from '../../../theme';
 import { getFood } from '../../../graphql/owner';
 
 class Foods extends React.Component {
-  addToCart = (foodId, userId, itemName, itemPrice,restaurantId, quantity) => {
-    this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId}, quantity})
+  addToCart = (foodId, userId, itemName, itemPrice, restaurantId, ownerId, quantity) => {
+    this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId, ownerId}, quantity})
       .then(success => {
         showMessage({
           message: "Item adicionado ao carrinho!",
@@ -47,55 +47,44 @@ class Foods extends React.Component {
     console.log('foood', this.props)
     const {user: {userId}, navigation} = this.props;
     const {goBack, state} = navigation;
-    const {foodId, name: FoodName} = state.params;
+    const {foodId, name, restaurantId, ownerId, price, description, image} = state.params;
     return (
-      <Query query={getFood} variables={{foodId}}>
-        {({loading, err, data}) => {
-          if(loading) return <Spinner text="Carregando as refeiçoes ..."/>
-          if(err) return (
-            <Error
-              emoji='😰'
-              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos esta refeiçao. Feche e volte a abrir a aplicaçao!`}
+      <View style={styles.container}>
+          <ScrollView>
+            <FoodItemCard
+              description={description}
+              name={name}
+              price={price}
+              image={image}
+              quantity={this.state.quantity}
+              imagePath={{
+                add: require('../../../assets/add.png'),
+                substract: require('../../../assets/substract.png')
+              }}
+              onPress={{
+                add: this.addQuantity,
+                substract: this.substractQuantity
+              }}
             />
-          )
-          return (
-            <View style={styles.container}>
-                <ScrollView>
-                  <FoodItemCard
-                    description={data.getFood.description}
-                    name={data.getFood.name}
-                    price={data.getFood.price}
-                    image={data.getFood.image}
-                    quantity={this.state.quantity}
-                    imagePath={{
-                      add: require('../../../assets/add.png'),
-                      substract: require('../../../assets/substract.png')
-                    }}
-                    onPress={{
-                      add: this.addQuantity,
-                      substract: this.substractQuantity
-                    }}
-                  />
-                </ScrollView>
-                <View style={styles.wrapper}>
-                <AddToCardButton
-                  onPress={
-                    () => this.addToCart(
-                        foodId,
-                        userId,
-                        data.getFood.name,
-                        data.getFood.price,
-                        data.getFood.restaurantId,
-                        this.state.quantity
-                      )
-                  }
-                  iconName='shopping-cart'
-                  text=" Adicionar ao carrinho"
-                />
-                </View>
-            </View>
-          )}}
-      </Query>
+          </ScrollView>
+          <View style={styles.wrapper}>
+          <AddToCardButton
+            onPress={
+              () => this.addToCart(
+                  foodId,
+                  userId,
+                  name,
+                  price,
+                  restaurantId,
+                  ownerId,
+                  this.state.quantity
+                )
+            }
+            iconName='shopping-cart'
+            text=" Adicionar ao carrinho"
+          />
+          </View>
+      </View>
     )
   }
 }

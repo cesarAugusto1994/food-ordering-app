@@ -35,7 +35,7 @@ class Foods extends React.Component {
     const {getParam, goBack} = this.props.navigation
     const restaurantId = getParam('restaurantId');
     return (
-      <Query query={getRestaurantsFoods} variables={{restaurantId}}>
+      <Query query={getRestaurantsFoods} variables={{restaurantId}} fetchPolicy='cache-and-network'>
         {({loading, err, data, client}) => {
           if(loading) return <Spinner text="Carregando as suas refeiçoes ..."/>
           if(err) return (
