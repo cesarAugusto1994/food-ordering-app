@@ -77,7 +77,7 @@ export const CREATE_CLIENT = gql`
 `;
 
 export const CREATE_ORDER = gql`
-  mutation createOrders(
+  mutation createOrder(
     $orderId: String!,
     $userId: String!,
     $restaurantId: String!,
@@ -88,7 +88,7 @@ export const CREATE_ORDER = gql`
     $phoneNumber: String!,
     $quantity: Int!
   ) {
-    createOrders(input: {
+    createOrder(input: {
       orderId: $orderId
       userId: $userId
       restaurantId: $restaurantId

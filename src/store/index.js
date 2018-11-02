@@ -6,6 +6,7 @@ const state = {
   isUser: false,
   isOwner: false,
   card: [],
+  orders: [],
   restaurants: [],
   categories: [
     { name: 'Fast Food', image: 'https://st2.depositphotos.com/1017986/7580/i/950/depositphotos_75807441-stock-photo-close-up-of-fast-food.jpg' },

@@ -17,12 +17,14 @@ export default connect(mapToPros, actions)(({navigation: {getParam, goBack}, use
   const description = getParam('description');
   const image = getParam('image');
   const price = getParam('price');
+  const {ownerId} = user;
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView>
         <EditFood
           restaurantId={restaurantId}
           foodId={foodId}
+          ownerId={ownerId}
           mutation={EDIT_FOOD}
           mutationName='updateFood'
           edit={true}

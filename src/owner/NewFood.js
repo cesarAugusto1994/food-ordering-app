@@ -12,6 +12,7 @@ import actions from '../store/actions';
 
 const mapToPros = ({user, restaurantId}) => ({user, restaurantId});
 export default connect(mapToPros, actions)(({navigation: {getParam, goBack}, user, restaurantId}) => {
+  const {ownerId} = user;
   const foodId = uuidv4();
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -19,6 +20,7 @@ export default connect(mapToPros, actions)(({navigation: {getParam, goBack}, use
         <CreateFood
           restaurantId={restaurantId}
           foodId={foodId}
+          ownerId={ownerId}
           mutation={CREATE_FOOD}
           mutationName='createFood'
           goBack={goBack}

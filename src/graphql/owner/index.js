@@ -168,6 +168,7 @@ export const CREATE_FOOD = gql`
     $image: String!,
     $restaurantId: String!,
     $foodId: String!
+    $ownerId: String!
   ) {
     createFood(input: {
       name: $name
@@ -176,6 +177,7 @@ export const CREATE_FOOD = gql`
       image: $image
       restaurantId: $restaurantId
       foodId: $foodId
+      ownerId: $ownerId
     }){
       name
       description
@@ -183,6 +185,7 @@ export const CREATE_FOOD = gql`
       image
       restaurantId
       foodId
+      ownerId
     }
   }
 `;
@@ -195,6 +198,7 @@ export const EDIT_FOOD = gql`
     $image: String!,
     $restaurantId: String!,
     $foodId: String!
+    $ownerId: String!
   ) {
     updateFood(input: {
       name: $name
@@ -203,6 +207,7 @@ export const EDIT_FOOD = gql`
       image: $image
       restaurantId: $restaurantId
       foodId: $foodId
+      ownerId: $ownerId
     }){
       name
       description
@@ -210,24 +215,34 @@ export const EDIT_FOOD = gql`
       image
       restaurantId
       foodId
+      ownerId
     }
   }
 `;
 
+const DeleteFoodInput = gql`
+  input DeleteFoodInput {
+    foodId: String!
+    restaurantId: String!
+  }
+`;
+
 export const DELETE_FOOD = gql`
-  mutation deleteFood($foodId: String!) {
-    deleteFood(input: {foodId: $foodId}) {
+  mutation deleteFood($foodId: String!, $restaurantId: String!) {
+    deleteFood(input: {foodId: $foodId, restaurantId: $restaurantId}) {
       name
     }
   }
 `;
 
+
 export const ORDER_CREATE = gql`
-  subscription onCreateOrders($restaurantId: String!){
-    onCreateOrders(restaurantId: $restaurantId) {
+  subscription onCreateOrder($ownerId: String!){
+    onCreateOrder(ownerId: $ownerId) {
       quantity
       orderId
       userId
+      ownerId
       restaurantId
       itemName
       itemPrice

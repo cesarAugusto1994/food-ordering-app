@@ -11,9 +11,11 @@ import FlashMessage from 'react-native-flash-message';
 import CardOverlay from '../components/CardOverlay';
 import TouchableLabel from '../components/TouchableLabel';
 import {EDIT_RESTAURANTE} from '../graphql/owner/';
+import { connect } from 'redux-zero/react';
+import actions from '../store/actions';
 
-
-export default ({navigation: {getParam, goBack, navigate}, image}) => {
+const mapToPros = ({user}) => ({user});
+export default connect(mapToPros, actions)(({navigation: {getParam, goBack, navigate}, image, user}) => {
   const value = getParam('value');
   const restaurantId = getParam('restaurantId');
   const ownerId = getParam('ownerId');
@@ -50,7 +52,7 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
         <FlashMessage position='top'/>
     </View>
   )
-}
+})
 
 export const styles = StyleSheet.create({
   container: {
@@ -61,8 +63,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: 10
+    alignItems: 'center'
+    // marginTop: 10
   },
   text: {
     fontSize: 20,

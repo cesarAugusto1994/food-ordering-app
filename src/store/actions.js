@@ -61,5 +61,6 @@ export default actions = store => ({
   resetCard: (state) => {
     return {...state, card: []};
   },
-  setTempRestaurantId: (state, restaurantId) => ({...state, restaurantId})
+  setTempRestaurantId: (state, restaurantId) => ({...state, restaurantId}),
+  pushOrders: (state, item) => ({ ...state, orders: [ {...item}, ...state.orders]})
 });

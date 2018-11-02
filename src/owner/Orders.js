@@ -14,28 +14,23 @@ import { Subscription } from 'react-apollo';
 import { ORDER_CREATE } from '../graphql/owner';
 
 class OwnerOrder extends React.Component {
+  // componentDidMount()
   render() {
-    console.log(this.props.restaurantId)
+    console.log({ffff: this.props.restaurantId})
     console.log({restaurantIddddd: this.props.restaurantId})
     return (
       <Subscription subscription={ORDER_CREATE} variables={{restaurantId: '0a794c25-7a84-4a9e-b93f-9f063276ccc2'}}>
-        {({data, loading}) => console.log({data}) || (
-          <View style={styles.container}>
-            <ScrollView style={styles.scroll}>
-              {
-                data && data.onCreateOrders ? (
-                  <Card
-                    index={data.onCreateOrders.foodId}
-                    name={data.onCreateOrders.itemName}
-                    quantity={data.onCreateOrders.quantity}
-                    foodId={data.onCreateOrders.foodId}
-                  />
-                )
-                : <Message text='Sem Encomendas Ativas' textStyle={{fontSize: 18}}/>
-              }
-            </ScrollView>
-          </View>
-        )}
+        {({data, loading}) => {
+          const {orders} = this.props;
+          {/* this.props.pushOrders(data && data.onCreateOrders); */}
+          return (
+              <View style={styles.container}>
+                <ScrollView style={styles.scroll}>
+                  hey
+                </ScrollView>
+              </View>
+          )
+        }}
       </Subscription>
     )
   }
@@ -67,6 +62,6 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapToProps = ({ restaurantId }) => ({ restaurantId })
+const mapToProps = ({ restaurantId, ownerId, pushOrders, orders }) => ({ restaurantId, ownerId, pushOrders, orders })
 
 export default connect(mapToProps, actions)(OwnerOrder);
