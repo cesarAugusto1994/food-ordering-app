@@ -32,8 +32,6 @@ const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNum
       userWillPay: order.quantity * order.itemPrice
     };
 
-    console.log({variables})
-
     mutationFn({
       mutation,
       variables,

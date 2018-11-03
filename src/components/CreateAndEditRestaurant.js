@@ -2,7 +2,7 @@
 
 import React from 'react';
 import _ from 'lodash';
-import {StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import {Mutation, graphql} from 'react-apollo';
 import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
@@ -97,6 +97,18 @@ export default class _Form extends React.Component {
   }
 
   deleteRestaurant = (client, restaurantId) => {
+    const message = 'Tem a certeza que pretende apagar este restaurante?';
+    Alert.alert(
+      'Apagar prato',
+      message,
+      [
+        {text: 'Nao', onPress: () => {}},
+        {text: 'Sim', onPress: () => this.restaurantDeletion(client, restaurantId)},
+      ],
+      { cancelable: false }
+    )
+  }
+  restaurantDeletion = (client, restaurantId) => {
     client.mutate({mutation: DELETE_RESTAURANTE, variables: {restaurantId}})
     .then(({data}) => {
       client.resetStore();

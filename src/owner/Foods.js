@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView} from 'react-native';
+import { View, StyleSheet, ScrollView, Alert} from 'react-native';
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
@@ -20,6 +20,19 @@ class Foods extends React.Component {
     this.props.setTempRestaurantId(this.props.navigation.getParam('restaurantId'));
   }
   deleteFood = (client, foodId, restaurantId) => {
+    const message = 'Tem a certeza que pretende apagar este prato?';
+    Alert.alert(
+      'Apagar prato',
+      message,
+      [
+        {text: 'Nao', onPress: () => {}},
+        {text: 'Sim', onPress: () => this.foodDeletion(client, foodId, restaurantId)},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  foodDeletion = (client, foodId, restaurantId) => {
     client.mutate({mutation: DELETE_FOOD, variables: {foodId, restaurantId}})
     .then(({data}) => {
       client.resetStore();

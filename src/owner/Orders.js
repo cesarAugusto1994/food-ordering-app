@@ -1,29 +1,36 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'redux-zero/react';
 import uuidv4 from 'uuid/v4';
 import Modal from 'react-native-modalbox';
 
 import actions from '../store/actions';
 import Card from '../components/OwnerOrder';
-import OrderButton from '../components/Button';
+import Button from '../components/Button';
 import Message from '../components/Error';
 import Spinner from '../components/Spinner';
 import Error from '../components/Error';
+import TouchableLabel from '../components/TouchableLabel';
 
 import { colors, fonts } from '../theme';
 import { Subscription, Query } from 'react-apollo';
 import { ORDER_CREATE, GET_ORDER } from '../graphql/owner';
 
 class OwnerOrder extends React.Component {
-  state = {
-    isOpen: false
-  }
-  openModal = () => {
-    this.setState({isOpen: true})
-  }
-  closeModal = () => {
-    this.setState({isOpen: false})
+  openModal = (info, phoneNumber) => {
+    const message = `
+      Pedido adicional: ${info}
+      Tel: ${phoneNumber}
+    `;
+    Alert.alert(
+      'Informaçoes',
+      message,
+      [
+        {text: 'Rejeitar', onPress: () => {}, style: 'cancel'},
+        {text: 'Aceitar', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
   }
   render() {
     const {user: {ownerId}} = this.props.store.getState();
@@ -49,7 +56,7 @@ class OwnerOrder extends React.Component {
                     <ScrollView style={styles.scroll}>
                       {
                         orders.map(order => (
-                          <TouchableOpacity onPress={this.openModal}>
+                          <TouchableOpacity onPress={() => this.openModal(order.additionalInfo, order.phoneNumber)}>
                             <Card
                               index={order.foodId}
                               name={order.itemName}
@@ -60,15 +67,6 @@ class OwnerOrder extends React.Component {
                         ))
                       }
                     </ScrollView>
-                    <Modal
-                      style={[styles.modal, styles.modal3]}
-                      position={"center"}
-                      isOpen={this.state.isOpen}
-                      onClosed={this.closeModal}
-                    >
-                      <Text style={styles.text}>Informaçoes</Text>
-                      {/* <Text style={styles.text}>{Informaçoes}</Text> */}
-                    </Modal>
                   </View>
                 )
               }}
@@ -97,17 +95,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: -1
-  },
-  modal: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modal3: {
-    height: 300,
-    width: 300
-  },
+  }
 })
 
-const mapToProps = ({ restaurantId, pushOrders, orders }) => ({ restaurantId, pushOrders, orders })
+const mapToProps = ({ restaurantId }) => ({ restaurantId })
 
 export default connect(mapToProps, actions)(OwnerOrder);
