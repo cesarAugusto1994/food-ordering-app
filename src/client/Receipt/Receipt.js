@@ -4,6 +4,7 @@ import { View, StyleSheet, ScrollView, TextInput, Text, TouchableOpacity, Alert 
 import { connect } from 'redux-zero/react';
 import uuidv4 from 'uuid/v4';
 import Modal from 'react-native-modalbox';
+import call from 'react-native-phone-call';
 
 import actions from '../../store/actions';
 import Card from '../../components/OwnerOrder';
@@ -22,40 +23,35 @@ class OwnerOrder extends React.Component {
     let message = 'Nao conseguimos obter o estado do seu pedido';
 
     if (order.state === 'enviado') {
-      message = `O seu pedido foi enviado ao restaurante
-      Tel. Restaurant: ${order.restaurantPhoneNumber}
-      `;
+      message = 'O seu pedido foi enviado ao restaurante';
     }
     if (order.state === 'rejeitado') {
-      message = `O seu pedido foi rejeitado
-      Tel. Restaurant: ${order.restaurantPhoneNumber}
-      `;
+      message = 'O seu pedido foi rejeitado';
     }
     if (order.state === 'aceite') {
-      message = `O seu pedido foi aceite
-      Tel. Restaurant: ${order.restaurantPhoneNumber}
-      `;
+      message = 'O seu pedido foi aceite';
     }
     if (order.state === 'preparando') {
-      message = `O seu pedido esta a ser preparado
-      Tel. Restaurant: ${order.restaurantPhoneNumber}
-      `;
+      message = 'O seu pedido esta a ser preparado';
     }
     if (order.state === 'enviando') {
-      message = `O seu pedido esta a caminho
-      Tel. Restaurant: ${order.restaurantPhoneNumber}
-      `;
+      message = 'O seu pedido esta a caminho';
     }
     if (order.state === 'entregue') {
       message = `O seu pedido foi entregue`;
     }
 
+    const args = {
+      number: order.restaurantPhoneNumber,
+      prompt: false
+    }
 
     Alert.alert(
       'Estado do seu pedido',
       message,
       [
-        {text: 'Ok', onPress: () => {}},
+        {text: 'OK', onPress: () => {}},
+        {text: 'Ligar para o restaurante', onPress: async () => await call(args)},
       ],
       { cancelable: true }
     )

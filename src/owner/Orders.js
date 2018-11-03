@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, TextInput, Text, TouchableOpacity, Alert 
 import { connect } from 'redux-zero/react';
 import uuidv4 from 'uuid/v4';
 import Modal from 'react-native-modalbox';
+import call from 'react-native-phone-call';
 
 import actions from '../store/actions';
 import Card from '../components/OwnerOrder';
@@ -18,9 +19,11 @@ import { ORDER_CREATE, GET_ORDER, UPDATE_ORDER } from '../graphql/owner';
 
 class OwnerOrder extends React.Component {
   openModal = (client, order) => {
-    const message = `Pedido adicional: ${order.additionalInfo}
-      Tel: ${order.userPhoneNumber}
-    `;
+    const message = `Pedido adicional: ${order.additionalInfo}`;
+    const args = {
+      number: order.restaurantPhoneNumber,
+      prompt: false
+    }
 
     if(order.state === 'enviado') {
       return Alert.alert(
@@ -28,6 +31,7 @@ class OwnerOrder extends React.Component {
         message,
         [
           {text: 'Rejeitar', onPress: () => this.updateOrderStatus(client, order.orderId, 'rejeitado'), style: 'cancel'},
+          {text: 'Ligar para o cliente', onPress: async () => await call(args)},
           {text: 'Aceitar', onPress: () => this.updateOrderStatus(client, order.orderId, 'aceite')},
         ],
         { cancelable: false }
@@ -39,6 +43,7 @@ class OwnerOrder extends React.Component {
         'Selecione uma das opçoes abaixo listadas',
         [
           {text: 'Fechar', onPress: () => {}, style: 'cancel'},
+          {text: 'Ligar para o cliente', onPress: async () => await call(args)},
           {text: 'Preparando', onPress: () => this.updateOrderStatus(client, order.orderId, 'preparando')}
         ],
         { cancelable: false }
@@ -50,6 +55,7 @@ class OwnerOrder extends React.Component {
         'Selecione uma das opçoes abaixo listadas',
         [
           {text: 'Fechar', onPress: () => {}, style: 'cancel'},
+          {text: 'Ligar para o cliente', onPress: async () => await call(args)},
           {text: 'Enviando', onPress: () => this.updateOrderStatus(client, order.orderId, 'enviando')}
         ],
         { cancelable: false }
@@ -61,6 +67,7 @@ class OwnerOrder extends React.Component {
         'Selecione uma das opçoes abaixo listadas',
         [
           {text: 'Fechar', onPress: () => {}, style: 'cancel'},
+          {text: 'Ligar para o cliente', onPress: async () => await call(args)},
           {text: 'Entregue', onPress: () => this.updateOrderStatus(client, order.orderId, 'entregue')}
         ],
         { cancelable: false }
@@ -71,6 +78,7 @@ class OwnerOrder extends React.Component {
       `Este pedido foi ${order.state}`,
       [
         {text: 'Fechar', onPress: () => {}, style: 'cancel'},
+        {text: 'Ligar para o cliente', onPress: async () => await call(args)},
         {text: 'Ok', onPress: () => {}},
       ],
       { cancelable: false }
