@@ -18,15 +18,41 @@ import { Subscription, Query } from 'react-apollo';
 import { GET_ORDER } from '../../graphql/client';
 
 class OwnerOrder extends React.Component {
-  openModal = (orderId, state) => {
-    const message = `
-      Pedido nr : ${orderId}
-      Estado: ${state}
-      O seu pedido sera entregue no endereço fornecido
-      Para mais info. contacte o restaurante: 
-    `;
+  openModal = (order) => {
+    let message = 'Nao conseguimos obter o estado do seu pedido';
+
+    if (order.state === 'enviado') {
+      message = `O seu pedido foi enviado ao restaurante
+      Tel. Restaurant: ${order.restaurantPhoneNumber}
+      `;
+    }
+    if (order.state === 'rejeitado') {
+      message = `O seu pedido foi rejeitado
+      Tel. Restaurant: ${order.restaurantPhoneNumber}
+      `;
+    }
+    if (order.state === 'aceite') {
+      message = `O seu pedido foi aceite
+      Tel. Restaurant: ${order.restaurantPhoneNumber}
+      `;
+    }
+    if (order.state === 'preparando') {
+      message = `O seu pedido esta a ser preparado
+      Tel. Restaurant: ${order.restaurantPhoneNumber}
+      `;
+    }
+    if (order.state === 'enviando') {
+      message = `O seu pedido esta a caminho
+      Tel. Restaurant: ${order.restaurantPhoneNumber}
+      `;
+    }
+    if (order.state === 'entregue') {
+      message = `O seu pedido foi entregue`;
+    }
+
+
     Alert.alert(
-      'Informaçoes',
+      'Estado do seu pedido',
       message,
       [
         {text: 'Ok', onPress: () => {}},
@@ -51,12 +77,13 @@ class OwnerOrder extends React.Component {
               <ScrollView style={styles.scroll}>
                 {
                   data.listOrders.items.map(order => (
-                    <TouchableOpacity onPress={() => this.openModal(order.additionalInfo, order.phoneNumber)}>
+                    <TouchableOpacity onPress={() => this.openModal(order)}>
                       <Card
                         index={order.foodId}
                         name={order.itemName}
                         quantity={order.quantity}
                         foodId={order.foodId}
+                        status={order.state}
                       />
                     </TouchableOpacity>
                   ))

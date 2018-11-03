@@ -6,6 +6,7 @@ export const myRestaurants = gql`
       items {
         image
         restaurantId
+        phoneNumber
         location
         waitTime
         description
@@ -21,12 +22,13 @@ export const CREATE_RESTAURANTE = gql`
   mutation createRestaurant(
     $ownerId: String!,
     $name: String!,
-    $image: String,
+    $image: String!,
     $description: String!,
     $waitTime: Int!,
     $speciality: String!,
     $location: String!,
     $restaurantId: String!
+    $phoneNumber: String!
   ) {
     createRestaurant(input: {
       ownerId: $ownerId,
@@ -37,9 +39,11 @@ export const CREATE_RESTAURANTE = gql`
       speciality: $speciality,
       location: $location,
       restaurantId: $restaurantId
+      phoneNumber: $phoneNumber
     }) {
       image
       restaurantId
+      phoneNumber
       location
       waitTime
       description
@@ -59,6 +63,7 @@ export const EDIT_RESTAURANTE = gql`
     $speciality: String!,
     $location: String!,
     $restaurantId: String!
+    $phoneNumber: String!
   ) {
     updateRestaurant(input: {
       name: $name,
@@ -68,9 +73,11 @@ export const EDIT_RESTAURANTE = gql`
       speciality: $speciality,
       location: $location,
       restaurantId: $restaurantId
+      phoneNumber: $phoneNumber
     }) {
       image
       restaurantId
+      phoneNumber
       location
       waitTime
       description
@@ -252,7 +259,8 @@ export const ORDER_CREATE = gql`
       itemPrice
       userWillPay
       additionalInfo
-      phoneNumber
+      restaurantPhoneNumber
+      state
     }
   }
 `;
@@ -272,9 +280,29 @@ export const GET_ORDER = gql`
         itemPrice
         userWillPay
         additionalInfo
-        phoneNumber
+        userPhoneNumber
+        restaurantPhoneNumber
+        state
         quantity
       }
+    }
+  }
+`;
+export const UPDATE_ORDER = gql`
+  mutation updateOrder($status: String!, $orderId: String!){
+    updateOrder(input: {state: $status, orderId: $orderId}) {
+      orderId
+      userId
+      restaurantId
+      ownerId
+      itemName
+      itemPrice
+      userWillPay
+      additionalInfo
+      userPhoneNumber
+      restaurantPhoneNumber
+      state
+      quantity
     }
   }
 `;

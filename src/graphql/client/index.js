@@ -24,6 +24,7 @@ export const getRestaurants = gql`
       items {
         image
         restaurantId
+        phoneNumber
         location
         waitTime
         description
@@ -41,6 +42,7 @@ export const filterRestaurants = gql`
       items {
         image
         restaurantId
+        phoneNumber
         location
         waitTime
         description
@@ -86,7 +88,9 @@ export const CREATE_ORDER = gql`
     $itemPrice: Int!,
     $userWillPay: Int!,
     $additionalInfo: String!,
-    $phoneNumber: String!,
+    $userPhoneNumber: String!,
+    $restaurantPhoneNumber: String!,
+    $state: String!,
     $quantity: Int!
   ) {
     createOrder(input: {
@@ -98,7 +102,9 @@ export const CREATE_ORDER = gql`
       itemPrice: $itemPrice
       userWillPay: $userWillPay
       additionalInfo: $additionalInfo
-      phoneNumber: $phoneNumber
+      userPhoneNumber: $userPhoneNumber
+      restaurantPhoneNumber: $restaurantPhoneNumber
+      state: $state
       quantity: $quantity
     }) {
       orderId
@@ -109,7 +115,9 @@ export const CREATE_ORDER = gql`
       itemPrice
       userWillPay
       additionalInfo
-      phoneNumber
+      userPhoneNumber
+      restaurantPhoneNumber
+      state
       quantity
     }
   }
@@ -129,7 +137,9 @@ export const GET_ORDER = gql`
         itemPrice
         userWillPay
         additionalInfo
-        phoneNumber
+        userPhoneNumber
+        restaurantPhoneNumber
+        state
         quantity
       }
     }

@@ -41,7 +41,7 @@ class MyRestaurants extends React.Component {
               <ScrollView>
                 {
                   data.listRestaurants.items.map(
-                    ({name, description, image, waitTime, speciality, location, restaurantId}) => (
+                    ({name, description, image, waitTime, speciality, location, restaurantId, phoneNumber}) => (
                         <ImageOverlay
                           index={restaurantId}
                           source={{uri: image}}
@@ -55,6 +55,7 @@ class MyRestaurants extends React.Component {
                                 location,
                                 waitTime,
                                 speciality,
+                                phoneNumber,
                                 image
                               }
                             })

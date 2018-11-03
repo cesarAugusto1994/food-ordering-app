@@ -14,23 +14,79 @@ import TouchableLabel from '../components/TouchableLabel';
 
 import { colors, fonts } from '../theme';
 import { Subscription, Query } from 'react-apollo';
-import { ORDER_CREATE, GET_ORDER } from '../graphql/owner';
+import { ORDER_CREATE, GET_ORDER, UPDATE_ORDER } from '../graphql/owner';
 
 class OwnerOrder extends React.Component {
-  openModal = (info, phoneNumber) => {
-    const message = `
-      Pedido adicional: ${info}
-      Tel: ${phoneNumber}
+  openModal = (client, order) => {
+    const message = `Pedido adicional: ${order.additionalInfo}
+      Tel: ${order.userPhoneNumber}
     `;
-    Alert.alert(
-      'Informaçoes',
-      message,
+
+    if(order.state === 'enviado') {
+      return Alert.alert(
+        'Informaçoes',
+        message,
+        [
+          {text: 'Rejeitar', onPress: () => this.updateOrderStatus(client, order.orderId, 'rejeitado'), style: 'cancel'},
+          {text: 'Aceitar', onPress: () => this.updateOrderStatus(client, order.orderId, 'aceite')},
+        ],
+        { cancelable: false }
+        )
+    }
+    if(order.state === 'aceite') {
+      return Alert.alert(
+        'Estado',
+        'Selecione uma das opçoes abaixo listadas',
+        [
+          {text: 'Fechar', onPress: () => {}, style: 'cancel'},
+          {text: 'Preparando', onPress: () => this.updateOrderStatus(client, order.orderId, 'preparando')}
+        ],
+        { cancelable: false }
+      )
+    }
+    if(order.state === 'preparando') {
+      return Alert.alert(
+        'Estado',
+        'Selecione uma das opçoes abaixo listadas',
+        [
+          {text: 'Fechar', onPress: () => {}, style: 'cancel'},
+          {text: 'Enviando', onPress: () => this.updateOrderStatus(client, order.orderId, 'enviando')}
+        ],
+        { cancelable: false }
+      )
+    }
+    if(order.state === 'enviando') {
+      return Alert.alert(
+        'Estado',
+        'Selecione uma das opçoes abaixo listadas',
+        [
+          {text: 'Fechar', onPress: () => {}, style: 'cancel'},
+          {text: 'Entregue', onPress: () => this.updateOrderStatus(client, order.orderId, 'entregue')}
+        ],
+        { cancelable: false }
+      )
+    }
+    return Alert.alert(
+      'Estado',
+      `Este pedido foi ${order.state}`,
       [
-        {text: 'Rejeitar', onPress: () => {}, style: 'cancel'},
-        {text: 'Aceitar', onPress: () => console.log('OK Pressed')},
+        {text: 'Fechar', onPress: () => {}, style: 'cancel'},
+        {text: 'Ok', onPress: () => {}},
       ],
       { cancelable: false }
     )
+  }
+  updateOrderStatus = (client, orderId, status) => {
+    client.mutate({mutation: UPDATE_ORDER, variables: {orderId, status}})
+    .then(({data}) => {
+      client.resetStore();
+      return showMessage({type: 'success', message: 'Estado actualizado'})
+    })
+    .catch(err => console.log({errrrrrd: err}) || showMessage({
+      type: 'danger',
+      message: 'Houve um erro ao tentar actualizar o estado',
+      backgroundColor: 'red'
+    }))
   }
   render() {
     const {user: {ownerId}} = this.props.store.getState();
@@ -39,7 +95,7 @@ class OwnerOrder extends React.Component {
         {({data: newOrder, loading}) => {
           return (
             <Query query={GET_ORDER} variables={{ownerId}} fetchPolicy='cache-and-network'>
-              {({data, loading, err}) => {
+              {({data, loading, err, client}) => {
                 if(loading) return <Spinner text="Carregando os seus pedidos ..."/>
                 if(err) return (
                   <Error
@@ -55,13 +111,14 @@ class OwnerOrder extends React.Component {
                   <View style={styles.container}>
                     <ScrollView style={styles.scroll}>
                       {
-                        orders.map(order => (
-                          <TouchableOpacity onPress={() => this.openModal(order.additionalInfo, order.phoneNumber)}>
+                        orders.map(order => console.log({ooooooo: order}) || (
+                          <TouchableOpacity onPress={() => this.openModal(client, order)}>
                             <Card
                               index={order.foodId}
                               name={order.itemName}
                               quantity={order.quantity}
                               foodId={order.foodId}
+                              status={order.state}
                             />
                           </TouchableOpacity>
                         ))

@@ -43,10 +43,10 @@ class Restaurants extends React.Component {
               <ScrollView style={styles.container}>
                 {
                   data.listRestaurants.items.map(
-                    ({name, image, description, waitTime, restaurantId}, i) => (
+                    ({name, image, description, waitTime, restaurantId, phoneNumber}, i) => (
                       <CardRestaurant
                         onPress={
-                          () => this.props.navigation.navigate('Foods', {restaurantId}
+                          () => this.props.navigation.navigate('Foods', {restaurantId, phoneNumber}
                           )
                         }
                         index={restaurantId}

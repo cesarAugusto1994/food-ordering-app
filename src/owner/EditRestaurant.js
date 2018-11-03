@@ -19,6 +19,7 @@ export default connect(mapToPros, actions)(({navigation: {getParam, goBack, navi
   const value = getParam('value');
   const restaurantId = getParam('restaurantId');
   const ownerId = getParam('ownerId');
+  const phoneNumber = getParam('phoneNumber');
   return (
     <View style={styles.container}>
         <ScrollView>
@@ -26,6 +27,7 @@ export default connect(mapToPros, actions)(({navigation: {getParam, goBack, navi
             edit={true}
             restaurantId={restaurantId}
             ownerId={ownerId}
+            phoneNumber={phoneNumber}
             value={value}
             mutation={EDIT_RESTAURANTE}
             mutationName='updateRestaurant'

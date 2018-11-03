@@ -4,6 +4,14 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import { colors } from '../theme';
 import OrderStatus from './TouchableIcon';
 
+const icons = {
+  enviado: 'send',
+  aceite: 'check',
+  rejeitado: 'minus-circle',
+  preparando: 'hourglass-start',
+  enviando: 'car',
+  entregue: 'map-pin'
+}
 export default ({ key, quantity, name, foodId, onDelete, status }) => (
     <View style={styles.infoContainer} key={foodId}>
       <View style={styles.quantityWrapper}>
@@ -13,7 +21,7 @@ export default ({ key, quantity, name, foodId, onDelete, status }) => (
         <Text style={styles.nameText}>{name}</Text>
       </View>
       <View>
-        <OrderStatus disabled={true} iconName={status === true ? 'check' : 'circle-o'} color={colors.primary} size={30}/>
+        <OrderStatus disabled={true} iconName={icons[status]} color={colors.primary} size={30}/>
       </View>
     </View>
 );

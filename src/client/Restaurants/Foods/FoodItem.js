@@ -20,8 +20,8 @@ import { colors, fonts } from '../../../theme';
 import { getFood } from '../../../graphql/owner';
 
 class Foods extends React.Component {
-  addToCart = (foodId, userId, itemName, itemPrice, restaurantId, ownerId, quantity) => {
-    this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId, ownerId}, quantity})
+  addToCart = (foodId, userId, itemName, itemPrice, restaurantId, ownerId, restaurantPhoneNumber, quantity) => {
+    this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId, ownerId, restaurantPhoneNumber}, quantity})
       .then(success => {
         showMessage({
           message: "Item adicionado ao carrinho!",
@@ -47,7 +47,7 @@ class Foods extends React.Component {
     console.log('foood', this.props)
     const {user: {userId}, navigation} = this.props;
     const {goBack, state} = navigation;
-    const {foodId, name, restaurantId, ownerId, price, description, image} = state.params;
+    const {foodId, name, restaurantId, ownerId, price, description, image, restaurantPhoneNumber} = state.params;
     return (
       <View style={styles.container}>
           <ScrollView>
@@ -77,6 +77,7 @@ class Foods extends React.Component {
                   price,
                   restaurantId,
                   ownerId,
+                  restaurantPhoneNumber,
                   this.state.quantity
                 )
             }

@@ -25,6 +25,7 @@ import { getRestaurantsFoods } from '../../../graphql/owner';
 export default connect(mapToProps, actions)(({navigation: {getParam, navigate, goBack}, ...props}) => {
     console.log('okokokok', {props})
     const restaurantId = getParam('restaurantId');
+    const restaurantPhoneNumber = getParam('phoneNumber');
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
@@ -63,7 +64,8 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
                               name,
                               price,
                               image,
-                              description
+                              description,
+                              restaurantPhoneNumber
                             }
                           })
                         }

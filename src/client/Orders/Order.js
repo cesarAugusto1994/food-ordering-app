@@ -17,7 +17,7 @@ import { CREATE_ORDER } from '../../graphql/client';
 import OrderForm from '../../components/OrderForm';
 
 
-const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNumber}) => {
+const createOrder = async (mutationFn,mutation, state, {additionalInfo, userPhoneNumber}) => {
   state.card.forEach(order => {
     const variables = {
       orderId: uuidv4(),
@@ -26,7 +26,9 @@ const createOrder = async (mutationFn,mutation, state, {additionalInfo, phoneNum
       ownerId: order.ownerId,
       itemPrice: order.itemPrice,
       itemName: order.itemName,
-      phoneNumber,
+      userPhoneNumber,
+      restaurantPhoneNumber: order.restaurantPhoneNumber,
+      state: 'enviado',
       additionalInfo,
       quantity: order.quantity,
       userWillPay: order.quantity * order.itemPrice
@@ -46,7 +48,7 @@ class Order extends React.Component {
   state = {
     isOpen: false,
     value: {
-      phoneNumber: '923302679',
+      userPhoneNumber: '923302679',
       additionalInfo: 'OKozkzokdko'
     }
   }
@@ -55,8 +57,8 @@ class Order extends React.Component {
   }
 
   _createOrder = (fn, state) => {
-    const {phoneNumber, additionalInfo} = this.state.value;
-    createOrder(fn, CREATE_ORDER, state, {phoneNumber, additionalInfo})
+    const {userPhoneNumber, additionalInfo} = this.state.value;
+    createOrder(fn, CREATE_ORDER, state, {userPhoneNumber, additionalInfo})
       .then(success => {
         console.log({success});
         showMessage({type: 'success', message: 'A sua encomenda foi enviada ao restaurante!'});
