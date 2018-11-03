@@ -30,7 +30,7 @@ class Restaurants extends React.Component {
           if(err) return (
             <Error
               emoji='😰'
-              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a list de restaurantes. Feche e volte a abrir a aplicaçao!`}
+              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de restaurantes. Feche e volte a abrir a aplicaçao!`}
             />
           )
           if(data.listRestaurants.items.length === 0 ) return (

@@ -145,3 +145,14 @@ export const GET_ORDER = gql`
     }
   }
 `;
+export const GET_SPECIALITIES = gql`
+  query specialities {
+    listSpecialities {
+      items {
+        spId
+        name
+        image
+      }
+    }
+  }
+`;
