@@ -53,6 +53,6 @@ export const styles = StyleSheet.create({
     textAlign: 'left'
   },
   priceText: {
-      color: colors.primary,
+      color: colors.green,
   }
 });

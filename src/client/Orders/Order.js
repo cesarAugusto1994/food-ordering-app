@@ -109,7 +109,7 @@ class Order extends React.Component {
                 <View style={styles.orderBtn}>
                   <OrderButton
                     onPress={this.openModal}
-                    iconName='shopping-cart'
+                    buttonStyle={{backgroundColor: colors.green}}
                     text=" Encomendar"
                   />
                 </View>

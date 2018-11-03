@@ -15,8 +15,8 @@ const queryName = 'listOwners';
 
 const Owner = ({signOnUser, navigation}) => (
   <Layout
-    greeting="Bem-vindo 2"
-    greeting2="conecte-se para continuar 2"
+    greeting="Bem-vindo ao espaço restaurante"
+    greeting2="conecte-se para continuar"
     imagePath={require('../assets/shape.png')}
     whoIs={whoIs}
     query={GET_OWNER}

@@ -152,7 +152,8 @@ const AppNavigator = createStackNavigator({
             <TouchableIcon
               iconName='shopping-cart'
               onPress={() => navigation.navigate('Cart')}
-              size={30} color='#fff'
+              size={30}
+              color='#fff'
               style={{marginRight: 20}}
             />
           );

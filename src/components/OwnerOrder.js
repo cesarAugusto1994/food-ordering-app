@@ -5,12 +5,30 @@ import { colors } from '../theme';
 import OrderStatus from './TouchableIcon';
 
 const icons = {
-  enviado: 'send',
-  aceite: 'check',
-  rejeitado: 'minus-circle',
-  preparando: 'hourglass-start',
-  enviando: 'car',
-  entregue: 'map-pin'
+  enviado: {
+    name: 'send',
+    color: colors.green
+  },
+  aceite: {
+    name: 'check',
+    color: colors.green
+  },
+  rejeitado: {
+    name: 'minus-circle',
+    color: colors.red
+  },
+  preparando: {
+    name: 'hourglass-start',
+    color: colors.blue
+  },
+  enviando: {
+    name: 'car',
+    color: colors.blue
+  },
+  entregue: {
+    name: 'map-pin',
+    color: colors.green
+  }
 }
 export default ({ key, quantity, name, foodId, onDelete, status }) => (
     <View style={styles.infoContainer} key={foodId}>
@@ -21,7 +39,7 @@ export default ({ key, quantity, name, foodId, onDelete, status }) => (
         <Text style={styles.nameText}>{name}</Text>
       </View>
       <View>
-        <OrderStatus disabled={true} iconName={icons[status]} color={colors.primary} size={30}/>
+        <OrderStatus disabled={true} iconName={icons[status].name} color={icons[status].color} size={30}/>
       </View>
     </View>
 );
@@ -53,11 +71,12 @@ const styles = StyleSheet.create({
   },
   quantityWrapper: {
     borderWidth: 2,
+    borderColor: colors.red,
     padding: 10
   },
   quantity: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: colors.primary,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.primary,
   }
 });

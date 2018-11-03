@@ -13,7 +13,7 @@ export default ({ key, quantity, name, foodId, onDelete }) => (
         <Text style={styles.nameText}>{name}</Text>
       </View>
       <View>
-        <DeleteButton onPress={onDelete} iconName='remove' color={colors.primary} size={30}/>
+        <DeleteButton onPress={onDelete} iconName='remove' color={colors.red} size={30}/>
       </View>
     </View>
 );
@@ -45,11 +45,12 @@ const styles = StyleSheet.create({
   },
   quantityWrapper: {
     borderWidth: 2,
+    borderColor: colors.red,
     padding: 10
   },
   quantity: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: colors.primary,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.primary,
   }
 });
