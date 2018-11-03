@@ -35,7 +35,6 @@ class Profile extends React.Component {
             xlarge
             rounded
             source={{uri: user && user ? user.image  : '' }}
-            onPress={() => console.log("Works!")}
             activeOpacity={0.7}
           />
         </View>
@@ -43,18 +42,15 @@ class Profile extends React.Component {
         <View style={styles.wrapper}>
           <View style={styles.el}>
             <Icon name='account-box-outline' size={25} color='#FB28' />
-            <Text style={styles.keys}>{' First Name: '.toUpperCase()}</Text>
-            <Text style={styles.text}>My Name</Text>
+            <Text style={styles.keys}>{user && user ? user.firstName.toUpperCase()  : ''}</Text>
           </View>
           <View style={styles.el}>
             <Icon name='account-box-outline' size={25} color='#FB28' />
-            <Text style={styles.keys}>{' Last Name: '.toUpperCase()}</Text>
-            <Text style={styles.text}>My Last Name</Text>
+            <Text style={styles.keys}>{user && user ? user.lastName.toUpperCase()  : ''}</Text>
           </View>
           <View style={styles.el}>
             <Icon name='email' size={25} color='#FB28' />
-            <Text style={styles.keys}>{' Email: '.toUpperCase()}</Text>
-            <Text style={styles.text}>My Email</Text>
+            <Text style={styles.keys}>{user && user ? user.email.toUpperCase()  : ''}</Text>
           </View>
         </View>
 
@@ -99,7 +95,8 @@ const styles = StyleSheet.create({
   },
   keys: {
     textAlign: 'left',
-    fontWeight: "500"
+    fontWeight: "500",
+    fontFamily: 'space-mono'
   },
   el: {
     flexDirection: 'row',
