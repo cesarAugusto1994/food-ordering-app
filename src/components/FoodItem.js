@@ -27,9 +27,9 @@ export default ({
     </View>
     <Text style={[styles.price, {marginTop: 10}]}>Quantidade</Text>
     <View style={styles.quantity}>
-      <CircleButton onPress={substract} iconName='minus'/>
+      <CircleButton onPress={substract} iconName='minus' buttonStyle={{backgroundColor: colors.red}}/>
       <Text style={[styles.price, {marginBottom: 0}]}>{quantity}</Text>
-      <CircleButton onPress={add} iconName='plus'/>
+      <CircleButton onPress={add} iconName='plus' buttonStyle={{backgroundColor: colors.green}}/>
     </View>
   </View>
 );
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   image: {
     padding: 5,
     paddingTop: 0,
+    marginTop: 0,
     paddingLeft: 3,
     height: 300,
     width: 400
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   priceText: {
-      color: colors.primary,
+      color: colors.green,
       fontSize: 17,
       marginTop: 10,
       marginBottom: 10,

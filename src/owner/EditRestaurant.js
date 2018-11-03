@@ -40,12 +40,12 @@ export default connect(mapToPros, actions)(({navigation: {getParam, goBack, navi
                 <TouchableLabel
                   text='Ver refeiçoes'
                   onPress={() => navigate('MyFoods', {restaurantId})}
-                  style={styles.text}
+                  style={[styles.text, {color: colors.green}]}
                 />
                 <TouchableLabel
                   text='Apagar Restaurante'
                   onPress={onDelete}
-                  style={styles.text}
+                  style={[styles.text, {color: colors.red}]}
                 />
               </View>
             )}

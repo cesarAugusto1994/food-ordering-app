@@ -7,7 +7,7 @@ import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import SaveButton from './Button'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import {colors} from '../theme';
 
 const Form = t.form.Form;
 
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     padding: 5
   },
   buttonStyle: {
+    backgroundColor: colors.green,
     marginLeft: 0
   }
 });

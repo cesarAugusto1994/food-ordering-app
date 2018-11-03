@@ -1,5 +1,7 @@
 import React from 'react';
 import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
+import {colors} from '../theme'
+
 
 export default ({
   containerStyle,
@@ -19,11 +21,11 @@ export default ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#002835',
+    backgroundColor: colors.grey,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
-    color: '#fff'
+    color: colors.primary
   }
 });

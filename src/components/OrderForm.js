@@ -6,6 +6,8 @@ import _ from 'lodash';
 import OrderItem from './OrderItem';
 import Button from './Button';
 
+import {colors} from '../theme';
+
 const Form = t.form.Form;
 
 const formStylesheet = _.cloneDeep(t.form.Form.stylesheet);
@@ -42,6 +44,7 @@ export default ({ onOrder, amount = 0, value, onChange }) => (
     <Button
       onPress={onOrder}
       iconName='send'
+      buttonStyle={{backgroundColor: colors.green}}
       text=" Enviar encomenda"
     />
   </View>

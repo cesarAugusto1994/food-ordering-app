@@ -66,7 +66,7 @@ class Profile extends React.Component {
               this.props.navigation.navigate('Auth')
               }
           }
-          iconName='sign-out'
+          buttonStyle={{backgroundColor: colors.red}}
           text="Terminar sessão"
         />
       </View>

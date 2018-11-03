@@ -81,7 +81,7 @@ class Foods extends React.Component {
                   this.state.quantity
                 )
             }
-            iconName='shopping-cart'
+            buttonStyle={{backgroundColor: colors.green}}
             text=" Adicionar ao carrinho"
           />
           </View>
