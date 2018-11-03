@@ -17,11 +17,9 @@ class CheckAuth extends Component {
     this._bootstrapAsync();
   }
   _bootstrapAsync = async () => {
-    console.log('DID');
       const value = await AsyncStorage.getItem('@app:session');
       if (value !== null) {
         const user = JSON.parse(value);
-        console.log('UUU', user);
         if(user && user.isUser === true) {
           this.props.signOnUser({...user, isAuthed: true, userId: user.userId});
           this.props.navigation.navigate('Cliente');
@@ -35,7 +33,6 @@ class CheckAuth extends Component {
       }
   }
   render() {
-    // console.log('PROPS', this.props)
     return (
       <Spinner />
     )

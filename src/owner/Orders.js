@@ -89,7 +89,7 @@ class OwnerOrder extends React.Component {
       client.resetStore();
       return showMessage({type: 'success', message: 'Estado actualizado'})
     })
-    .catch(err => console.log({errrrrrd: err}) || showMessage({
+    .catch(err => showMessage({
       type: 'danger',
       message: 'Houve um erro ao tentar actualizar o estado',
       backgroundColor: 'red'
@@ -118,7 +118,7 @@ class OwnerOrder extends React.Component {
                   <View style={styles.container}>
                     <ScrollView style={styles.scroll}>
                       {
-                        orders.map(order => console.log({ooooooo: order}) || (
+                        orders.map(order => (
                           <TouchableOpacity onPress={() => this.openModal(client, order)}>
                             <Card
                               index={order.foodId}

@@ -44,7 +44,6 @@ class Foods extends React.Component {
     this.setState(prevState => ({quantity: prevState.quantity - 1}))
   }
   render() {
-    console.log('foood', this.props)
     const {user: {userId}, navigation} = this.props;
     const {goBack, state} = navigation;
     const {foodId, name, restaurantId, ownerId, price, description, image, restaurantPhoneNumber} = state.params;

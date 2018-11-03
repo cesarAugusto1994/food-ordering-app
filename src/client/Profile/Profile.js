@@ -21,54 +21,52 @@ import actions from '../../store/actions';
 import { colors, fonts } from '../../theme';
 import LogoutButton from '../../components/Button';
 
-class Profile extends React.Component {
-  static navigationOptions = {
-    header: null
-  }
-  render() {
-    const user = this.props.user
-    console.log('Profile props', this.props)
-    return (
-      <View style={styles.container}>
-        <View style={styles.info}>
-          <Avatar
-            xlarge
-            rounded
-            source={{uri: user && user ? user.image  : '' }}
-            activeOpacity={0.7}
-          />
-        </View>
-
-        <View style={styles.wrapper}>
-          <View style={styles.el}>
-            <Icon name='account-box-outline' size={25} color='#FB28' />
-            <Text style={styles.keys}>{user && user ? user.firstName.toUpperCase()  : ''}</Text>
-          </View>
-          <View style={styles.el}>
-            <Icon name='account-box-outline' size={25} color='#FB28' />
-            <Text style={styles.keys}>{user && user ? user.lastName.toUpperCase()  : ''}</Text>
-          </View>
-          <View style={styles.el}>
-            <Icon name='email' size={25} color='#FB28' />
-            <Text style={styles.keys}>{user && user ? user.email.toUpperCase()  : ''}</Text>
-          </View>
-        </View>
-
-        <LogoutButton
-          onPress={
-            async () => {
-              await AsyncStorage.clear()
-              this.props.signOut()
-              this.props.navigation.navigate('Auth')
-              }
-          }
-          buttonStyle={{backgroundColor: colors.red}}
-          text="Terminar sessão"
+const Profile = (props) => {
+  const user = props.user
+  return (
+    <View style={styles.container}>
+      <View style={styles.info}>
+        <Avatar
+          xlarge
+          rounded
+          source={{uri: user && user ? user.image  : '' }}
+          activeOpacity={0.7}
         />
       </View>
-    )
-  }
+
+      <View style={styles.wrapper}>
+        <View style={styles.el}>
+          <Icon name='account-box-outline' size={25} color='#FB28' />
+          <Text style={styles.keys}>{user && user ? user.firstName.toUpperCase()  : ''}</Text>
+        </View>
+        <View style={styles.el}>
+          <Icon name='account-box-outline' size={25} color='#FB28' />
+          <Text style={styles.keys}>{user && user ? user.lastName.toUpperCase()  : ''}</Text>
+        </View>
+        <View style={styles.el}>
+          <Icon name='email' size={25} color='#FB28' />
+          <Text style={styles.keys}>{user && user ? user.email.toUpperCase()  : ''}</Text>
+        </View>
+      </View>
+
+      <LogoutButton
+        onPress={
+          async () => {
+            await AsyncStorage.clear()
+            props.signOut()
+            props.navigation.navigate('Auth')
+            }
+        }
+        buttonStyle={{backgroundColor: colors.red}}
+        text="Terminar sessão"
+      />
+    </View>
+  )
 }
+
+Profile.navigationOptions = {
+  header: null
+};
 
 const styles = StyleSheet.create({
   container: {

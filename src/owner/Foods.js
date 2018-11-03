@@ -38,7 +38,7 @@ class Foods extends React.Component {
       client.resetStore();
       return showMessage({type: 'success', message: 'Apagado com sucesso'})
     })
-    .catch(err => console.log({errrrrrd: err}) || showMessage({
+    .catch(err => showMessage({
       type: 'danger',
       message: 'Houve um erro ao tentar apagar este prato',
       backgroundColor: 'red'

@@ -52,7 +52,6 @@ export default actions = store => ({
     return Promise.reject();
   },
   removeFromCard: (state, foodId) => {
-    console.log({fooooooo: foodId})
     const newCard = state.card.filter(el => {
       if(el.foodId === foodId) return;
       return el;

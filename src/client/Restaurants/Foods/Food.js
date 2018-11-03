@@ -23,70 +23,61 @@ import { colors, fonts } from '../../../theme';
 import { getRestaurantsFoods } from '../../../graphql/owner';
 
 export default connect(mapToProps, actions)(({navigation: {getParam, navigate, goBack}, ...props}) => {
-    console.log('okokokok', {props})
-    const restaurantId = getParam('restaurantId');
-    const restaurantPhoneNumber = getParam('phoneNumber');
-    return (
-      <Query query={getRestaurantsFoods} variables={{restaurantId}}>
-        {({loading, err, data}) => {
-          if(loading) return <Spinner text="Carregando as refeiçoes ..."/>
-          if(err) return (
-            <Error
-              emoji='😰'
-              text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de refeiçoes. Feche e volte a abrir a aplicaçao!`}
-            />
-          )
-          if(data.listFoods.items.length === 0 ) return (
-            <Error
-              text='Oops! Não pudemos satisfazer a sua pesquisa'
-              textStyle={{fontSize: 18}}/>
-          )
-          return (
-            <View style={styles.container}>
-              <ScrollView>
-                {
-                  data.listFoods.items.map(
-                    ({name, description, price, image, foodId, restaurantId, ownerId}) => (
-                      <Card
-                        description={description}
-                        index={foodId}
-                        name={name}
-                        price={price}
-                        image={image}
-                        foodId={foodId}
-                        onPress={
-                          () => navigate({
-                            routeName: 'FoodItem',
-                            params: {
-                              foodId,
-                              restaurantId,
-                              ownerId,
-                              name,
-                              price,
-                              image,
-                              description,
-                              restaurantPhoneNumber
-                            }
-                          })
-                        }
-                      />
-                    )
+  const restaurantId = getParam('restaurantId');
+  const restaurantPhoneNumber = getParam('phoneNumber');
+  return (
+    <Query query={getRestaurantsFoods} variables={{restaurantId}}>
+      {({loading, err, data}) => {
+        if(loading) return <Spinner text="Carregando as refeiçoes ..."/>
+        if(err) return (
+          <Error
+            emoji='😰'
+            text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de refeiçoes. Feche e volte a abrir a aplicaçao!`}
+          />
+        )
+        if(data.listFoods.items.length === 0 ) return (
+          <Error
+            text='Oops! Não pudemos satisfazer a sua pesquisa'
+            textStyle={{fontSize: 18}}/>
+        )
+        return (
+          <View style={styles.container}>
+            <ScrollView>
+              {
+                data.listFoods.items.map(
+                  ({name, description, price, image, foodId, restaurantId, ownerId}) => (
+                    <Card
+                      description={description}
+                      index={foodId}
+                      name={name}
+                      price={price}
+                      image={image}
+                      foodId={foodId}
+                      onPress={
+                        () => navigate({
+                          routeName: 'FoodItem',
+                          params: {
+                            foodId,
+                            restaurantId,
+                            ownerId,
+                            name,
+                            price,
+                            image,
+                            description,
+                            restaurantPhoneNumber
+                          }
+                        })
+                      }
+                    />
                   )
-                }
-              </ScrollView>
-            </View>
-          )}}
-      </Query>
-    )
+                )
+              }
+            </ScrollView>
+          </View>
+        )}}
+    </Query>
+  )
 })
-
-// image
-// name
-// foodId
-// restaurantId
-// ownerId
-// price
-// description
 
 const styles = StyleSheet.create({
   container: {
