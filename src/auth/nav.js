@@ -44,8 +44,8 @@ const routeConfig = {
   tabBarOptions: {
     showLabel: true,
     activeTintColor: colors.primary,
-    inactiveTintColor: colors.secondary,
-    indicatorStyle: { backgroundColor: colors.secondary },
+    inactiveTintColor: colors.grey,
+    indicatorStyle: { backgroundColor: colors.grey },
     labelStyle: {
       fontSize: 12
     },

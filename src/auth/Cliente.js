@@ -15,7 +15,7 @@ const queryName = 'listClients';
 
 const Cliente = ({signOnUser, navigation}) => (
   <Layout
-    greeting="Bem-vindo"
+    greeting="Bem-vindo ao espaço cliente"
     greeting2="conecte-se para continuar"
     whoIs={whoIs}
     query={GET_CLIENT}
