@@ -114,3 +114,24 @@ export const CREATE_ORDER = gql`
     }
   }
 `
+export const GET_ORDER = gql`
+  query getOrder($userId: String!) {
+    listOrders(
+      filter: {
+        userId: {eq: $userId}
+      }) {
+      items {
+        orderId
+        userId
+        restaurantId
+        ownerId
+        itemName
+        itemPrice
+        userWillPay
+        additionalInfo
+        phoneNumber
+        quantity
+      }
+    }
+  }
+`;
