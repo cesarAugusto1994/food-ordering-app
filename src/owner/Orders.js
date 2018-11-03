@@ -78,8 +78,7 @@ class OwnerOrder extends React.Component {
       `Este pedido foi ${order.state}`,
       [
         {text: 'Fechar', onPress: () => {}, style: 'cancel'},
-        {text: 'Ligar para o cliente', onPress: async () => await call(args)},
-        {text: 'Ok', onPress: () => {}},
+        {text: 'Ligar para o cliente', onPress: async () => await call(args)}
       ],
       { cancelable: false }
     )
