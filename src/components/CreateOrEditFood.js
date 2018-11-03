@@ -86,7 +86,7 @@ export default class _Form extends React.Component {
         backgroundColor: "red"
       })
     })
-    .catch(err => console.log({errrrrrrrr: err}) || showMessage({
+    .catch(err => showMessage({
       type: 'danger',
       message: 'Ocorreu-se algum errro',
       description: 'Deve-se à um ou mais problemas com os dados do item',

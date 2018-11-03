@@ -22,7 +22,6 @@ import {getRestaurants} from '../../graphql/client';
 
 class Restaurants extends React.Component {
   render() {
-    console.log('---> props rest', this.props)
     return (
       <Query query={getRestaurants} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {

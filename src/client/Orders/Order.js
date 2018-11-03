@@ -60,12 +60,11 @@ class Order extends React.Component {
     const {userPhoneNumber, additionalInfo} = this.state.value;
     createOrder(fn, CREATE_ORDER, state, {userPhoneNumber, additionalInfo})
       .then(success => {
-        console.log({success});
         showMessage({type: 'success', message: 'A sua encomenda foi enviada ao restaurante!'});
         this.props.resetCard();
         this.setState({isOpen: false});
       })
-      .catch(error => console.log({error}) || showMessage({
+      .catch(error => showMessage({
         type: 'danger',
         message: 'Ocorreu-se algum errro',
         description: 'Deve-se à um ou mais problemas com os dados do item',
@@ -82,7 +81,6 @@ class Order extends React.Component {
   }
   render() {
     const {card, user} = this.props.store.getState();
-    console.log({ffffffffffffsss: this.props, card})
     return (
       <Mutation mutation={CREATE_ORDER}>
         {(mutationFn, {data, client}) => (

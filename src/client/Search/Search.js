@@ -24,7 +24,6 @@ class Search extends React.Component {
     header: null
   };
   render() {
-    console.log('----> search props', this.props)
     return (
       <Query query={GET_SPECIALITIES} fetchPolicy='cache-and-network'>
         {({data, loading, err}) =>  {
