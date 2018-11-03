@@ -6,7 +6,7 @@ import { colors, fonts } from '../theme';
 import Restaurants from '../client/Restaurants/Restaurants';
 import Search from '../client/Search/Search';
 import Profile from '../client/Profile/Profile';
-import SignUp from '../auth/Restaurante';
+import Receipt from '../client/Receipt/Receipt';
 
 const styles = StyleSheet.create({
   icon: {
@@ -35,7 +35,7 @@ const routes = {
     }
   },
   Invoice: {
-    screen: SignUp,
+    screen: Receipt,
     navigationOptions: {
       title: 'Recibos',
       tabBarIcon: ({ tintColor }) => (

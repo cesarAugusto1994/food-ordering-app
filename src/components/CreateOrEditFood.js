@@ -11,7 +11,6 @@ import Form from './Form';
 import {showMessage} from 'react-native-flash-message';
 import Card from './Card';
 import CardOverlay from './CardOverlay';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const FoodType = t.struct({
   name: t.String,
@@ -40,6 +39,7 @@ export default class _Form extends React.Component {
       props: {
         restaurantId,
         foodId,
+        ownerId,
         mutationName,
         edit
       },
@@ -48,7 +48,8 @@ export default class _Form extends React.Component {
     const variables = {
       ...value,
       restaurantId,
-      foodId
+      foodId,
+      ownerId
     };
 
     if(!this.props.edit) {
@@ -85,7 +86,7 @@ export default class _Form extends React.Component {
         backgroundColor: "red"
       })
     })
-    .catch(err => showMessage({
+    .catch(err => console.log({errrrrrrrr: err}) || showMessage({
       type: 'danger',
       message: 'Ocorreu-se algum errro',
       description: 'Deve-se à um ou mais problemas com os dados do item',

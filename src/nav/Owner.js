@@ -1,12 +1,12 @@
-import React from 'react'
-import { Image, StyleSheet } from 'react-native'
-import { createBottomTabNavigator } from 'react-navigation'
+import React from 'react';
+import { Image, StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from 'react-navigation';
 
-import { colors, fonts } from '../theme'
-import MyRestaurants from '../owner/Restaurants'
-import Search from '../client/Search/Search'
-import Profile from '../client/Profile/Profile'
-import SignUp from '../auth/Restaurante'
+import { colors, fonts } from '../theme';
+import MyRestaurants from '../owner/Restaurants';
+import Search from '../client/Search/Search';
+import Profile from '../client/Profile/Profile';
+import Orders from '../owner/Orders';
 
 const styles = StyleSheet.create({
   icon: {
@@ -29,7 +29,7 @@ const routes = {
     }
   },
   Orders: {
-    screen: SignUp,
+    screen: Orders,
     navigationOptions: {
       title: 'Encomendas',
       tabBarIcon: ({ tintColor }) => (

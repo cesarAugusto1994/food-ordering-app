@@ -6,6 +6,7 @@ export const myRestaurants = gql`
       items {
         image
         restaurantId
+        phoneNumber
         location
         waitTime
         description
@@ -21,12 +22,13 @@ export const CREATE_RESTAURANTE = gql`
   mutation createRestaurant(
     $ownerId: String!,
     $name: String!,
-    $image: String,
+    $image: String!,
     $description: String!,
     $waitTime: Int!,
     $speciality: String!,
     $location: String!,
     $restaurantId: String!
+    $phoneNumber: String!
   ) {
     createRestaurant(input: {
       ownerId: $ownerId,
@@ -37,9 +39,11 @@ export const CREATE_RESTAURANTE = gql`
       speciality: $speciality,
       location: $location,
       restaurantId: $restaurantId
+      phoneNumber: $phoneNumber
     }) {
       image
       restaurantId
+      phoneNumber
       location
       waitTime
       description
@@ -59,6 +63,7 @@ export const EDIT_RESTAURANTE = gql`
     $speciality: String!,
     $location: String!,
     $restaurantId: String!
+    $phoneNumber: String!
   ) {
     updateRestaurant(input: {
       name: $name,
@@ -68,9 +73,11 @@ export const EDIT_RESTAURANTE = gql`
       speciality: $speciality,
       location: $location,
       restaurantId: $restaurantId
+      phoneNumber: $phoneNumber
     }) {
       image
       restaurantId
+      phoneNumber
       location
       waitTime
       description
@@ -108,6 +115,8 @@ export const GET_OWNER = gql`
     }
   }
 `;
+
+
 export const getRestaurantsFoods = gql`
   query getMyFoods($restaurantId: String!) {
     listFoods(filter: {restaurantId: {eq: $restaurantId} }) {
@@ -116,6 +125,7 @@ export const getRestaurantsFoods = gql`
         name
         foodId
         restaurantId
+        ownerId
         price
         description
       }
@@ -124,12 +134,13 @@ export const getRestaurantsFoods = gql`
 `;
 
 export const getFood = gql`
-  query getFood($foodId: String!) {
-    getFood(foodId: $foodId) {
+  query getFood($foodId: String!, $restaurantId: String) {
+    getFood(foodId: $foodId, restaurantId: $restaurantId) {
       image
       name
       foodId
       restaurantId
+      ownerId
       price
       description
     }
@@ -168,6 +179,7 @@ export const CREATE_FOOD = gql`
     $image: String!,
     $restaurantId: String!,
     $foodId: String!
+    $ownerId: String!
   ) {
     createFood(input: {
       name: $name
@@ -176,6 +188,7 @@ export const CREATE_FOOD = gql`
       image: $image
       restaurantId: $restaurantId
       foodId: $foodId
+      ownerId: $ownerId
     }){
       name
       description
@@ -183,6 +196,7 @@ export const CREATE_FOOD = gql`
       image
       restaurantId
       foodId
+      ownerId
     }
   }
 `;
@@ -195,6 +209,7 @@ export const EDIT_FOOD = gql`
     $image: String!,
     $restaurantId: String!,
     $foodId: String!
+    $ownerId: String!
   ) {
     updateFood(input: {
       name: $name
@@ -203,6 +218,7 @@ export const EDIT_FOOD = gql`
       image: $image
       restaurantId: $restaurantId
       foodId: $foodId
+      ownerId: $ownerId
     }){
       name
       description
@@ -210,14 +226,83 @@ export const EDIT_FOOD = gql`
       image
       restaurantId
       foodId
+      ownerId
     }
   }
 `;
 
+const DeleteFoodInput = gql`
+  input DeleteFoodInput {
+    foodId: String!
+    restaurantId: String!
+  }
+`;
+
 export const DELETE_FOOD = gql`
-  mutation deleteFood($foodId: String!) {
-    deleteFood(input: {foodId: $foodId}) {
+  mutation deleteFood($foodId: String!, $restaurantId: String!) {
+    deleteFood(input: {foodId: $foodId, restaurantId: $restaurantId}) {
       name
+    }
+  }
+`;
+
+
+export const ORDER_CREATE = gql`
+  subscription onCreateOrder($ownerId: String!){
+    onCreateOrder(ownerId: $ownerId) {
+      quantity
+      orderId
+      userId
+      ownerId
+      restaurantId
+      itemName
+      itemPrice
+      userWillPay
+      additionalInfo
+      restaurantPhoneNumber
+      state
+    }
+  }
+`;
+
+export const GET_ORDER = gql`
+  query getOrder($ownerId: String!) {
+    listOrders(
+      filter: {
+        ownerId: {eq: $ownerId}
+      }) {
+      items {
+        orderId
+        userId
+        restaurantId
+        ownerId
+        itemName
+        itemPrice
+        userWillPay
+        additionalInfo
+        userPhoneNumber
+        restaurantPhoneNumber
+        state
+        quantity
+      }
+    }
+  }
+`;
+export const UPDATE_ORDER = gql`
+  mutation updateOrder($status: String!, $orderId: String!){
+    updateOrder(input: {state: $status, orderId: $orderId}) {
+      orderId
+      userId
+      restaurantId
+      ownerId
+      itemName
+      itemPrice
+      userWillPay
+      additionalInfo
+      userPhoneNumber
+      restaurantPhoneNumber
+      state
+      quantity
     }
   }
 `;

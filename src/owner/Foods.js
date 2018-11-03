@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView} from 'react-native';
+import { View, StyleSheet, ScrollView, Alert} from 'react-native';
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
@@ -19,13 +19,26 @@ class Foods extends React.Component {
   componentDidMount() {
     this.props.setTempRestaurantId(this.props.navigation.getParam('restaurantId'));
   }
-  deleteFood = (client, foodId) => {
-    client.mutate({mutation: DELETE_FOOD, variables: {foodId}})
+  deleteFood = (client, foodId, restaurantId) => {
+    const message = 'Tem a certeza que pretende apagar este prato?';
+    Alert.alert(
+      'Apagar prato',
+      message,
+      [
+        {text: 'Nao', onPress: () => {}},
+        {text: 'Sim', onPress: () => this.foodDeletion(client, foodId, restaurantId)},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  foodDeletion = (client, foodId, restaurantId) => {
+    client.mutate({mutation: DELETE_FOOD, variables: {foodId, restaurantId}})
     .then(({data}) => {
       client.resetStore();
       return showMessage({type: 'success', message: 'Apagado com sucesso'})
     })
-    .catch(err => showMessage({
+    .catch(err => console.log({errrrrrd: err}) || showMessage({
       type: 'danger',
       message: 'Houve um erro ao tentar apagar este prato',
       backgroundColor: 'red'
@@ -35,7 +48,7 @@ class Foods extends React.Component {
     const {getParam, goBack} = this.props.navigation
     const restaurantId = getParam('restaurantId');
     return (
-      <Query query={getRestaurantsFoods} variables={{restaurantId}}>
+      <Query query={getRestaurantsFoods} variables={{restaurantId}} fetchPolicy='cache-and-network'>
         {({loading, err, data, client}) => {
           if(loading) return <Spinner text="Carregando as suas refeiçoes ..."/>
           if(err) return (
@@ -54,7 +67,7 @@ class Foods extends React.Component {
               <ScrollView>
                 {
                   data.listFoods.items.map(
-                    ({name, description, price, image, foodId}) => (
+                    ({name, description, price, image, foodId, restaurantId}) => (
                       <Card
                         { ...{
                           description,
@@ -63,7 +76,7 @@ class Foods extends React.Component {
                           image,
                           foodId
                           }}
-                          onDelete={this.deleteFood.bind(this, client, foodId)}
+                          onDelete={this.deleteFood.bind(this, client, foodId, restaurantId)}
                         onPress={
                           () => this.props.navigation.navigate({routeName: 'EditFood', params: {
                             foodId,

@@ -24,6 +24,7 @@ export const getRestaurants = gql`
       items {
         image
         restaurantId
+        phoneNumber
         location
         waitTime
         description
@@ -41,6 +42,7 @@ export const filterRestaurants = gql`
       items {
         image
         restaurantId
+        phoneNumber
         location
         waitTime
         description
@@ -77,37 +79,69 @@ export const CREATE_CLIENT = gql`
 `;
 
 export const CREATE_ORDER = gql`
-  mutation createOrders(
+  mutation createOrder(
     $orderId: String!,
     $userId: String!,
     $restaurantId: String!,
+    $ownerId: String!,
     $itemName: String!,
     $itemPrice: Int!,
     $userWillPay: Int!,
     $additionalInfo: String!,
-    $phoneNumber: String!,
+    $userPhoneNumber: String!,
+    $restaurantPhoneNumber: String!,
+    $state: String!,
     $quantity: Int!
   ) {
-    createOrders(input: {
+    createOrder(input: {
       orderId: $orderId
       userId: $userId
       restaurantId: $restaurantId
+      ownerId: $ownerId
       itemName: $itemName
       itemPrice: $itemPrice
       userWillPay: $userWillPay
       additionalInfo: $additionalInfo
-      phoneNumber: $phoneNumber
+      userPhoneNumber: $userPhoneNumber
+      restaurantPhoneNumber: $restaurantPhoneNumber
+      state: $state
       quantity: $quantity
     }) {
       orderId
       userId
       restaurantId
+      ownerId
       itemName
       itemPrice
       userWillPay
       additionalInfo
-      phoneNumber
+      userPhoneNumber
+      restaurantPhoneNumber
+      state
       quantity
     }
   }
 `
+export const GET_ORDER = gql`
+  query getOrder($userId: String!) {
+    listOrders(
+      filter: {
+        userId: {eq: $userId}
+      }) {
+      items {
+        orderId
+        userId
+        restaurantId
+        ownerId
+        itemName
+        itemPrice
+        userWillPay
+        additionalInfo
+        userPhoneNumber
+        restaurantPhoneNumber
+        state
+        quantity
+      }
+    }
+  }
+`;

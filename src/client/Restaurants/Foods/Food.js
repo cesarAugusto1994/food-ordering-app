@@ -25,6 +25,7 @@ import { getRestaurantsFoods } from '../../../graphql/owner';
 export default connect(mapToProps, actions)(({navigation: {getParam, navigate, goBack}, ...props}) => {
     console.log('okokokok', {props})
     const restaurantId = getParam('restaurantId');
+    const restaurantPhoneNumber = getParam('phoneNumber');
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}}>
         {({loading, err, data}) => {
@@ -45,7 +46,7 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
               <ScrollView>
                 {
                   data.listFoods.items.map(
-                    ({name, description, price, image, foodId}) => (
+                    ({name, description, price, image, foodId, restaurantId, ownerId}) => (
                       <Card
                         description={description}
                         index={foodId}
@@ -54,7 +55,19 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
                         image={image}
                         foodId={foodId}
                         onPress={
-                          () => navigate({routeName: 'FoodItem', params: {foodId, name}})
+                          () => navigate({
+                            routeName: 'FoodItem',
+                            params: {
+                              foodId,
+                              restaurantId,
+                              ownerId,
+                              name,
+                              price,
+                              image,
+                              description,
+                              restaurantPhoneNumber
+                            }
+                          })
                         }
                       />
                     )
@@ -66,6 +79,14 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
       </Query>
     )
 })
+
+// image
+// name
+// foodId
+// restaurantId
+// ownerId
+// price
+// description
 
 const styles = StyleSheet.create({
   container: {

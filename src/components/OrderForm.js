@@ -28,33 +28,28 @@ const options = {
     }
   }
 };
-
-const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 export default ({ onOrder, amount = 0, value, onChange }) => (
   <View style={styles.container}>
-      <Form type={OrderInfo} options={options} value={value} onChange={onChange}/>
+    <Form type={OrderInfo} options={options} value={value} onChange={onChange}/>
+    <View style={styles.infoContainer}>
+      <View style={styles.info}>
+        <Text style={styles.total}>Total</Text>
+      </View>
       <View>
-        <View style={styles.infoContainer}>
-          <View style={styles.info}>
-            <Text style={styles.total}>Total</Text>
-          </View>
-          <View>
-            <Text style={styles.amount}>AOA {amount}</Text>
-          </View>
-        </View>
-        <Button
-          onPress={onOrder}
-          iconName='shopping-cart'
-          text=" Encomendar"
-        />
+        <Text style={styles.amount}>AOA {amount}</Text>
       </View>
     </View>
+    <Button
+      onPress={onOrder}
+      iconName='send'
+      text=" Enviar encomenda"
+    />
+  </View>
 );
 
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    marginTop: 50,
     padding: 20,
     backgroundColor: '#ffffff',
     width: '100%',

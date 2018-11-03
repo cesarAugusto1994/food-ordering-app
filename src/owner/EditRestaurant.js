@@ -11,12 +11,15 @@ import FlashMessage from 'react-native-flash-message';
 import CardOverlay from '../components/CardOverlay';
 import TouchableLabel from '../components/TouchableLabel';
 import {EDIT_RESTAURANTE} from '../graphql/owner/';
+import { connect } from 'redux-zero/react';
+import actions from '../store/actions';
 
-
-export default ({navigation: {getParam, goBack, navigate}, image}) => {
+const mapToPros = ({user}) => ({user});
+export default connect(mapToPros, actions)(({navigation: {getParam, goBack, navigate}, image, user}) => {
   const value = getParam('value');
   const restaurantId = getParam('restaurantId');
   const ownerId = getParam('ownerId');
+  const phoneNumber = getParam('phoneNumber');
   return (
     <View style={styles.container}>
         <ScrollView>
@@ -24,6 +27,7 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
             edit={true}
             restaurantId={restaurantId}
             ownerId={ownerId}
+            phoneNumber={phoneNumber}
             value={value}
             mutation={EDIT_RESTAURANTE}
             mutationName='updateRestaurant'
@@ -50,7 +54,7 @@ export default ({navigation: {getParam, goBack, navigate}, image}) => {
         <FlashMessage position='top'/>
     </View>
   )
-}
+})
 
 export const styles = StyleSheet.create({
   container: {
@@ -58,11 +62,12 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   wrapper: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10
+    margin: 10
+    // marginTop: 10
   },
   text: {
     fontSize: 20,
