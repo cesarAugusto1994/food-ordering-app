@@ -127,7 +127,6 @@ export default class _Form extends React.Component {
   }
   render() {
     const {
-      options,
       mutation,
       text,
       value = this.state.value,
@@ -159,6 +158,39 @@ export default class _Form extends React.Component {
     )
   }
 };
+
+const options = {
+  fields: {
+    name: {
+      placeholder: 'Nome',
+      label: 'Nome'
+    },
+    description: {
+      placeholder: 'Descriçao',
+      label: 'Descriçao'
+    },
+    location: {
+      placeholder: 'Localizaçao',
+      label: 'Localizaçao'
+    },
+    waitTime: {
+      placeholder: 'Tempo de espera',
+      label: 'Tempo de espera'
+    },
+    speciality: {
+      placeholder: 'Especialidade',
+      label: 'Especialidade'
+    },
+    phoneNumber: {
+      placeholder: 'Tel.',
+      label: 'Tel.'
+    },
+    image: {
+      placeholder: 'Imagem',
+      label: 'Imagem'
+    }
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
