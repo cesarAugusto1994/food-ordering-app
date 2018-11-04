@@ -32,9 +32,9 @@ class Restaurants extends React.Component {
               text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de restaurantes. Feche e volte a abrir a aplicaçao!`}
             />
           )
-          if(data.listRestaurants.items.length === 0 ) return (
+          if(!data.listRestaurants || data.listRestaurants.items.length === 0) return (
             <Error
-              text='Oops! Não pudemos satisfazer a sua pesquisa'
+              text='Oops!'
               textStyle={{fontSize: 18}}/>
           )
           return (

@@ -37,15 +37,15 @@ const Profile = (props) => {
       <View style={styles.wrapper}>
         <View style={styles.el}>
           <Icon name='account-box-outline' size={25} color='#FB28' />
-          <Text style={styles.keys}>{user && user ? user.firstName.toUpperCase()  : ''}</Text>
+          <Text style={styles.keys}>{user && user ? user.firstName  : ''}</Text>
         </View>
         <View style={styles.el}>
           <Icon name='account-box-outline' size={25} color='#FB28' />
-          <Text style={styles.keys}>{user && user ? user.lastName.toUpperCase()  : ''}</Text>
+          <Text style={styles.keys}>{user && user ? user.lastName  : ''}</Text>
         </View>
         <View style={styles.el}>
           <Icon name='email' size={25} color='#FB28' />
-          <Text style={styles.keys}>{user && user ? user.email.toUpperCase()  : ''}</Text>
+          <Text style={styles.keys}>{user && user ? user.email  : ''}</Text>
         </View>
       </View>
 
@@ -55,7 +55,7 @@ const Profile = (props) => {
             await AsyncStorage.clear()
             props.signOut()
             props.navigation.navigate('Auth')
-            }
+          }
         }
         buttonStyle={{backgroundColor: colors.red}}
         text="Terminar sessão"

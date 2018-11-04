@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "foodapp",
+    "name": "Milly Food App",
     "description": "This project is really great.",
-    "slug": "foodapp",
+    "slug": "millyapp",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,10 +22,21 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.foodApp.foodApp"
+      "bundleIdentifier": "com.millyapp.millyapp",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.529624563579-n0s0fla9ip1a1f0amgsube9j52d0ocee"
+        }
+      }
     },
     "android": {
-      "package": "com.foodApp.foodApp"
+      "package": "com.millyapp.millyapp",
+      "config": {
+        "googleSignIn":{
+          "certificateHash": "19959463090C8730985F403129A4FD61194109E5",
+          "apiKey": "AIzaSyBDvOE7sLtBMqcSnbgzpKHROLmz_o3ggKE"
+        }
+      }
     },
     "facebookScheme": "fb1029457293903156",
     "facebookAppId": "1029457293903156",

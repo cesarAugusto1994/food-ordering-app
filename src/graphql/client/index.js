@@ -2,12 +2,7 @@ import gql from 'graphql-tag';
 
 export const GET_CLIENT = gql`
   query getClient($email: String!) {
-    listClients(
-      filter: {
-        email: {eq: $email}
-      },
-      limit: 1
-    ) {
+    listClients( filter: { email: {eq: $email} }) {
       items {
         userId
         email
