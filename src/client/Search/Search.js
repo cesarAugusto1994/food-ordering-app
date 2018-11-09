@@ -38,7 +38,7 @@ class Search extends React.Component {
             <View style={styles.container}>
               <GridView
                 itemDimension={130}
-                items={data.listSpecialities.items}
+                items={data.specialities}
                 style={styles.gridView}
                 renderItem={item => (
                   <View style={[styles.itemContainer]}>

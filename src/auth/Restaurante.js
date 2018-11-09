@@ -11,7 +11,7 @@ const signOn = (props, fn) => user => fn({user, ...props});
 const mapToProps = ({ signOnUser }) => ({ signOnUser });
 const mutationName = 'createOwner';
 const mutationModel = 'Owner';
-const queryName = 'listOwners';
+const queryName = 'owners';
 
 const Owner = ({signOnUser, navigation}) => (
   <Layout

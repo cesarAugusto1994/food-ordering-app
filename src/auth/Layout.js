@@ -3,7 +3,7 @@ import {Platform, Linking, Text, View, Image, AsyncStorage} from 'react-native';
 import { SocialIcon } from 'react-native-elements';
 import { graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import uuid from 'uuid/v4';
+import short from 'short-uuid';
 import { NavigationActions, StackNavigator, StackActions } from 'react-navigation';
 
 import { connect } from 'redux-zero/react';
@@ -36,19 +36,13 @@ const findOrCreateUser = async (
   await client.resetStore();
   return client.query({query: query, variables: {email: email}})
     .then(response => {
+      console.log({rrrr: response})
       if (
         response.data
         && response.data[queryName]
-        && response.data[queryName].items.length !== 0
+        && response.data[queryName].length !== 0
         ) {
-        const {
-          data: {
-            [queryName]: {
-              items
-            }
-          }
-        } = response;
-        return Promise.resolve(items[0]);
+        return Promise.resolve(response.data[queryName][0]);
       }
       return mutationFn({
         mutation,
@@ -59,6 +53,7 @@ const findOrCreateUser = async (
         },
       })
         .then(response => {
+          console.log({rrrrrrr: response})
           const {data} = response;
           return {
             email: data[mutationName].email,
@@ -100,7 +95,7 @@ class SignIn extends Component {
           mutationFn,
           {
             ...user,
-            [id]: uuid()
+            [id]: short.uuid()
           }, {
             query,
             queryName,
@@ -146,7 +141,7 @@ class SignIn extends Component {
         mutationFn,
         {
           ...user,
-          [id]: uuid()
+          [id]: short.uuid()
         }, {
           query,
           queryName,

@@ -32,7 +32,7 @@ const RestaurantList = ({navigation: {navigate, state}}) => {
             text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a list de restaurantes. Feche e volte a abrir a aplicaçao!`}
           />
         )
-        if(data.listRestaurants.items.length === 0 ) return (
+        if(data.restaurants.length === 0 ) return (
           <Error
             text='Oops! Não pudemos satisfazer a sua pesquisa'
             textStyle={{fontSize: 18}}/>
@@ -41,7 +41,7 @@ const RestaurantList = ({navigation: {navigate, state}}) => {
           <React.Fragment>
             <ScrollView style={styles.container}>
               {
-                data.listRestaurants.items.map(
+                data.restaurants.map(
                   ({name, image, description, waitTime, restaurantId}, i) => (
                     <CardRestaurant
                       onPress={

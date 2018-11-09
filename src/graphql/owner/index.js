@@ -2,18 +2,19 @@ import gql from 'graphql-tag';
 
 export const myRestaurants = gql`
   query myRestaurants($ownerId: String!) {
-    listRestaurants(filter: {ownerId: { eq: $ownerId }}) {
-      items {
-        image
-        restaurantId
-        phoneNumber
-        location
-        waitTime
-        description
-        ownerId
-        speciality
-        name
-      }
+    restaurants(where: {ownerId: $ownerId }) {
+      image
+      restaurantId
+      phoneNumber
+      location
+      waitTime
+      description
+      ownerId
+      speciality
+      name
+      scheduleStart
+      scheduleEnd
+      isWeekendOpen
     }
   }
 `;
@@ -27,10 +28,13 @@ export const CREATE_RESTAURANTE = gql`
     $waitTime: Int!,
     $speciality: String!,
     $location: String!,
-    $restaurantId: String!
-    $phoneNumber: String!
+    $restaurantId: String!,
+    $phoneNumber: String!,
+    $scheduleStart: String!,
+    $scheduleEnd: String!,
+    $isWeekendOpen: Boolean!
   ) {
-    createRestaurant(input: {
+    createRestaurant(data: {
       ownerId: $ownerId,
       name: $name,
       image: $image,
@@ -38,8 +42,11 @@ export const CREATE_RESTAURANTE = gql`
       waitTime: $waitTime,
       speciality: $speciality,
       location: $location,
-      restaurantId: $restaurantId
-      phoneNumber: $phoneNumber
+      restaurantId: $restaurantId,
+      phoneNumber: $phoneNumber,
+      scheduleStart: $scheduleStart
+      scheduleEnd: $scheduleEnd
+      isWeekendOpen: $isWeekendOpen
     }) {
       image
       restaurantId
@@ -50,6 +57,9 @@ export const CREATE_RESTAURANTE = gql`
       ownerId
       speciality
       name
+      scheduleStart
+      scheduleEnd
+      isWeekendOpen
     }
   }
 `;
@@ -62,18 +72,24 @@ export const EDIT_RESTAURANTE = gql`
     $waitTime: Int!,
     $speciality: String!,
     $location: String!,
-    $restaurantId: String!
-    $phoneNumber: String!
+    $restaurantId: String!,
+    $phoneNumber: String!,
+    $scheduleStart: String!,
+    $scheduleEnd: String!,
+    $isWeekendOpen: Boolean!
   ) {
-    updateRestaurant(input: {
+    updateRestaurant(data: {
       name: $name,
       image: $image,
       description: $description,
       waitTime: $waitTime,
       speciality: $speciality,
       location: $location,
-      restaurantId: $restaurantId
-      phoneNumber: $phoneNumber
+      restaurantId: $restaurantId,
+      phoneNumber: $phoneNumber,
+      scheduleStart: $scheduleStart
+      scheduleEnd: $scheduleEnd
+      isWeekendOpen: $isWeekendOpen
     }) {
       image
       restaurantId
@@ -84,13 +100,16 @@ export const EDIT_RESTAURANTE = gql`
       ownerId
       speciality
       name
+      scheduleStart
+      scheduleEnd
+      isWeekendOpen
     }
   }
 `;
 
 export const DELETE_RESTAURANTE = gql`
   mutation deleteRestaurant($restaurantId: String!) {
-    deleteRestaurant(input: {restaurantId: $restaurantId}) {
+    deleteRestaurant(where: {restaurantId: $restaurantId}) {
       name
     }
   }
@@ -99,19 +118,12 @@ export const DELETE_RESTAURANTE = gql`
 
 export const GET_OWNER = gql`
   query getOwner($email: String!) {
-    listOwners(
-      filter: {
-        email: {eq: $email}
-      },
-      limit: 1
-    ) {
-      items {
-        ownerId
-        email
-        firstName
-        lastName
-        image
-      }
+    owners(where: {email: $email}) {
+      ownerId
+      email
+      firstName
+      lastName
+      image
     }
   }
 `;
@@ -119,23 +131,21 @@ export const GET_OWNER = gql`
 
 export const getRestaurantsFoods = gql`
   query getMyFoods($restaurantId: String!) {
-    listFoods(filter: {restaurantId: {eq: $restaurantId} }) {
-      items {
-        image
-        name
-        foodId
-        restaurantId
-        ownerId
-        price
-        description
-      }
+    foods(where: {restaurantId: $restaurantId}) {
+      image
+      name
+      foodId
+      restaurantId
+      ownerId
+      price
+      description
     }
   }
 `;
 
 export const getFood = gql`
-  query getFood($foodId: String!, $restaurantId: String) {
-    getFood(foodId: $foodId, restaurantId: $restaurantId) {
+  query getFood($foodId: String!, $restaurantId: ID) {
+    food(foodId: $foodId, restaurantId: $restaurantId) {
       image
       name
       foodId
@@ -155,7 +165,7 @@ export const CREATE_OWNER = gql`
     $lastName: String!,
     $image: String!
     ) {
-      createOwner(input: {
+      createOwner(data: {
         email: $email
         ownerId: $ownerId
         firstName: $firstName
@@ -181,7 +191,7 @@ export const CREATE_FOOD = gql`
     $foodId: String!
     $ownerId: String!
   ) {
-    createFood(input: {
+    createFood(data: {
       name: $name
       description: $description
       price: $price
@@ -211,7 +221,7 @@ export const EDIT_FOOD = gql`
     $foodId: String!
     $ownerId: String!
   ) {
-    updateFood(input: {
+    updateFood(where: {foodId: $foodId}, data: {
       name: $name
       description: $description
       price: $price
@@ -240,7 +250,7 @@ const DeleteFoodInput = gql`
 
 export const DELETE_FOOD = gql`
   mutation deleteFood($foodId: String!, $restaurantId: String!) {
-    deleteFood(input: {foodId: $foodId, restaurantId: $restaurantId}) {
+    deleteFood(data: {foodId: $foodId, restaurantId: $restaurantId}) {
       name
     }
   }
@@ -267,30 +277,25 @@ export const ORDER_CREATE = gql`
 
 export const GET_ORDER = gql`
   query getOrder($ownerId: String!) {
-    listOrders(
-      filter: {
-        ownerId: {eq: $ownerId}
-      }) {
-      items {
-        orderId
-        userId
-        restaurantId
-        ownerId
-        itemName
-        itemPrice
-        userWillPay
-        additionalInfo
-        userPhoneNumber
-        restaurantPhoneNumber
-        state
-        quantity
-      }
+    orders(where: {ownerId: $ownerId}) {
+      orderId
+      userId
+      restaurantId
+      ownerId
+      itemName
+      itemPrice
+      userWillPay
+      additionalInfo
+      userPhoneNumber
+      restaurantPhoneNumber
+      state
+      quantity
     }
   }
 `;
 export const UPDATE_ORDER = gql`
   mutation updateOrder($status: String!, $orderId: String!){
-    updateOrder(input: {state: $status, orderId: $orderId}) {
+    updateOrder(data: {state: $status, orderId: $orderId}) {
       orderId
       userId
       restaurantId

@@ -18,7 +18,10 @@ const RestauranteType = t.struct({
   waitTime: t.Number,
   speciality: t.String,
   phoneNumber: t.String,
-  image: t.String
+  image: t.String,
+  scheduleStart: t.String,
+  scheduleEnd: t.String,
+  isWeekendOpen: t.Boolean
 });
 
 export default class _Form extends React.Component {
@@ -30,7 +33,10 @@ export default class _Form extends React.Component {
       waitTime: 0,
       speciality: '',
       phoneNumber: '',
-      image: ''
+      image: '',
+      scheduleStart: '',
+      scheduleEnd: '',
+      isWeekendOpen: false
     }
   }
 
@@ -53,6 +59,7 @@ export default class _Form extends React.Component {
     const variables = {
       ...value,
       restaurantId,
+      waitTime: Number(value.waitTime),
       phoneNumber: !this.props.edit ? value.phoneNumber : phoneNumber,
       ownerId
     };
@@ -64,7 +71,9 @@ export default class _Form extends React.Component {
         value.location === '' ||
         value.waitTime === 0 ||
         value.speciality === '' ||
-        value.image === ''
+        value.image === '' ||
+        value.scheduleStart === '' ||
+        value.scheduleEnd === ''
         ) {
           return showMessage({
             type: 'warning',
@@ -80,6 +89,7 @@ export default class _Form extends React.Component {
       }, {}),
     })
     .then(data => {
+      console.log({ddddd: data})
       if(edit && !_.isEmpty(data.data.updateRestaurant) || !_.isEmpty(data.data.createRestaurant)) {
         client.resetStore();
         showMessage({type: 'success', message: 'Item guardado com sucesso!'});

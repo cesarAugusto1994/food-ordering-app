@@ -29,6 +29,7 @@ class MyRestaurants extends React.Component {
     return (
       <Query query={myRestaurants} variables={{ownerId}} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
+          console.log({ffff: data})
           if(loading) return <Spinner text="Carregando os seus restaurantes ..."/>
           if(err) return (
             <Error
@@ -40,8 +41,20 @@ class MyRestaurants extends React.Component {
             <View style={styles.container}>
               <ScrollView>
                 {
-                  data.listRestaurants.items.map(
-                    ({name, description, image, waitTime, speciality, location, restaurantId, phoneNumber}) => (
+                  data.restaurants.map(
+                    ({
+                      name,
+                      description,
+                      image,
+                      waitTime,
+                      speciality,
+                      location,
+                      restaurantId,
+                      phoneNumber,
+                      scheduleStart,
+                      scheduleEnd,
+                      isWeekendOpen
+                      }) => (
                         <ImageOverlay
                           index={restaurantId}
                           source={{uri: image}}
@@ -56,7 +69,10 @@ class MyRestaurants extends React.Component {
                                 waitTime,
                                 speciality,
                                 phoneNumber,
-                                image
+                                image,
+                                scheduleStart,
+                                scheduleEnd,
+                                isWeekendOpen
                               }
                             })
                           }

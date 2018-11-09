@@ -3,7 +3,7 @@ import CreateRestaurant from '../components/CreateAndEditRestaurant';
 import CardOverlay from '../components/CardOverlay';
 import gql from 'graphql-tag';
 import {Text, ScrollView, TouchableOpacity, Alert, View} from 'react-native';
-import uuidv4 from 'uuid/v4';
+import short from 'short-uuid';
 import FlashMessage from 'react-native-flash-message';
 
 import {colors} from '../theme';
@@ -15,7 +15,7 @@ import {styles} from './EditRestaurant';
 const mapToPros = ({user}) => ({user});
 export default connect(mapToPros, actions)(({navigation: {getParam, goBack}, user}) => {
   const {ownerId} = user;
-  const restaurantId = uuidv4();
+  const restaurantId = short.uuid();
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView>

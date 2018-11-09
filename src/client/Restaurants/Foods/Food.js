@@ -35,7 +35,7 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
             text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de refeiçoes. Feche e volte a abrir a aplicaçao!`}
           />
         )
-        if(data.listFoods.items.length === 0 ) return (
+        if(data.foods.length === 0 ) return (
           <Error
             text='Oops! Não pudemos satisfazer a sua pesquisa'
             textStyle={{fontSize: 18}}/>
@@ -44,7 +44,7 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
           <View style={styles.container}>
             <ScrollView>
               {
-                data.listFoods.items.map(
+                data.foods.map(
                   ({name, description, price, image, foodId, restaurantId, ownerId}) => (
                     <Card
                       description={description}

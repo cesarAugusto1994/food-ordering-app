@@ -2,54 +2,43 @@ import gql from 'graphql-tag';
 
 export const GET_CLIENT = gql`
   query getClient($email: String!) {
-    listClients(
-      filter: {
-        email: {eq: $email}
-      },
-      limit: 1
-    ) {
-      items {
-        userId
-        email
-        firstName
-        lastName
-        image
-      }
+    clients(where: {email: $email}) {
+      userId
+      email
+      firstName
+      lastName
+      image
     }
   }
 `;
 export const getRestaurants = gql`
-  query listRestaurants {
-    listRestaurants {
-      items {
-        image
-        restaurantId
-        phoneNumber
-        location
-        waitTime
-        description
-        ownerId
-        speciality
-        name
-      }
+  query restaurants {
+    restaurants {
+      image
+      restaurantId
+      phoneNumber
+      location
+      waitTime
+      description
+      ownerId
+      speciality
+      name
     }
-}
+  }
 `;
 
 export const filterRestaurants = gql`
   query myRestaurants($speciality: String!) {
-    listRestaurants(filter: {speciality: { eq: $speciality }}) {
-      items {
-        image
-        restaurantId
-        phoneNumber
-        location
-        waitTime
-        description
-        ownerId
-        speciality
-        name
-      }
+    restaurants(where: {speciality: $speciality}) {
+      image
+      restaurantId
+      phoneNumber
+      location
+      waitTime
+      description
+      ownerId
+      speciality
+      name
     }
   }
 `;
@@ -62,7 +51,7 @@ export const CREATE_CLIENT = gql`
     $lastName: String!,
     $image: String!
     ) {
-      createClient(input: {
+      createClient(data: {
         email: $email
         userId: $userId
         firstName: $firstName
@@ -93,7 +82,7 @@ export const CREATE_ORDER = gql`
     $state: String!,
     $quantity: Int!
   ) {
-    createOrder(input: {
+    createOrder(data: {
       orderId: $orderId
       userId: $userId
       restaurantId: $restaurantId
@@ -124,35 +113,28 @@ export const CREATE_ORDER = gql`
 `
 export const GET_ORDER = gql`
   query getOrder($userId: String!) {
-    listOrders(
-      filter: {
-        userId: {eq: $userId}
-      }) {
-      items {
-        orderId
-        userId
-        restaurantId
-        ownerId
-        itemName
-        itemPrice
-        userWillPay
-        additionalInfo
-        userPhoneNumber
-        restaurantPhoneNumber
-        state
-        quantity
-      }
+    orders(where: {userId: $userId}) {
+      orderId
+      userId
+      restaurantId
+      ownerId
+      itemName
+      itemPrice
+      userWillPay
+      additionalInfo
+      userPhoneNumber
+      restaurantPhoneNumber
+      state
+      quantity
     }
   }
 `;
 export const GET_SPECIALITIES = gql`
   query specialities {
-    listSpecialities {
-      items {
-        spId
-        name
-        image
-      }
+    specialities {
+      spId
+      name
+      image
     }
   }
 `;

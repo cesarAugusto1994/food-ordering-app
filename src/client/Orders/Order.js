@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput, Text, Button } from 'react-native';
 import { connect } from 'redux-zero/react';
-import uuidv4 from 'uuid/v4';
+import uuid from 'short-uuid';
 import {showMessage} from 'react-native-flash-message';
 
 import actions from '../../store/actions';
@@ -20,7 +20,7 @@ import OrderForm from '../../components/OrderForm';
 const createOrder = async (mutationFn,mutation, state, {additionalInfo, userPhoneNumber}) => {
   state.card.forEach(order => {
     const variables = {
-      orderId: uuidv4(),
+      orderId: uuid(),
       userId: state.user.userId,
       restaurantId: order.restaurantId,
       ownerId: order.ownerId,
