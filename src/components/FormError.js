@@ -16,6 +16,7 @@ export const FormError = ({name}) => (
 
 const style = StyleSheet.create({
   text: {
-    color: colors.red
+    color: colors.red,
+    marginBottom: 5
   }
 });

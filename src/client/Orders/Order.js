@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput, Text, Button } from 'react-native';
 import { connect } from 'redux-zero/react';
-import uuid from 'short-uuid';
+import short from 'short-uuid';
 import {showMessage} from 'react-native-flash-message';
 
 import actions from '../../store/actions';
@@ -20,7 +20,7 @@ import OrderForm from '../../components/OrderForm';
 const createOrder = async (mutationFn,mutation, state, {additionalInfo, userPhoneNumber}) => {
   state.card.forEach(order => {
     const variables = {
-      orderId: uuid(),
+      orderId:  short.uuid(),
       userId: state.user.userId,
       restaurantId: order.restaurantId,
       ownerId: order.ownerId,
@@ -48,16 +48,12 @@ class Order extends React.Component {
   state = {
     isOpen: false,
     value: {
-      userPhoneNumber: '923302679',
-      additionalInfo: 'OKozkzokdko'
+      additionalInfo: '',
+      userPhoneNumber: 0
     }
   }
-  onChange = (value) => {
-    this.setState({value})
-  }
-
-  _createOrder = (fn, state) => {
-    const {userPhoneNumber, additionalInfo} = this.state.value;
+  sendOrder = (fn, state, values) => {
+    const {userPhoneNumber, additionalInfo} = values;
     createOrder(fn, CREATE_ORDER, state, {userPhoneNumber, additionalInfo})
       .then(success => {
         showMessage({type: 'success', message: 'A sua encomenda foi enviada ao restaurante!'});
@@ -121,8 +117,7 @@ class Order extends React.Component {
               >
                 <OrderForm
                   value={this.state.value}
-                  onChange={this.onChange.bind(this)}
-                  onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
+                  onOrder={values => this.sendOrder(mutationFn, {card, user}, values)}
                   amount={getTotalAmount(card)}
                 />
             </Modal>

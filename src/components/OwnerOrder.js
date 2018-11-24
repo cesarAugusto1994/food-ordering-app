@@ -30,8 +30,8 @@ const icons = {
     color: colors.green
   }
 }
-export default ({ key, quantity, name, foodId, onDelete, status }) => (
-    <View style={styles.infoContainer} key={foodId}>
+export default ({ quantity, name, foodId, onDelete, status }) => (
+    <View style={styles.infoContainer}>
       <View style={styles.quantityWrapper}>
         <Text style={styles.quantity}>{quantity}</Text>
       </View>

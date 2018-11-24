@@ -12,12 +12,11 @@ export default ({
   source,
   onPress,
   children = () => null,
-  index,
   imageStyle,
   wrapperStyle,
   disabled = false
 }) => (
-  <TouchableOpacity onPress={onPress} key={index} disabled={disabled}>
+  <TouchableOpacity onPress={onPress} disabled={disabled}>
     <ImageBackground source={source} style={[styles.image, imageStyle]}>
       <View style={[styles.wrapper, wrapperStyle]}/>
       {children()}

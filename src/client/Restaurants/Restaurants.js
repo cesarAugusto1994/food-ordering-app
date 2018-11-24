@@ -25,7 +25,6 @@ class Restaurants extends React.Component {
     return (
       <Query query={getRestaurants} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
-          console.log({detttt: data})
           if(loading) return <Spinner text="Carregando os restaurantes ..."/>
           if(err) return (
             <Error
@@ -33,7 +32,7 @@ class Restaurants extends React.Component {
               text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de restaurantes. Feche e volte a abrir a aplicaçao!`}
             />
           )
-          if(data.restaurants.length === 0 ) return (
+          if(data && data.restaurants.length === 0 ) return (
             <Error
               text='Oops! Não pudemos satisfazer a sua pesquisa'
               textStyle={{fontSize: 18}}/>
@@ -49,7 +48,6 @@ class Restaurants extends React.Component {
                           () => this.props.navigation.navigate('Foods', {restaurantId, phoneNumber}
                           )
                         }
-                        index={restaurantId}
                         key={restaurantId}
                         contentPosition="center"
                         source={{uri: image}}

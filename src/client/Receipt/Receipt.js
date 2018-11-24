@@ -71,7 +71,7 @@ class OwnerOrder extends React.Component {
             <View style={styles.container}>
               <ScrollView style={styles.scroll}>
                 {
-                  data.listOrders.items.map(order => (
+                  data.orders.map(order => (
                     <TouchableOpacity onPress={() => this.openModal(order)}>
                       <Card
                         index={order.foodId}

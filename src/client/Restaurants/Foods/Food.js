@@ -48,7 +48,7 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
                   ({name, description, price, image, foodId, restaurantId, ownerId}) => (
                     <Card
                       description={description}
-                      index={foodId}
+                      key={foodId}
                       name={name}
                       price={price}
                       image={image}

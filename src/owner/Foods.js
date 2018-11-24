@@ -50,6 +50,7 @@ class Foods extends React.Component {
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}} fetchPolicy='cache-and-network'>
         {({loading, err, data, client}) => {
+          console.log({data})
           if(loading) return <Spinner text="Carregando as suas refeiçoes ..."/>
           if(err) return (
             <Error
@@ -57,7 +58,7 @@ class Foods extends React.Component {
               text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos os seus dados. Feche e volte a abrir a aplicaçao!`}
             />
           )
-          if(data.listFoods.items.length === 0 ) return (
+          if(data.foods.length === 0 ) return (
             <Error
               text='Oops! Não pudemos satisfazer a sua pesquisa'
               textStyle={{fontSize: 18}}/>
@@ -66,9 +67,10 @@ class Foods extends React.Component {
             <View style={styles.container}>
               <ScrollView>
                 {
-                  data.listFoods.items.map(
+                  data.foods.map(
                     ({name, description, price, image, foodId, restaurantId}) => (
                       <Card
+                        key={foodId}
                         { ...{
                           description,
                           name,

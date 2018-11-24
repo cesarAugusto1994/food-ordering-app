@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   keys: {
     textAlign: 'left',
     fontWeight: "500",
-    fontFamily: 'space-mono'
+    // fontFamily: 'space-mono'
   },
   el: {
     flexDirection: 'row',

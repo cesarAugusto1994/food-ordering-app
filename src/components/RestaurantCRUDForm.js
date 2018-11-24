@@ -2,19 +2,21 @@
 
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import {Mutation, graphql} from 'react-apollo';
+import { connect } from 'redux-zero/react';
 import { Button, TextInput, Switch } from 'react-native-paper';
 import {showMessage} from 'react-native-flash-message';
 import { Formik, ErrorMessage } from 'formik';
-import gql from 'graphql-tag';
 import SaveButton from './Button'
 import {FormError} from './FormError'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Picker from 'react-native-picker-select';
 import {colors} from '../theme';
+import actions from '../store/actions'
 
-export default ({ value, onSave, text, iconName, onChange, formStyle, isEditing }) => (
+const mapToProps = ({categoriesLabels}) => ({categoriesLabels})
+export default connect(mapToProps, actions)(({ value, onSave, text, formStyle, categoriesLabels }) => (
   <Formik
-    initialValues={value}
+    initialValues={{ ...value, items: categoriesLabels}}
     validate={values => validate(values)}
     onSubmit={values => onSave(values)}>
     {({ handleChange, handleSubmit, values, setFieldValue }) => (
@@ -58,14 +60,26 @@ export default ({ value, onSave, text, iconName, onChange, formStyle, isEditing 
               name='waitTime'
             />
             <FormError name='waitTime'/>
-            <TextInput
+            <Picker
+              placeholder={{
+                label: 'Selecionar uma especialidade',
+                value: null,
+              }}
+              hideIcon={true}
+              items={values.items}
+              onValueChange={value => setFieldValue('speciality', value)}
+              style={{...pickerSelectStyles}}
+              value={values.speciality}
+            />
+
+            {/* <TextInput
               style={styles.input}
               mode='disabled'
               label='Especialidade'
               value={values.speciality}
               onChangeText={handleChange('speciality')}
               name='speciality'
-            />
+            /> */}
             <FormError name='speciality'/>
             <TextInput
               style={styles.input}
@@ -112,14 +126,15 @@ export default ({ value, onSave, text, iconName, onChange, formStyle, isEditing 
             <FormError name='isWeekendOpen'/>
           </View>
           <SaveButton
-            onPress={handleSubmit} { ...{text, iconName}}
+            onPress={handleSubmit}
+            text={text}
             buttonStyle={styles.buttonStyle}
           />
         </View>
       </KeyboardAwareScrollView>
     )}
   </Formik>
-);
+));
 
 const validate = values => {
   const errors = {};
@@ -173,5 +188,17 @@ const styles = StyleSheet.create({
     borderColor: colors.grey,
     borderRadius: 5,
     marginTop: 10
+  }
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    marginTop: 10,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: colors.grey,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    color: 'black',
   }
 });

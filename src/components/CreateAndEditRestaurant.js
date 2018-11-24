@@ -11,18 +11,6 @@ import CardOverlay from './CardOverlay';
 import {showMessage} from 'react-native-flash-message';
 import {DELETE_RESTAURANTE} from '../graphql/owner/index'
 
-const RestauranteType = t.struct({
-  name: t.String,
-  description: t.String,
-  location: t.String,
-  waitTime: t.Number,
-  speciality: t.String,
-  phoneNumber: t.String,
-  image: t.String,
-  scheduleStart: t.String,
-  scheduleEnd: t.String,
-  isWeekendOpen: t.Boolean
-});
 
 export default class _Form extends React.Component {
   mutate = (mutationFn, client,  values) => {
@@ -117,7 +105,6 @@ export default class _Form extends React.Component {
               />
             {children(this.deleteRestaurant.bind(this, client, this.props.restaurantId))}
             <Form
-              onChange={this.onChange}
               formStyle={formStyle}
               value={value}
               text={text}

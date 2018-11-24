@@ -109,7 +109,8 @@ class OwnerOrder extends React.Component {
                     text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de seus pedidos. Feche e volte a abrir a aplicaçao!`}
                   />
                 )
-                let orders = data.listOrders.items;
+                console.log({ddddd: data})
+                let orders = data.orders;
                 if(newOrder && newOrder.onCreateOrder){
                   orders.unshift({...newOrder.onCreateOrder})
                 }
@@ -118,9 +119,8 @@ class OwnerOrder extends React.Component {
                     <ScrollView style={styles.scroll}>
                       {
                         orders.map(order => (
-                          <TouchableOpacity onPress={() => this.openModal(client, order)}>
+                          <TouchableOpacity onPress={() => this.openModal(client, order)} key={order.foodId}>
                             <Card
-                              index={order.foodId}
                               name={order.itemName}
                               quantity={order.quantity}
                               foodId={order.foodId}
