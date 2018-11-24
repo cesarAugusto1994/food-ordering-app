@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Text, Button } from 'react-native';
+import { View, StyleSheet, FlatList, TextInput, Text, Button } from 'react-native';
 import { connect } from 'redux-zero/react';
 import short from 'short-uuid';
 import {showMessage} from 'react-native-flash-message';
@@ -80,10 +80,15 @@ class Order extends React.Component {
       <Mutation mutation={CREATE_ORDER}>
         {(mutationFn, {data, client}) => (
           <View style={styles.container}>
-            <ScrollView style={styles.scroll}>
-                {
-                  card.length !== 0 ? card.map(
-                    ({itemName, itemPrice, foodId, quantity}) => (
+            <RenderIf
+              condition={card.length !== 0}
+              children={() => (
+                <FlatList
+                  style={styles.scroll}
+                  data={card}
+                  keyExtractor={(item, index) => item.foodId}
+                  renderItem={
+                    ({item: {itemName, itemPrice, foodId, quantity}}) => (
                       <Card
                         index={foodId}
                         name={itemName}
@@ -91,11 +96,13 @@ class Order extends React.Component {
                         foodId={foodId}
                         onDelete={() => this.props.removeFromCard(foodId)}
                       />
-                    )
-                  )
-                  : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
-                }
-            </ScrollView>
+                    )}
+                />
+              )}
+              fallback={() => (
+                <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
+              )}
+            />
             <RenderIf
               condition={card.length !== 0}
               children={() => (

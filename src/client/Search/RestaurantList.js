@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
+  FlatList,
   Button
 } from 'react-native'
 import { Query } from "react-apollo";
@@ -39,36 +39,32 @@ const RestaurantList = ({navigation: {navigate, state}}) => {
         )
         return (
           <React.Fragment>
-            <ScrollView style={styles.container}>
-              {
-                data.restaurants.map(
-                  ({name, image, description, waitTime, restaurantId}, i) => (
-                    <CardRestaurant
-                      onPress={
-                        () => navigate('Foods', {restaurantId}
-                        )
-                      }
-                      index={restaurantId}
-                      key={restaurantId}
-                      contentPosition="center"
-                      source={{uri: image}}
-                      overlayAlpha={0.3}
-                      rounded={5}
-                    >
-                    {() => (
-                      <React.Fragment key={restaurantId}>
-                        <Text style={styles.text}>{name.toUpperCase()}</Text>
-                        <View style={styles.waitTime}>
-                          <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
-                        </View>
-                      </React.Fragment>
+            <FlatList
+              style={styles.container}
+              data={data && data.restaurants}
+              keyExtractor={(item, index) => item.restaurantId}
+              renderItem={({item: {name, image, description, waitTime, restaurantId}}) => (
+                <CardRestaurant
+                  onPress={() => navigate('Foods', {restaurantId})}
+                  index={restaurantId}
+                  key={restaurantId}
+                  contentPosition="center"
+                  source={{uri: image}}
+                  overlayAlpha={0.3}
+                  rounded={5}
+                >
+                  {() => (
+                    <React.Fragment key={restaurantId}>
+                      <Text style={styles.text}>{name.toUpperCase()}</Text>
+                      <View style={styles.waitTime}>
+                        <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
+                      </View>
+                    </React.Fragment>
 
-                    )}
-                    </CardRestaurant>
-                  )
-                )
-              }
-            </ScrollView>
+                  )}
+                </CardRestaurant>
+              )}
+            />
           </React.Fragment>
         )
       }}

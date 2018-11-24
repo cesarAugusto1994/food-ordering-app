@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, FlatList, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'redux-zero/react';
 import call from 'react-native-phone-call';
 
@@ -115,20 +115,22 @@ class OwnerOrder extends React.Component {
                 }
                 return (
                   <View style={styles.container}>
-                    <ScrollView style={styles.scroll}>
-                      {
-                        orders.map(order => (
-                          <TouchableOpacity onPress={() => this.openModal(client, order)} key={order.foodId}>
-                            <Card
-                              name={order.itemName}
-                              quantity={order.quantity}
-                              foodId={order.foodId}
-                              status={order.state}
-                            />
-                          </TouchableOpacity>
-                        ))
-                      }
-                    </ScrollView>
+                    <FlatList
+                      style={styles.scroll}
+                      data={orders}
+                      keyExtractor={(item, index) => item.foodId}
+                      renderItem={({item}) => (
+                        <TouchableOpacity onPress={() => this.openModal(client, item)} key={item.foodId}>
+                          <Card
+                            name={item.itemName}
+                            quantity={item.quantity}
+                            foodId={item.foodId}
+                            status={item.state}
+                          />
+                        </TouchableOpacity>
+
+                      )}
+                    />
                   </View>
                 )
               }}

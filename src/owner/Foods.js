@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Alert} from 'react-native';
+import { View, StyleSheet, FlatList, Alert} from 'react-native';
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
@@ -61,38 +61,37 @@ class Foods extends React.Component {
           if(data.foods.length === 0 ) return (
             <Error
               text='Oops! Não pudemos satisfazer a sua pesquisa'
-              textStyle={{fontSize: 18}}/>
+              textStyle={{fontSize: 18}}
+            />
           )
           return (
             <View style={styles.container}>
-              <ScrollView>
-                {
-                  data.foods.map(
-                    ({name, description, price, image, foodId, restaurantId}) => (
-                      <Card
-                        key={foodId}
-                        { ...{
-                          description,
-                          name,
-                          price,
-                          image,
-                          foodId
-                          }}
-                          onDelete={this.deleteFood.bind(this, client, foodId, restaurantId)}
-                        onPress={
-                          () => this.props.navigation.navigate({routeName: 'EditFood', params: {
-                            foodId,
-                            description,
-                            name,
-                            price,
-                            image
-                            }})
-                        }
-                      />
-                    )
-                  )
-                }
-              </ScrollView>
+              <FlatList
+                data={data.foods}
+                keyExtractor={(item, index) => item.foodId}
+                renderItem={({item: {name, description, price, image, foodId, restaurantId}}) => (
+                  <Card
+                    key={foodId}
+                    { ...{
+                      description,
+                      name,
+                      price,
+                      image,
+                      foodId
+                      }}
+                    onDelete={this.deleteFood.bind(this, client, foodId, restaurantId)}
+                    onPress={
+                      () => this.props.navigation.navigate({routeName: 'EditFood', params: {
+                        foodId,
+                        description,
+                        name,
+                        price,
+                        image
+                        }})
+                    }
+                  />
+                )}
+              />
             </View>
           )}}
       </Query>

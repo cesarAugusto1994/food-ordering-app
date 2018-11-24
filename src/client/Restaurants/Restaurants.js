@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Button
+  Button,
+  FlatList
 } from 'react-native'
 import { Query } from "react-apollo";
 import { connect } from 'redux-zero/react'
@@ -39,35 +40,35 @@ class Restaurants extends React.Component {
           )
           return (
             <React.Fragment>
-              <ScrollView style={styles.container}>
-                {
-                  data && data.restaurants.map(
-                    ({name, image, description, waitTime, restaurantId, phoneNumber}, i) => (
-                      <CardRestaurant
-                        onPress={
-                          () => this.props.navigation.navigate('Foods', {restaurantId, phoneNumber}
-                          )
-                        }
-                        key={restaurantId}
-                        contentPosition="center"
-                        source={{uri: image}}
-                        overlayAlpha={0.3}
-                        rounded={5}
-                      >
-                      {() => (
-                        <React.Fragment key={restaurantId}>
-                          <Text style={styles.text}>{name.toUpperCase()}</Text>
-                          <View style={styles.waitTime}>
-                            <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
-                          </View>
-                        </React.Fragment>
+              <FlatList
+                style={styles.container}
+                data={data && data.restaurants}
+                keyExtractor={(item, index) => item.restaurantId}
+                renderItem={({item: {name, image, description, waitTime, restaurantId, phoneNumber}}) => (
+                  <CardRestaurant
+                    onPress={
+                      () => this.props.navigation.navigate('Foods', {restaurantId, phoneNumber}
+                      )
+                    }
+                    key={restaurantId}
+                    contentPosition="center"
+                    source={{uri: image}}
+                    overlayAlpha={0.3}
+                    rounded={5}
+                  >
+                    {() => (
+                      <React.Fragment key={restaurantId}>
+                        <Text style={styles.text}>{name.toUpperCase()}</Text>
+                        <View style={styles.waitTime}>
+                          <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
+                        </View>
+                      </React.Fragment>
 
-                      )}
-                      </CardRestaurant>
-                    )
-                  )
-                }
-              </ScrollView>
+                    )}
+                  </CardRestaurant>
+
+                )}
+              />
             </React.Fragment>
           )
         }}
