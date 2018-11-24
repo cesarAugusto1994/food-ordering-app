@@ -123,6 +123,7 @@ export default connect(mapToProps, actions)(({ value, onSave, text, formStyle, c
               value={values.isWeekendOpen}
               onValueChange={value => setFieldValue('isWeekendOpen', value)}
             />
+            <Text>Aberto aos fins de semana</Text>
             <FormError name='isWeekendOpen'/>
           </View>
           <SaveButton

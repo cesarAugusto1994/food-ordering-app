@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'redux-zero/react';
-import Modal from 'react-native-modalbox';
 import call from 'react-native-phone-call';
 
 import actions from '../store/actions';

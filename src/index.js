@@ -5,12 +5,6 @@ import {
   Text,
   View
 } from 'react-native';
-
-import {
-  graphql,
-  Mutation
-} from 'react-apollo';
-import gql from 'graphql-tag';
 import {connect} from 'redux-zero/react';
 
 

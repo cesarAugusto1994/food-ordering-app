@@ -18,7 +18,7 @@ export default ({ onOrder, amount = 0, value }) => (
       <KeyboardAwareScrollView>
         <View style={styles.container}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, {marginTop: 20}]}
             mode='disabled'
             label='Pedido'
             value={values.additionalInfo}
@@ -71,6 +71,7 @@ const validate = values => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
+    alignContent: 'center',
     padding: 20,
     backgroundColor: '#ffffff',
     width: '100%',

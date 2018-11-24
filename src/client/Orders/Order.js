@@ -3,12 +3,11 @@ import { View, StyleSheet, ScrollView, TextInput, Text, Button } from 'react-nat
 import { connect } from 'redux-zero/react';
 import short from 'short-uuid';
 import {showMessage} from 'react-native-flash-message';
-
+import { Modal, Portal } from 'react-native-paper';
 import actions from '../../store/actions';
 import Card from '../../components/OrderItem';
 import OrderButton from '../../components/Button';
 import Message from '../../components/Error';
-import Modal from 'react-native-modalbox';
 import RenderIf from '../../components/RenderIf';
 
 import { colors, fonts } from '../../theme';
@@ -109,18 +108,15 @@ class Order extends React.Component {
                 </View>
               )}
             />
-            <Modal
-              keyboardTopOffset={0}
-              isOpen={this.state.isOpen}
-              onClosed={this.closeModal}
-              backdropPressToClose={false}
-              >
+            <Portal>
+              <Modal visible={this.state.isOpen} onDismiss={this.closeModal}>
                 <OrderForm
                   value={this.state.value}
                   onOrder={values => this.sendOrder(mutationFn, {card, user}, values)}
                   amount={getTotalAmount(card)}
                 />
-            </Modal>
+              </Modal>
+            </Portal>
           </View>
         )}
       </Mutation>

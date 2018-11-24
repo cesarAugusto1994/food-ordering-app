@@ -4,7 +4,6 @@ import React from 'react';
 import _ from 'lodash';
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import {Mutation, graphql} from 'react-apollo';
-import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import Form from './RestaurantCRUDForm';
 import CardOverlay from './CardOverlay';

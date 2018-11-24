@@ -5,7 +5,6 @@ import React from 'react';
 import _ from 'lodash';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import {Mutation, graphql} from 'react-apollo';
-import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import Form from './FoodCRUDForm';
 import {showMessage} from 'react-native-flash-message';

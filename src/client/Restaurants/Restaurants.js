@@ -41,7 +41,7 @@ class Restaurants extends React.Component {
             <React.Fragment>
               <ScrollView style={styles.container}>
                 {
-                  data.restaurants.map(
+                  data && data.restaurants.map(
                     ({name, image, description, waitTime, restaurantId, phoneNumber}, i) => (
                       <CardRestaurant
                         onPress={
