@@ -6,7 +6,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import {Mutation, graphql} from 'react-apollo';
 import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
-import Form from './Form';
+import Form from './RestaurantCRUDForm';
 import CardOverlay from './CardOverlay';
 import {showMessage} from 'react-native-flash-message';
 import {DELETE_RESTAURANTE} from '../graphql/owner/index'
@@ -25,27 +25,7 @@ const RestauranteType = t.struct({
 });
 
 export default class _Form extends React.Component {
-  state = {
-    value: {
-      name: '',
-      description: '',
-      location: '',
-      waitTime: 0,
-      speciality: '',
-      phoneNumber: '',
-      image: '',
-      scheduleStart: '',
-      scheduleEnd: '',
-      isWeekendOpen: false
-    }
-  }
-
-  onChange = (value) => {
-    this.setState({value})
-  }
-
-  mutate  = (e, mutationFn, client) => {
-    e.preventDefault();
+  mutate = (mutationFn, client,  values) => {
     const {
       props: {
         restaurantId,
@@ -53,34 +33,15 @@ export default class _Form extends React.Component {
         phoneNumber,
         mutationName,
         edit
-      },
-      state:{ value }
+      }
     } = this;
     const variables = {
-      ...value,
+      ...values,
       restaurantId,
-      waitTime: Number(value.waitTime),
-      phoneNumber: !this.props.edit ? value.phoneNumber : phoneNumber,
+      waitTime: values.waitTime ? Number(values.waitTime): '',
+      phoneNumber: values.phoneNumber,
       ownerId
     };
-
-    if(!this.props.edit) {
-      if (
-        value.name === '' ||
-        value.description === '' ||
-        value.location === '' ||
-        value.waitTime === 0 ||
-        value.speciality === '' ||
-        value.image === '' ||
-        value.scheduleStart === '' ||
-        value.scheduleEnd === ''
-        ) {
-          return showMessage({
-            type: 'warning',
-            message: 'Os campos não devem estar vazios'
-          });
-      }
-    }
     mutationFn({
       variables,
       optimisticResponse: () => ({
@@ -102,7 +63,7 @@ export default class _Form extends React.Component {
         backgroundColor: "red"
       })
     })
-    .catch(err => showMessage({
+    .catch(err => console.log({err}) || showMessage({
       type: 'danger',
       message: 'Ocorreu-se algum errro',
       description: 'Deve-se à um ou mais problemas com os dados do restaurante',
@@ -139,28 +100,29 @@ export default class _Form extends React.Component {
     const {
       mutation,
       text,
-      value = this.state.value,
+      value,
+      edit,
       containerStyle,
       formStyle,
       children = () => null
     } = this.props;
+    console.log({state: this.state})
     return (
       <Mutation mutation={mutation}>
         {(mutationFn, {client, data, error, loading}) => (
           <View style={[styles.container, containerStyle]}>
             <CardOverlay
-              source={value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}
+              source={value && value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}
               disabled={true}
               />
             {children(this.deleteRestaurant.bind(this, client, this.props.restaurantId))}
             <Form
-              type={RestauranteType}
-              options={options}
               onChange={this.onChange}
               formStyle={formStyle}
               value={value}
               text={text}
-              onSave={async e => await this.mutate(e, mutationFn, client)}
+              isEditing={edit}
+              onSave={values => this.mutate(mutationFn, client, values)}
             />
           </View>
         )}
@@ -168,39 +130,6 @@ export default class _Form extends React.Component {
     )
   }
 };
-
-const options = {
-  fields: {
-    name: {
-      placeholder: 'Nome',
-      label: 'Nome'
-    },
-    description: {
-      placeholder: 'Descriçao',
-      label: 'Descriçao'
-    },
-    location: {
-      placeholder: 'Localizaçao',
-      label: 'Localizaçao'
-    },
-    waitTime: {
-      placeholder: 'Tempo de espera',
-      label: 'Tempo de espera'
-    },
-    speciality: {
-      placeholder: 'Especialidade',
-      label: 'Especialidade'
-    },
-    phoneNumber: {
-      placeholder: 'Tel.',
-      label: 'Tel.'
-    },
-    image: {
-      placeholder: 'Imagem',
-      label: 'Imagem'
-    }
-  }
-}
 
 const styles = StyleSheet.create({
   container: {

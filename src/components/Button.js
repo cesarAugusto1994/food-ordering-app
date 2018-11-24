@@ -1,5 +1,4 @@
 import React from 'react'
-import {RkButton} from 'react-native-ui-kitten';
 import {Image,Text,StyleSheet, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { fonts, colors } from '../theme'
@@ -24,7 +23,6 @@ const styles = StyleSheet.create({
     margin: 0,
     marginLeft: 40,
     marginBottom: 5,
-    color: '#fff',
     height: 50,
     borderRadius: 5,
     backgroundColor: colors.primary,

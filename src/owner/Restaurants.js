@@ -56,6 +56,7 @@ class MyRestaurants extends React.Component {
                       isWeekendOpen
                       }) => (
                         <ImageOverlay
+                          key={restaurantId}
                           index={restaurantId}
                           source={{uri: image}}
                           onPress={

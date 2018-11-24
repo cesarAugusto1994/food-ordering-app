@@ -78,7 +78,7 @@ export const EDIT_RESTAURANTE = gql`
     $scheduleEnd: String!,
     $isWeekendOpen: Boolean!
   ) {
-    updateRestaurant(data: {
+    updateRestaurant(where: {restaurantId: $restaurantId}, data: {
       name: $name,
       image: $image,
       description: $description,
