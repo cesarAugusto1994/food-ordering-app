@@ -14,7 +14,7 @@ export default ({
   foodId,
   onDelete
 }) => (
-  <TouchableOpacity onPress={onPress} key={foodId}>
+  <TouchableOpacity onPress={onPress}>
     <View style={styles.infoContainer}>
       <Image style={styles.image} source={{uri: image}} />
       <View style={styles.info}>

@@ -2,7 +2,7 @@ import React from 'react';
 import CreateFood from '../components/CreateOrEditFood';
 import gql from 'graphql-tag';
 import {Text, ScrollView, TouchableOpacity, Alert, View} from 'react-native';
-import uuidv4 from 'uuid/v4';
+import uuid from 'short-uuid';
 import FlashMessage from 'react-native-flash-message';
 
 import {colors} from '../theme';
@@ -13,7 +13,7 @@ import actions from '../store/actions';
 const mapToPros = ({user, restaurantId}) => ({user, restaurantId});
 export default connect(mapToPros, actions)(({navigation: {getParam, goBack}, user, restaurantId}) => {
   const {ownerId} = user;
-  const foodId = uuidv4();
+  const foodId = uuid();
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView>

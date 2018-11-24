@@ -5,36 +5,14 @@ import React from 'react';
 import _ from 'lodash';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import {Mutation, graphql} from 'react-apollo';
-import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
-import Form from './Form';
+import Form from './FoodCRUDForm';
 import {showMessage} from 'react-native-flash-message';
 import Card from './Card';
 import CardOverlay from './CardOverlay';
 
-const FoodType = t.struct({
-  name: t.String,
-  description: t.String,
-  price: t.Number,
-  image: t.String,
-});
-
 export default class _Form extends React.Component {
-  state = {
-    value: {
-      name: '',
-      description: '',
-      price: 0,
-      image: '',
-    }
-  }
-
-  onChange = (value) => {
-    this.setState({value})
-  }
-
-  mutate  = (e, mutationFn, client) => {
-    e.preventDefault();
+  mutate  = (mutationFn, client, values) => {
     const {
       props: {
         restaurantId,
@@ -42,30 +20,14 @@ export default class _Form extends React.Component {
         ownerId,
         mutationName,
         edit
-      },
-      state:{ value }
+      }
     } = this;
     const variables = {
-      ...value,
+      ...values,
       restaurantId,
       foodId,
       ownerId
     };
-
-    if(!this.props.edit) {
-      if (
-        value.name === '' ||
-        value.description === '' ||
-        value.price === '' ||
-        value.image === 0 ||
-        value.foodId === ''
-        ) {
-          return showMessage({
-            type: 'warning',
-            message: 'Os campos não devem estar vazios'
-          });
-      }
-    }
     mutationFn({
       variables,
       optimisticResponse: () => ({
@@ -98,7 +60,7 @@ export default class _Form extends React.Component {
       options,
       mutation,
       text,
-      value = this.state.value,
+      value,
       containerStyle,
       formStyle
     } = this.props;
@@ -107,18 +69,15 @@ export default class _Form extends React.Component {
         {(mutationFn, {client, data, error, loading}) => (
           <View style={[styles.container, containerStyle]}>
             <CardOverlay
-              source={value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}
+              source={value && value.image !== '' ? {uri: value.image} : require('../assets/placeholder.png')}
               disabled={true}
               />
             <ScrollView>
               <Form
-                type={FoodType}
-                options={options}
-                onChange={this.onChange}
                 formStyle={[formStyle, styles.formStyle]}
                 value={value}
                 text={text}
-                onSave={async e => await this.mutate(e, mutationFn, client)}
+                onSave={values => this.mutate(mutationFn, client, values)}
               />
             </ScrollView>
           </View>

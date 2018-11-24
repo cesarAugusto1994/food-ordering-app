@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Alert} from 'react-native';
+import { View, StyleSheet, FlatList, Alert} from 'react-native';
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
@@ -50,6 +50,7 @@ class Foods extends React.Component {
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}} fetchPolicy='cache-and-network'>
         {({loading, err, data, client}) => {
+          console.log({data})
           if(loading) return <Spinner text="Carregando as suas refeiçoes ..."/>
           if(err) return (
             <Error
@@ -57,40 +58,40 @@ class Foods extends React.Component {
               text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos os seus dados. Feche e volte a abrir a aplicaçao!`}
             />
           )
-          if(data.listFoods.items.length === 0 ) return (
+          if(data.foods.length === 0 ) return (
             <Error
               text='Oops! Não pudemos satisfazer a sua pesquisa'
-              textStyle={{fontSize: 18}}/>
+              textStyle={{fontSize: 18}}
+            />
           )
           return (
             <View style={styles.container}>
-              <ScrollView>
-                {
-                  data.listFoods.items.map(
-                    ({name, description, price, image, foodId, restaurantId}) => (
-                      <Card
-                        { ...{
-                          description,
-                          name,
-                          price,
-                          image,
-                          foodId
-                          }}
-                          onDelete={this.deleteFood.bind(this, client, foodId, restaurantId)}
-                        onPress={
-                          () => this.props.navigation.navigate({routeName: 'EditFood', params: {
-                            foodId,
-                            description,
-                            name,
-                            price,
-                            image
-                            }})
-                        }
-                      />
-                    )
-                  )
-                }
-              </ScrollView>
+              <FlatList
+                data={data.foods}
+                keyExtractor={(item, index) => item.foodId}
+                renderItem={({item: {name, description, price, image, foodId, restaurantId}}) => (
+                  <Card
+                    key={foodId}
+                    { ...{
+                      description,
+                      name,
+                      price,
+                      image,
+                      foodId
+                      }}
+                    onDelete={this.deleteFood.bind(this, client, foodId, restaurantId)}
+                    onPress={
+                      () => this.props.navigation.navigate({routeName: 'EditFood', params: {
+                        foodId,
+                        description,
+                        name,
+                        price,
+                        image
+                        }})
+                    }
+                  />
+                )}
+              />
             </View>
           )}}
       </Query>

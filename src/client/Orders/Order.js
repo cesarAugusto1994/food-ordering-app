@@ -1,14 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Text, Button } from 'react-native';
+import { View, StyleSheet, FlatList, TextInput, Text, Button } from 'react-native';
 import { connect } from 'redux-zero/react';
-import uuidv4 from 'uuid/v4';
+import short from 'short-uuid';
 import {showMessage} from 'react-native-flash-message';
-
+import { Modal, Portal } from 'react-native-paper';
 import actions from '../../store/actions';
 import Card from '../../components/OrderItem';
 import OrderButton from '../../components/Button';
 import Message from '../../components/Error';
-import Modal from 'react-native-modalbox';
 import RenderIf from '../../components/RenderIf';
 
 import { colors, fonts } from '../../theme';
@@ -20,7 +19,7 @@ import OrderForm from '../../components/OrderForm';
 const createOrder = async (mutationFn,mutation, state, {additionalInfo, userPhoneNumber}) => {
   state.card.forEach(order => {
     const variables = {
-      orderId: uuidv4(),
+      orderId:  short.uuid(),
       userId: state.user.userId,
       restaurantId: order.restaurantId,
       ownerId: order.ownerId,
@@ -48,16 +47,12 @@ class Order extends React.Component {
   state = {
     isOpen: false,
     value: {
-      userPhoneNumber: '923302679',
-      additionalInfo: 'OKozkzokdko'
+      additionalInfo: '',
+      userPhoneNumber: 0
     }
   }
-  onChange = (value) => {
-    this.setState({value})
-  }
-
-  _createOrder = (fn, state) => {
-    const {userPhoneNumber, additionalInfo} = this.state.value;
+  sendOrder = (fn, state, values) => {
+    const {userPhoneNumber, additionalInfo} = values;
     createOrder(fn, CREATE_ORDER, state, {userPhoneNumber, additionalInfo})
       .then(success => {
         showMessage({type: 'success', message: 'A sua encomenda foi enviada ao restaurante!'});
@@ -85,10 +80,15 @@ class Order extends React.Component {
       <Mutation mutation={CREATE_ORDER}>
         {(mutationFn, {data, client}) => (
           <View style={styles.container}>
-            <ScrollView style={styles.scroll}>
-                {
-                  card.length !== 0 ? card.map(
-                    ({itemName, itemPrice, foodId, quantity}) => (
+            <RenderIf
+              condition={card.length !== 0}
+              children={() => (
+                <FlatList
+                  style={styles.scroll}
+                  data={card}
+                  keyExtractor={(item, index) => item.foodId}
+                  renderItem={
+                    ({item: {itemName, itemPrice, foodId, quantity}}) => (
                       <Card
                         index={foodId}
                         name={itemName}
@@ -96,11 +96,13 @@ class Order extends React.Component {
                         foodId={foodId}
                         onDelete={() => this.props.removeFromCard(foodId)}
                       />
-                    )
-                  )
-                  : <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
-                }
-            </ScrollView>
+                    )}
+                />
+              )}
+              fallback={() => (
+                <Message text='O carrinho está vazio!' textStyle={{fontSize: 18}}/>
+              )}
+            />
             <RenderIf
               condition={card.length !== 0}
               children={() => (
@@ -113,19 +115,15 @@ class Order extends React.Component {
                 </View>
               )}
             />
-            <Modal
-              keyboardTopOffset={0}
-              isOpen={this.state.isOpen}
-              onClosed={this.closeModal}
-              backdropPressToClose={false}
-              >
+            <Portal>
+              <Modal visible={this.state.isOpen} onDismiss={this.closeModal}>
                 <OrderForm
                   value={this.state.value}
-                  onChange={this.onChange.bind(this)}
-                  onOrder={this._createOrder.bind(this, mutationFn, {card, user})}
+                  onOrder={values => this.sendOrder(mutationFn, {card, user}, values)}
                   amount={getTotalAmount(card)}
                 />
-            </Modal>
+              </Modal>
+            </Portal>
           </View>
         )}
       </Mutation>

@@ -11,7 +11,7 @@ const signOn = (props, fn) => user => fn({user, ...props})
 const mapToProps = ({ signOnUser }) => ({ signOnUser });
 const mutationName = 'createClient';
 const mutationModel = 'Client';
-const queryName = 'listClients';
+const queryName = 'clients';
 
 const Cliente = ({signOnUser, navigation}) => (
   <Layout

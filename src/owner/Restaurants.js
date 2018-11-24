@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Button,
   Image,
-  ScrollView,
+  FlatList,
   TouchableOpacity
 } from 'react-native';
 import { Query, graphql } from "react-apollo";
@@ -29,6 +29,7 @@ class MyRestaurants extends React.Component {
     return (
       <Query query={myRestaurants} variables={{ownerId}} fetchPolicy='cache-and-network'>
         {({loading, err, data}) => {
+          console.log({ffff: data})
           if(loading) return <Spinner text="Carregando os seus restaurantes ..."/>
           if(err) return (
             <Error
@@ -38,39 +39,57 @@ class MyRestaurants extends React.Component {
           )
           return (
             <View style={styles.container}>
-              <ScrollView>
-                {
-                  data.listRestaurants.items.map(
-                    ({name, description, image, waitTime, speciality, location, restaurantId, phoneNumber}) => (
-                        <ImageOverlay
-                          index={restaurantId}
-                          source={{uri: image}}
-                          onPress={
-                            () => this.props.navigation.navigate('EditRestaurant', {
-                              restaurantId,
-                              ownerId,
-                              value: {
-                                name,
-                                description,
-                                location,
-                                waitTime,
-                                speciality,
-                                phoneNumber,
-                                image
-                              }
-                            })
-                          }
-                          contentPosition="center"
-                          overlayAlpha={0.3}
-                          rounded={5}
-                        >
-                        {() => (
-                          <Text style={styles.text}>{name.toUpperCase()}</Text>
-                        )}
-                        </ImageOverlay>
-                    ))
+              <FlatList
+                data={data && data.restaurants}
+                keyExtractor={(item, index) => item.restaurantId}
+                renderItem={({
+                    item: {
+                      name,
+                      description,
+                      image,
+                      waitTime,
+                      speciality,
+                      location,
+                      restaurantId,
+                      phoneNumber,
+                      scheduleStart,
+                      scheduleEnd,
+                      isWeekendOpen
+                    }
+                  }) => (
+                      <ImageOverlay
+                        key={restaurantId}
+                        index={restaurantId}
+                        source={{uri: image}}
+                        onPress={
+                          () => this.props.navigation.navigate('EditRestaurant', {
+                            restaurantId,
+                            ownerId,
+                            value: {
+                              name,
+                              description,
+                              location,
+                              waitTime,
+                              speciality,
+                              phoneNumber,
+                              image,
+                              scheduleStart,
+                              scheduleEnd,
+                              isWeekendOpen
+                            }
+                          })
+                        }
+                        contentPosition="center"
+                        overlayAlpha={0.3}
+                        rounded={5}
+                      >
+                      {() => (
+                        <Text style={styles.text}>{name.toUpperCase()}</Text>
+                      )}
+                      </ImageOverlay>
+                  )
                 }
-              </ScrollView>
+              />
             </View>
           )}}
       </Query>

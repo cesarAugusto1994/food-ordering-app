@@ -2,7 +2,6 @@ import React from 'react';
 import EditFood from '../components/CreateOrEditFood';
 import gql from 'graphql-tag';
 import {Text, ScrollView, TouchableOpacity, Alert, View} from 'react-native';
-import uuidv4 from 'uuid/v4';
 import FlashMessage from 'react-native-flash-message';
 
 import {colors} from '../theme';

@@ -18,6 +18,16 @@ const state = {
     { name: 'Others', image: 'https://static.cuisineaz.com/400x320/i50715-caldeirada-ragout-de-poisson-portugais.jpg' },
     { name: 'Others', image: 'https://static.cuisineaz.com/400x320/i50715-caldeirada-ragout-de-poisson-portugais.jpg' }
   ],
+  categoriesLabels: [
+    { label: 'Fast Food', value: 'Fast Food' },
+    { label: 'Burger', value: 'Burger' },
+    { label: 'Sushi', value: 'Sushi' },
+    { label: 'Pizza', value: 'Pizza' },
+    { label: 'Sandwich', value: 'Sandwich' },
+    { label: 'Indian', value: 'Indian' },
+    { label: 'Others', value: 'Others' },
+    { label: 'Others', value: 'Others' }
+  ],
   restaurantId: ''
 };
 

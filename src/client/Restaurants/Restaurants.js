@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Button
+  Button,
+  FlatList
 } from 'react-native'
 import { Query } from "react-apollo";
 import { connect } from 'redux-zero/react'
@@ -32,43 +33,42 @@ class Restaurants extends React.Component {
               text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de restaurantes. Feche e volte a abrir a aplicaçao!`}
             />
           )
-          if(data.listRestaurants.items.length === 0 ) return (
+          if(data && data.restaurants.length === 0 ) return (
             <Error
               text='Oops! Não pudemos satisfazer a sua pesquisa'
               textStyle={{fontSize: 18}}/>
           )
           return (
             <React.Fragment>
-              <ScrollView style={styles.container}>
-                {
-                  data.listRestaurants.items.map(
-                    ({name, image, description, waitTime, restaurantId, phoneNumber}, i) => (
-                      <CardRestaurant
-                        onPress={
-                          () => this.props.navigation.navigate('Foods', {restaurantId, phoneNumber}
-                          )
-                        }
-                        index={restaurantId}
-                        key={restaurantId}
-                        contentPosition="center"
-                        source={{uri: image}}
-                        overlayAlpha={0.3}
-                        rounded={5}
-                      >
-                      {() => (
-                        <React.Fragment key={restaurantId}>
-                          <Text style={styles.text}>{name.toUpperCase()}</Text>
-                          <View style={styles.waitTime}>
-                            <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
-                          </View>
-                        </React.Fragment>
+              <FlatList
+                style={styles.container}
+                data={data && data.restaurants}
+                keyExtractor={(item, index) => item.restaurantId}
+                renderItem={({item: {name, image, description, waitTime, restaurantId, phoneNumber}}) => (
+                  <CardRestaurant
+                    onPress={
+                      () => this.props.navigation.navigate('Foods', {restaurantId, phoneNumber}
+                      )
+                    }
+                    key={restaurantId}
+                    contentPosition="center"
+                    source={{uri: image}}
+                    overlayAlpha={0.3}
+                    rounded={5}
+                  >
+                    {() => (
+                      <React.Fragment key={restaurantId}>
+                        <Text style={styles.text}>{name.toUpperCase()}</Text>
+                        <View style={styles.waitTime}>
+                          <Text style={styles.text2}>Tempo de espera: {waitTime}min</Text>
+                        </View>
+                      </React.Fragment>
 
-                      )}
-                      </CardRestaurant>
-                    )
-                  )
-                }
-              </ScrollView>
+                    )}
+                  </CardRestaurant>
+
+                )}
+              />
             </React.Fragment>
           )
         }}

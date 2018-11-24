@@ -1,4 +1,5 @@
-import ApolloClient from 'apollo-client';
+// import ApolloClient from 'apollo-client';
+import ApolloClient from "apollo-boost";
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state';
@@ -21,12 +22,13 @@ const auth = {
 
 export const client = new ApolloClient({
   cache,
-  link: ApolloLink.from([
-    stateLink,
-    createAppSyncLink({
-      url: config.appSyncApiUrl,
-      region: config.appSyncRegion,
-      auth
-    })
-  ]),
+  uri: 'https://eu1.prisma.sh/faustino/foodapp/dev'
+  // link: ApolloLink.from([
+  //   stateLink,
+  //   createAppSyncLink({
+  //     url: config.appSyncApiUrl,
+  //     region: config.appSyncRegion,
+  //     auth
+  //   })
+  // ]),
 })

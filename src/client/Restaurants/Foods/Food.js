@@ -5,8 +5,7 @@ import {
   StyleSheet,
   Button,
   Image,
-  ScrollView,
-  TouchableOpacity
+  FlatList
 } from 'react-native';
 import { Query, graphql } from "react-apollo";
 import gql from 'graphql-tag';
@@ -35,44 +34,42 @@ export default connect(mapToProps, actions)(({navigation: {getParam, navigate, g
             text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de refeiçoes. Feche e volte a abrir a aplicaçao!`}
           />
         )
-        if(data.listFoods.items.length === 0 ) return (
+        if(data.foods.length === 0 ) return (
           <Error
             text='Oops! Não pudemos satisfazer a sua pesquisa'
             textStyle={{fontSize: 18}}/>
         )
         return (
           <View style={styles.container}>
-            <ScrollView>
-              {
-                data.listFoods.items.map(
-                  ({name, description, price, image, foodId, restaurantId, ownerId}) => (
-                    <Card
-                      description={description}
-                      index={foodId}
-                      name={name}
-                      price={price}
-                      image={image}
-                      foodId={foodId}
-                      onPress={
-                        () => navigate({
-                          routeName: 'FoodItem',
-                          params: {
-                            foodId,
-                            restaurantId,
-                            ownerId,
-                            name,
-                            price,
-                            image,
-                            description,
-                            restaurantPhoneNumber
-                          }
-                        })
+            <FlatList
+              data={data && data.foods}
+              keyExtractor={(item, index) => item.foodId}
+              renderItem={({item: {name, description, price, image, foodId, restaurantId, ownerId}}) => (
+                <Card
+                  description={description}
+                  key={foodId}
+                  name={name}
+                  price={price}
+                  image={image}
+                  foodId={foodId}
+                  onPress={
+                    () => navigate({
+                      routeName: 'FoodItem',
+                      params: {
+                        foodId,
+                        restaurantId,
+                        ownerId,
+                        name,
+                        price,
+                        image,
+                        description,
+                        restaurantPhoneNumber
                       }
-                    />
-                  )
-                )
-              }
-            </ScrollView>
+                    })
+                  }
+                />
+              )}
+            />
           </View>
         )}}
     </Query>

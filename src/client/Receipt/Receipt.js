@@ -1,9 +1,7 @@
 
 import React from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, FlatList, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'redux-zero/react';
-import uuidv4 from 'uuid/v4';
-import Modal from 'react-native-modalbox';
 import call from 'react-native-phone-call';
 
 import actions from '../../store/actions';
@@ -70,21 +68,22 @@ class OwnerOrder extends React.Component {
           )
           return (
             <View style={styles.container}>
-              <ScrollView style={styles.scroll}>
-                {
-                  data.listOrders.items.map(order => (
-                    <TouchableOpacity onPress={() => this.openModal(order)}>
-                      <Card
-                        index={order.foodId}
-                        name={order.itemName}
-                        quantity={order.quantity}
-                        foodId={order.foodId}
-                        status={order.state}
-                      />
-                    </TouchableOpacity>
-                  ))
-                }
-              </ScrollView>
+              <FlatList
+                style={styles.scroll}
+                data={data && data.orders}
+                keyExtractor={(item, index) => item.foodId}
+                renderItem={({item}) => (
+                  <TouchableOpacity onPress={() => this.openModal(item)}>
+                    <Card
+                      index={item.foodId}
+                      name={item.itemName}
+                      quantity={item.quantity}
+                      foodId={item.foodId}
+                      status={item.state}
+                    />
+                  </TouchableOpacity>
+                )}
+              />
             </View>
           )
         }}

@@ -4,7 +4,7 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import { colors } from '../theme';
 
 export default ({ onPress, key, description, name, image, price, foodId }) => (
-  <TouchableOpacity onPress={onPress} key={foodId}>
+  <TouchableOpacity onPress={onPress}>
     <View style={styles.infoContainer}>
       <Image style={styles.image} source={{uri: image}} />
       <View style={styles.info}>

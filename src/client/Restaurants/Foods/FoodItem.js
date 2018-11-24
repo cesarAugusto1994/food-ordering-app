@@ -20,8 +20,29 @@ import { colors, fonts } from '../../../theme';
 import { getFood } from '../../../graphql/owner';
 
 class Foods extends React.Component {
-  addToCart = (foodId, userId, itemName, itemPrice, restaurantId, ownerId, restaurantPhoneNumber, quantity) => {
-    this.props.addToCard({item:{foodId, userId, itemName, itemPrice, restaurantId, ownerId, restaurantPhoneNumber}, quantity})
+  addToCart = (
+    foodId,
+    userId,
+    itemName,
+    itemPrice,
+    restaurantId,
+    ownerId,
+    restaurantPhoneNumber,
+    quantity
+    ) => {
+    this.props.addToCard(
+      {
+        item: {
+          foodId,
+          userId,
+          itemName,
+          itemPrice,
+          restaurantId,
+          ownerId,
+          restaurantPhoneNumber
+        },
+        quantity
+      })
       .then(success => {
         showMessage({
           message: "Item adicionado ao carrinho!",
