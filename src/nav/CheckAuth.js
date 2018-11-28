@@ -1,36 +1,56 @@
 import React, { Component } from 'react';
-import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {AsyncStorage, StyleSheet} from 'react-native';
+import {graphql, ApolloConsumer} from 'react-apollo';
+import gql from 'graphql-tag';
 import {connect} from 'redux-zero/react';
 import actions from '../store/actions';
 import Spinner from '../components/Spinner';
 
 class CheckAuth extends Component {
-  constructor() {
-    super();
-    this._bootstrapAsync();
-  }
-  _bootstrapAsync = async () => {
-      const value = await AsyncStorage.getItem('@app:session');
-      if (value !== null) {
-        const user = JSON.parse(value);
-        if(user && user.isUser === true) {
-          this.props.signOnUser({...user, isAuthed: true, userId: user.userId});
+  async componentDidMount() {
+    const value = await AsyncStorage.getItem('@app:session');
+    if (value !== null) {
+      const user = JSON.parse(value);
+      if(user && user.isUser === true) {
+        console.log('---->', user)
+          this.props.cache.writeData({
+            data: {
+              auth: {
+                isAuthed: true,
+                __typename: 'Auth'
+              },
+              user: {
+                ...user.user,
+                id: user.user.id,
+                isOwner: user.isOwner,
+                isUser: user.isUser,
+                __typename: 'User'
+              }
+            }
+          });
           this.props.navigation.navigate('Cliente');
         }
         if(user && user.isOwner === true) {
-          this.props.signOnUser({...user, isAuthed: true, ownerId: user.ownerId});
+          this.props.cache.writeData({
+            data: {
+              auth: {
+                isAuthed: true,
+                __typename: 'Auth'
+              },
+              user: {
+                ...user,
+                id: user.id,
+                isOwner: user.isOwner,
+                isUser: user.isUser,
+                __typename: 'User'
+              }
+            }
+          });
           this.props.navigation.navigate('Restaurante');
         }
       } else {
         this.props.navigation.navigate('Auth');
-      }
+    }
   }
   render() {
     return (
@@ -38,6 +58,7 @@ class CheckAuth extends Component {
     )
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -51,6 +72,10 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapToProps = ({signOnUser}) => ({signOnUser});
-
-export default connect(mapToProps, actions)(CheckAuth);
+export default (props) => (
+  <ApolloConsumer>
+    {cache => (
+      <CheckAuth cache={cache} navigation={props && props.navigation}/>
+    )}
+  </ApolloConsumer>
+);

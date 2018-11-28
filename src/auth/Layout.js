@@ -5,9 +5,6 @@ import { graphql, Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import short from 'short-uuid';
 import { NavigationActions, StackNavigator, StackActions } from 'react-navigation';
-
-import { connect } from 'redux-zero/react';
-import actions from '../store/actions';
 import Expo from "expo";
 
 
@@ -105,7 +102,7 @@ class SignIn extends Component {
             id
         })
           .then(async response => {
-            await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, [id]: whoIs.isOwner ? response[id] : response[id]}, ...whoIs}));
+            await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, id: response[id]}, ...whoIs}));
             consumer.writeData({
               data: {
                 auth: {
@@ -113,7 +110,8 @@ class SignIn extends Component {
                   __typename: 'Auth'
                 },
                 user: {
-                  ...user, [id]: whoIs.isOwner ? response[id] : response[id],
+                  ...user,
+                  id: response[id],
                   isOwner: whoIs.isOwner,
                   isUser: whoIs.isUser,
                   __typename: 'User'
@@ -164,14 +162,19 @@ class SignIn extends Component {
           id
       })
         .then(async response => {
-          await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, [id]: whoIs.isOwner ? response[id] : response[id]}, ...whoIs}));
+          await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, id: response[id]}, ...whoIs}));
           consumer.writeData({
             data: {
+              auth: {
+                isAuthed: true,
+                __typename: 'Auth'
+              },
               user: {
-                ...user, [id]: whoIs.isOwner ? response[id] : response[id],
+                ...user,
+                id: response[id],
                 isOwner: whoIs.isOwner,
                 isUser: whoIs.isUser,
-                isAuthed: true
+                __typename: 'User'
               }
             }
           })

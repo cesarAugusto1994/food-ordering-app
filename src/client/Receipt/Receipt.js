@@ -17,6 +17,7 @@ import { Subscription, Query } from 'react-apollo';
 import { GET_ORDER } from '../../graphql/client';
 
 class OwnerOrder extends React.Component {
+
   openModal = (order) => {
     let message = 'Nao conseguimos obter o estado do seu pedido';
 
