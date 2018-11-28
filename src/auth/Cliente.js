@@ -7,13 +7,11 @@ import Layout from './Layout';
 import {CREATE_CLIENT, GET_CLIENT} from '../graphql/client';
 
 const whoIs = {isUser: true, isOwner: false};
-const signOn = (props, fn) => user => fn({user, ...props})
-const mapToProps = ({ signOnUser }) => ({ signOnUser });
 const mutationName = 'createClient';
 const mutationModel = 'Client';
 const queryName = 'clients';
 
-const Cliente = ({signOnUser, navigation}) => (
+const Cliente = ({navigation}) => (
   <Layout
     greeting="Bem-vindo ao espaço cliente"
     greeting2="conecte-se para continuar"
@@ -25,8 +23,7 @@ const Cliente = ({signOnUser, navigation}) => (
     mutationModel={mutationModel}
     navigation={navigation}
     imagePath={require('../assets/logo.png')}
-    signOn={signOn({isAuthed: true, isOwner: false, isUser: true}, signOnUser)}
   />
 );
 
-export default connect(mapToProps, actions)(Cliente);
+export default Cliente;

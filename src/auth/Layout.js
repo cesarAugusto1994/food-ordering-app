@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Platform, Linking, Text, View, Image, AsyncStorage} from 'react-native';
 import { SocialIcon } from 'react-native-elements';
-import { graphql, Mutation } from 'react-apollo';
+import { graphql, Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import short from 'short-uuid';
 import { NavigationActions, StackNavigator, StackActions } from 'react-navigation';
@@ -72,7 +72,7 @@ class SignIn extends Component {
   state = {
     processing: false
   }
-  googleSignIn = async (e, {client, mutationFn}) => {
+  googleSignIn = async (e, {client, mutationFn, consumer}) => {
     e.preventDefault();
     const {query, queryName, mutation, mutationName, mutationModel, whoIs} = this.props;
     try {
@@ -106,7 +106,20 @@ class SignIn extends Component {
         })
           .then(async response => {
             await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, [id]: whoIs.isOwner ? response[id] : response[id]}, ...whoIs}));
-            this.props.signOn({...user, [id]: whoIs.isOwner ? response[id] : response[id]});
+            consumer.writeData({
+              data: {
+                auth: {
+                  isAuthed: true,
+                  __typename: 'Auth'
+                },
+                user: {
+                  ...user, [id]: whoIs.isOwner ? response[id] : response[id],
+                  isOwner: whoIs.isOwner,
+                  isUser: whoIs.isUser,
+                  __typename: 'User'
+                }
+              }
+            })
             this.props.whoIs.isOwner === true
             ? this.props.navigation.push('Restaurante')
             : this.props.navigation.push('Cliente')
@@ -119,7 +132,7 @@ class SignIn extends Component {
       console.log("error", e)
     }
   }
-  facebookSignIn = async (e, {client, mutationFn}) =>  {
+  facebookSignIn = async (e, {client, mutationFn, consumer}) =>  {
     e.preventDefault();
     const {query, queryName, mutation, mutationName, mutationModel, whoIs} = this.props;
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(config.facebookAppId, {
@@ -152,7 +165,16 @@ class SignIn extends Component {
       })
         .then(async response => {
           await AsyncStorage.setItem('@app:session', JSON.stringify({user: {...user, [id]: whoIs.isOwner ? response[id] : response[id]}, ...whoIs}));
-          this.props.signOn({...user, [id]: whoIs.isOwner ? response[id] : response[id]});
+          consumer.writeData({
+            data: {
+              user: {
+                ...user, [id]: whoIs.isOwner ? response[id] : response[id],
+                isOwner: whoIs.isOwner,
+                isUser: whoIs.isUser,
+                isAuthed: true
+              }
+            }
+          })
           this.props.whoIs.isOwner === true
           ? this.props.navigation.push('Restaurante')
           : this.props.navigation.push('Cliente');
@@ -163,28 +185,31 @@ class SignIn extends Component {
   render() {
     const { greeting, greeting2, imagePath, mutation } = this.props;
     return (
-      <Mutation mutation={mutation}>
-        {(mutationFn, {data, client}) => (
-          <View style={styles.user.container}>
-            <View style={styles.user.heading}>
-              <Image
-                source={imagePath}
-                style={styles.user.headingImage}
-                resizeMode="contain"
-              />
-            </View>
-            <Text style={[styles.user.greeting]}>{greeting}</Text>
-            <Text style={[styles.user.greeting2]}>{greeting2}</Text>
-            <View style={styles.user.inputContainer}>
-              <FacebookAuth loginWithFacebook={async e => await this.facebookSignIn(e, {mutationFn, client})}/>
-              <GoogleAuth loginWithGoogle={async e => await this.googleSignIn(e, {mutationFn, client})}/>
-            </View>
-          </View>
+      <ApolloConsumer>
+        {consumer => (
+          <Mutation mutation={mutation}>
+            {(mutationFn, {data, client, cache}) => (
+              <View style={styles.user.container}>
+                <View style={styles.user.heading}>
+                  <Image
+                    source={imagePath}
+                    style={styles.user.headingImage}
+                    resizeMode="contain"
+                  />
+                </View>
+                <Text style={[styles.user.greeting]}>{greeting}</Text>
+                <Text style={[styles.user.greeting2]}>{greeting2}</Text>
+                <View style={styles.user.inputContainer}>
+                  <FacebookAuth loginWithFacebook={async e => await this.facebookSignIn(e, {mutationFn, client, consumer})}/>
+                  <GoogleAuth loginWithGoogle={async e => await this.googleSignIn(e, {mutationFn, client, consumer, cache})}/>
+                </View>
+              </View>
+            )}
+          </Mutation>
         )}
-      </Mutation>
+      </ApolloConsumer>
     );
   }
 };
 
-const mapToProps = ({ isAuthed, user, isUser, isOwner }) => ({ isAuthed, user, isUser, isOwner });
-export default connect(mapToProps, actions)(SignIn);
+export default SignIn;

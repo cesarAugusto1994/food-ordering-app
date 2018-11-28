@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  AsyncStorage
-} from 'react-native';
+import {View,Text,StyleSheet,ScrollView,AsyncStorage} from 'react-native';
 import { Query } from "react-apollo";
 import gql from 'graphql-tag';
 
@@ -21,46 +12,58 @@ import actions from '../../store/actions';
 import { colors, fonts } from '../../theme';
 import LogoutButton from '../../components/Button';
 
+const GET_LOCAL_USER = gql`{
+  user @client {
+    image
+    firstName
+    lastName
+    email
+  }
+}`;
+
+
 const Profile = (props) => {
   const user = props.user
   return (
-    <View style={styles.container}>
-      <View style={styles.info}>
-        <Avatar
-          xlarge
-          rounded
-          source={{uri: user && user ? user.image  : '' }}
-          activeOpacity={0.7}
-        />
-      </View>
+    // <Query query={GET_LOCAL_USER}>
+    //   {({ data }) => console.log({data}) || (
+        <View style={styles.container}>
+          <View style={styles.info}>
+            <Avatar
+              xlarge
+              rounded
+              source={{uri: user && user ? user.image  : '' }}
+              activeOpacity={0.7}
+            />
+          </View>
 
-      <View style={styles.wrapper}>
-        <View style={styles.el}>
-          <Icon name='account-box-outline' size={25} color='#FB28' />
-          <Text style={styles.keys}>{user && user ? user.firstName  : ''}</Text>
-        </View>
-        <View style={styles.el}>
-          <Icon name='account-box-outline' size={25} color='#FB28' />
-          <Text style={styles.keys}>{user && user ? user.lastName  : ''}</Text>
-        </View>
-        <View style={styles.el}>
-          <Icon name='email' size={25} color='#FB28' />
-          <Text style={styles.keys}>{user && user ? user.email  : ''}</Text>
-        </View>
-      </View>
+          <View style={styles.wrapper}>
+            <View style={styles.el}>
+              <Icon name='account-box-outline' size={25} color='#FB28' />
+              <Text style={styles.keys}>{user && user ? user.firstName  : ''}</Text>
+            </View>
+            <View style={styles.el}>
+              <Icon name='account-box-outline' size={25} color='#FB28' />
+              <Text style={styles.keys}>{user && user ? user.lastName  : ''}</Text>
+            </View>
+            <View style={styles.el}>
+              <Icon name='email' size={25} color='#FB28' />
+              <Text style={styles.keys}>{user && user ? user.email  : ''}</Text>
+            </View>
+          </View>
 
-      <LogoutButton
-        onPress={
-          async () => {
-            await AsyncStorage.clear()
-            props.signOut()
-            props.navigation.navigate('Auth')
+          <LogoutButton
+            onPress={
+              async () => {
+                await AsyncStorage.clear()
+                props.signOut()
+                props.navigation.navigate('Auth')
+                }
             }
-        }
-        buttonStyle={{backgroundColor: colors.red}}
-        text="Terminar sessão"
-      />
-    </View>
+            buttonStyle={{backgroundColor: colors.red}}
+            text="Terminar sessão"
+          />
+        </View>
   )
 }
 

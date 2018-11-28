@@ -7,8 +7,6 @@ import Layout from './Layout';
 import {CREATE_OWNER, GET_OWNER} from '../graphql/owner';
 
 const whoIs = {isUser: false, isOwner: true};
-const signOn = (props, fn) => user => fn({user, ...props});
-const mapToProps = ({ signOnUser }) => ({ signOnUser });
 const mutationName = 'createOwner';
 const mutationModel = 'Owner';
 const queryName = 'owners';
@@ -25,8 +23,7 @@ const Owner = ({signOnUser, navigation}) => (
     mutationName={mutationName}
     mutationModel={mutationModel}
     navigation={navigation}
-    signOn={signOn({isAuthed: true, isOwner: true, isUser: false}, signOnUser)}
   />
 );
 
-export default connect(mapToProps, actions)(Owner);
+export default Owner;
