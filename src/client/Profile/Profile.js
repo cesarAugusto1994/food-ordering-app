@@ -10,9 +10,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors, fonts } from '../../theme';
 import LogoutButton from '../../components/Button';
 
-const GET_LOCAL_USER = gql`
+export const GET_LOCAL_USER = gql`
   {
     user @client {
+      id
       image
       firstName
       lastName

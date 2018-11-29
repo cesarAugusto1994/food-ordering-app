@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, FlatList, Alert} from 'react-native';
-import { Query, graphql } from "react-apollo";
+import { Query, graphql, withApollo } from "react-apollo";
 import gql from 'graphql-tag';
 
 import Card from '../components/OwnerFoodList';
@@ -8,16 +8,21 @@ import Spinner from '../components/Spinner';
 import TouchableIcon from '../components/TouchableIcon';
 import Error from '../components/Error';
 
-import { connect } from 'redux-zero/react';
 import {showMessage} from 'react-native-flash-message';
-import actions from '../store/actions';
 
 import { colors, fonts } from '../theme';
 import { getRestaurantsFoods, DELETE_FOOD } from '../graphql/owner';
 
 class Foods extends React.Component {
   componentDidMount() {
-    this.props.setTempRestaurantId(this.props.navigation.getParam('restaurantId'));
+    this.props.client.writeData({
+      data: {
+        restaurantId: {
+          id: this.props.navigation.getParam('restaurantId'),
+          __typename: 'RestaurantID'
+        }
+      }
+    });
   }
   deleteFood = (client, foodId, restaurantId) => {
     const message = 'Tem a certeza que pretende apagar este prato?';
@@ -45,7 +50,7 @@ class Foods extends React.Component {
     }))
   }
   render() {
-    const {getParam, goBack} = this.props.navigation
+    const {getParam, goBack} = this.props.navigation;
     const restaurantId = getParam('restaurantId');
     return (
       <Query query={getRestaurantsFoods} variables={{restaurantId}} fetchPolicy='cache-and-network'>
@@ -104,17 +109,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white'
   }
-})
-const mapToProps = ({
-  user,
-  card,
-  setTempRestaurantId,
-  restaurantId
-}) => ({
-  user,
-  card,
-  setTempRestaurantId,
-  restaurantId
 });
 
-export default connect(mapToProps, actions)(Foods);
+export default withApollo(Foods);

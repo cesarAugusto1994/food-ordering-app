@@ -4,20 +4,14 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 // import gql from 'graphql-tag';
 
-import { connect } from 'redux-zero/react';
 import Card from '../../../components/Card';
 import Spinner from '../../../components/Spinner';
 import Error from '../../../components/Error';
 
-import actions from '../../../store/actions';
-
 // import { colors, fonts } from '../../../theme';
 import { getRestaurantsFoods } from '../../../graphql/owner';
 
-export default connect(
-  mapToProps,
-  actions
-)(({ navigation: { getParam, navigate } }) => {
+export default ({ navigation: { getParam, navigate } }) => {
   const restaurantId = getParam('restaurantId');
   const restaurantPhoneNumber = getParam('phoneNumber');
   return (
@@ -75,19 +69,11 @@ export default connect(
       }}
     </Query>
   );
-});
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
-});
-
-const mapToProps = ({ isAuthed, user, addToCard, card, currentUser }) => ({
-  isAuthed,
-  user,
-  addToCard,
-  card,
-  currentUser,
 });

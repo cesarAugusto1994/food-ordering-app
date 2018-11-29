@@ -1,99 +1,50 @@
-import gql from 'graphql-tag';
-
-
 export const defaults = {
-  isAuthed: false,
+  auth: {
+    isAuthed: false,
+    __typename: 'Auth',
+  },
   user: {
-    userId: '',
+    id: '',
     email: '',
     firstName: '',
     lastName: '',
     image: '',
-    __typename: 'User'
+    __typename: 'User',
   },
-  isUser: false,
-  isOwner: false,
-  card: [],
-  orders: [],
-  restaurants: [],
-  categories: [],
-  categoriesLabels: [],
-  restaurantId: ''
+  whoIs: {
+    isUser: false,
+    isOwner: false,
+    __typename: 'WhoIs',
+  },
+  shopCard: {
+    items: [],
+    __typename: 'Card',
+  },
+  orders: {
+    items: [],
+    __typename: 'Orders',
+  },
+  restaurants: {
+    items: [],
+    __typename: 'Restaurants',
+  },
+  categories: {
+    items: [
+      { label: 'Fast Food', value: 'Fast Food', __typename: 'categorieItem_FastFood' },
+      { label: 'Burger', value: 'Burger', __typename: 'categorieItem_Burger' },
+      { label: 'Sushi', value: 'Sushi', __typename: 'categorieItem_Sushi' },
+      { label: 'Pizza', value: 'Pizza', __typename: 'categorieItem_Pizza' },
+      { label: 'Sandwich', value: 'Sandwich', __typename: 'categorieItem_Sandwich' },
+      { label: 'Indian', value: 'Indian', __typename: 'categorieItem_Indian' },
+      { label: 'Others', value: 'Others', __typename: 'categorieItem_Others' },
+      { label: 'Others', value: 'Others', __typename: 'categorieItem_Others2' },
+    ],
+    __typename: 'Categories',
+  },
+  restaurantId: {
+    id: '',
+    __typename: 'RestaurantID',
+  },
 };
 
-export const typeDefs = `
-  type User {
-    userId: String
-    ownerId: String
-    email: String
-    firstName: String
-    lastName: String
-    image: String
-  }
-
-  type Client {
-    userId: String! @unique
-    email: String!
-    firstName: String!
-    lastName: String!
-    image: String!
-  }
-
-  type Food {
-    foodId: String! @unique
-    name: String!
-    description: String!
-    price: Int!
-    image: String!
-    restaurantId: String!
-    ownerId: String!
-  }
-
-  type Order {
-    orderId: String! @unique
-    userId: String!
-    restaurantId: String!
-    ownerId: String!
-    itemName: String!
-    itemPrice: Int!
-    userWillPay: Int!
-    additionalInfo: String!
-    userPhoneNumber: String!
-    restaurantPhoneNumber: String!
-    state: String!
-    quantity: Int!
-  }
-
-  type Owner {
-    ownerId: String! @unique
-    email: String!
-    firstName: String!
-    lastName: String!
-    image: String!
-  }
-
-  type Restaurant {
-    restaurantId: String! @unique
-    ownerId: String!
-    name: String!
-    description: String!
-    location: String!
-    waitTime: Int!
-    speciality: String!
-    phoneNumber: String!
-    image: String!
-    scheduleStart: String!
-    scheduleEnd: String!
-    isWeekendOpen: Boolean! @default(value: "false")
-  }
-
-  type Speciality {
-    spId: String! @unique
-    name: String!
-    image: String!
-  }
-
-  type Query {
-    user: User
-  }
-`;
+export const typeDefs = ``;

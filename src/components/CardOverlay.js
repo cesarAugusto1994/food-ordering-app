@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/prop-types */
+import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 export default ({

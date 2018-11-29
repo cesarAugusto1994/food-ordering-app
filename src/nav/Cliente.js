@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Image, StyleSheet, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,48 +12,40 @@ import Receipt from '../client/Receipt/Receipt';
 const styles = StyleSheet.create({
   icon: {
     width: 26,
-    height: 26
-  }
-})
+    height: 26,
+  },
+});
 
 const routes = {
   Restaurants: {
     screen: Restaurants,
     navigationOptions: {
       title: 'Restaurantes',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='home' size={30} color={tintColor}/>
-      )
-    }
+      tabBarIcon: ({ tintColor }) => <Icon name="home" size={30} color={tintColor} />,
+    },
   },
   Search: {
     screen: Search,
     navigationOptions: {
       title: 'Categorias',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='filter' size={30} color={tintColor}/>
-      )
-    }
+      tabBarIcon: ({ tintColor }) => <Icon name="filter" size={30} color={tintColor} />,
+    },
   },
   Invoice: {
     screen: Receipt,
     navigationOptions: {
       title: 'Recibos',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='barcode' size={30} color={tintColor}/>
-      )
-    }
+      tabBarIcon: ({ tintColor }) => <Icon name="barcode" size={30} color={tintColor} />,
+    },
   },
   Profile: {
     screen: Profile,
     navigationOptions: {
       title: 'Perfil',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='user' size={30} color={tintColor}/>
-      )
-    }
-  }
-}
+      tabBarIcon: ({ tintColor }) => <Icon name="user" size={30} color={tintColor} />,
+    },
+  },
+};
 
 const routeConfig = {
   tabBarPosition: 'bottom',
@@ -62,15 +55,15 @@ const routeConfig = {
     inactiveTintColor: 'white',
     indicatorStyle: { backgroundColor: 'white' },
     labelStyle: {
-      fontSize: 12
+      fontSize: 12,
     },
     style: {
       backgroundColor: colors.primary,
       borderTopWidth: 0,
       paddingBottom: 3,
-      zIndex: 9999
+      zIndex: 9999,
     },
-  }
-}
+  },
+};
 
-export default {routes, routeConfig}
+export default { routes, routeConfig };

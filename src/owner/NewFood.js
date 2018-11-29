@@ -1,33 +1,57 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
-import CreateFood from '../components/CreateOrEditFood';
 import gql from 'graphql-tag';
-import {Text, ScrollView, TouchableOpacity, Alert, View} from 'react-native';
+import PropType from 'prop-types';
+import { ScrollView, View } from 'react-native';
 import uuid from 'short-uuid';
 import FlashMessage from 'react-native-flash-message';
 
-import {colors} from '../theme';
-import {CREATE_FOOD} from '../graphql/owner/';
-import { connect } from 'redux-zero/react';
-import actions from '../store/actions';
+import { withApollo } from 'react-apollo';
+import { CREATE_FOOD } from '../graphql/owner';
+import CreateFood from '../components/CreateOrEditFood';
 
-const mapToPros = ({user, restaurantId}) => ({user, restaurantId});
-export default connect(mapToPros, actions)(({navigation: {getParam, goBack}, user, restaurantId}) => {
-  const {ownerId} = user;
+const query = gql`
+  {
+    user @client {
+      id
+    }
+    restaurantId @client {
+      id
+    }
+  }
+`;
+
+const NewFood = ({ navigation: { goBack }, client }) => {
+  const {
+    user: { id: ownerId },
+    restaurantId: { id: restaurantId },
+  } = client.readQuery({ query });
   const foodId = uuid();
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <ScrollView>
         <CreateFood
           restaurantId={restaurantId}
           foodId={foodId}
           ownerId={ownerId}
           mutation={CREATE_FOOD}
-          mutationName='createFood'
+          mutationName="createFood"
           goBack={goBack}
           text="Adicionar"
         />
-        <FlashMessage position='top'/>
+        <FlashMessage position="top" />
       </ScrollView>
     </View>
-  )
-});
+  );
+};
+
+NewFood.propTypes = {
+  navigation: PropType.shape({
+    goBack: PropType.func,
+  }),
+  client: PropType.shape({
+    readQuery: PropType.func,
+  }),
+};
+
+export default withApollo(NewFood);

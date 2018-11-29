@@ -1,10 +1,8 @@
 
 import React from 'react';
 import { View, StyleSheet, FlatList, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
-import { connect } from 'redux-zero/react';
 import call from 'react-native-phone-call';
 
-import actions from '../../store/actions';
 import Card from '../../components/OwnerOrder';
 import Button from '../../components/Button';
 import Message from '../../components/Error';
@@ -13,8 +11,18 @@ import Error from '../../components/Error';
 import TouchableLabel from '../../components/TouchableLabel';
 
 import { colors, fonts } from '../../theme';
-import { Subscription, Query } from 'react-apollo';
+import { Query, withApollo } from 'react-apollo';
 import { GET_ORDER } from '../../graphql/client';
+import gql from 'graphql-tag';
+
+const query = gql`
+  {
+    user @client {
+      id
+    }
+  }
+`;
+
 
 class OwnerOrder extends React.Component {
 
@@ -56,7 +64,9 @@ class OwnerOrder extends React.Component {
     )
   }
   render() {
-    const {user: {userId}} = this.props.store.getState();
+    const {
+      user: { id: userId },
+    } = this.props.client.readQuery({ query });
     return (
       <Query query={GET_ORDER} variables={{userId}} fetchPolicy='cache-and-network'>
         {({data, loading, err}) => {
@@ -113,6 +123,4 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapToProps = ({ restaurantId }) => ({ restaurantId })
-
-export default connect(mapToProps, actions)(OwnerOrder);
+export default withApollo(OwnerOrder);

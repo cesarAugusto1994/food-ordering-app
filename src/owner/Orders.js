@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, FlatList, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
-import { connect } from 'redux-zero/react';
 import call from 'react-native-phone-call';
 
-import actions from '../store/actions';
 import Card from '../components/OwnerOrder';
 import Button from '../components/Button';
 import Message from '../components/Error';
@@ -12,8 +10,9 @@ import Error from '../components/Error';
 import TouchableLabel from '../components/TouchableLabel';
 
 import { colors, fonts } from '../theme';
-import { Subscription, Query } from 'react-apollo';
+import { Subscription, Query, ApolloConsumer } from 'react-apollo';
 import { ORDER_CREATE, GET_ORDER, UPDATE_ORDER } from '../graphql/owner';
+import {GET_LOCAL_USER} from '../client/Profile/Profile';
 
 class OwnerOrder extends React.Component {
   openModal = (client, order) => {
@@ -94,50 +93,58 @@ class OwnerOrder extends React.Component {
     }))
   }
   render() {
-    const {user: {ownerId}} = this.props.store.getState();
     return (
-      <Subscription subscription={ORDER_CREATE} variables={{ownerId}}>
-        {({data: newOrder, loading}) => {
+      <ApolloConsumer>
+        {cache => {
+          const {
+            user: { id: ownerId },
+          } = cache.readQuery({ query: GET_LOCAL_USER });
           return (
-            <Query query={GET_ORDER} variables={{ownerId}} fetchPolicy='cache-and-network'>
-              {({data, loading, err, client}) => {
-                if(loading) return <Spinner text="Carregando os seus pedidos ..."/>
-                if(err) return (
-                  <Error
-                    emoji='😰'
-                    text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de seus pedidos. Feche e volte a abrir a aplicaçao!`}
-                  />
-                )
-                console.log({ddddd: data})
-                let orders = data.orders;
-                if(newOrder && newOrder.onCreateOrder){
-                  orders.unshift({...newOrder.onCreateOrder})
-                }
+            <Subscription subscription={ORDER_CREATE} variables={{ownerId}}>
+              {({data: newOrder, loading}) => {
                 return (
-                  <View style={styles.container}>
-                    <FlatList
-                      style={styles.scroll}
-                      data={orders}
-                      keyExtractor={(item, index) => item.foodId}
-                      renderItem={({item}) => (
-                        <TouchableOpacity onPress={() => this.openModal(client, item)} key={item.foodId}>
-                          <Card
-                            name={item.itemName}
-                            quantity={item.quantity}
-                            foodId={item.foodId}
-                            status={item.state}
-                          />
-                        </TouchableOpacity>
+                  <Query query={GET_ORDER} variables={{ownerId}} fetchPolicy='cache-and-network'>
+                    {({data, loading, err, client}) => {
+                      if(loading) return <Spinner text="Carregando os seus pedidos ..."/>
+                      if(err) return (
+                        <Error
+                          emoji='😰'
+                          text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de seus pedidos. Feche e volte a abrir a aplicaçao!`}
+                        />
+                      )
+                      let orders = data.orders;
+                      if(newOrder && newOrder.onCreateOrder){
+                        orders.unshift({...newOrder.onCreateOrder})
+                      }
+                      return (
+                        <View style={styles.container}>
+                          <FlatList
+                            style={styles.scroll}
+                            data={orders}
+                            keyExtractor={(item, index) => item.foodId}
+                            renderItem={({item}) => (
+                              <TouchableOpacity onPress={() => this.openModal(client, item)} key={item.foodId}>
+                                <Card
+                                  key={item.foodId}
+                                  name={item.itemName}
+                                  quantity={item.quantity}
+                                  foodId={item.foodId}
+                                  status={item.state}
+                                />
+                              </TouchableOpacity>
 
-                      )}
-                    />
-                  </View>
+                            )}
+                          />
+                        </View>
+                      )
+                    }}
+                  </Query>
                 )
               }}
-            </Query>
+            </Subscription>
           )
         }}
-      </Subscription>
+      </ApolloConsumer>
     )
   }
 }
@@ -162,6 +169,4 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapToProps = ({ restaurantId }) => ({ restaurantId })
-
-export default connect(mapToProps, actions)(OwnerOrder);
+export default OwnerOrder;

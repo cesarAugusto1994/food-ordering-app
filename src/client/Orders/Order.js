@@ -1,11 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, FlatList, TextInput, Text, Button } from 'react-native';
-import { connect } from 'redux-zero/react';
 import gql from 'graphql-tag';
 import short from 'short-uuid';
 import {showMessage} from 'react-native-flash-message';
 import { Modal, Portal } from 'react-native-paper';
-import actions from '../../store/actions';
 import Card from '../../components/OrderItem';
 import OrderButton from '../../components/Button';
 import Message from '../../components/Error';

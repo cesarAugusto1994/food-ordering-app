@@ -1,16 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { Query } from 'react-apollo';
-import { connect } from 'redux-zero/react';
 
 import CardRestaurant from '../../components/CardOverlay';
-import ShoppingCart from '../../components/TouchableIcon';
 import Spinner from '../../components/Spinner';
 import Error from '../../components/Error';
 
-import { colors, fonts } from '../../theme';
 import { styles } from '../Restaurants/Restaurants';
-import actions from '../../store/actions';
 import { filterRestaurants } from '../../graphql/client';
 
 const RestaurantList = ({ navigation: { navigate, state } }) => (
@@ -66,8 +62,4 @@ const RestaurantList = ({ navigation: { navigate, state } }) => (
   </Query>
 );
 
-const mapToProps = ({ user }) => ({ user });
-export default connect(
-  mapToProps,
-  actions
-)(RestaurantList);
+export default RestaurantList;

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable global-require */
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
@@ -11,9 +13,9 @@ import Orders from '../owner/Orders';
 const styles = StyleSheet.create({
   icon: {
     width: 26,
-    height: 26
-  }
-})
+    height: 26,
+  },
+});
 
 const routes = {
   MyRestaurants: {
@@ -21,24 +23,18 @@ const routes = {
     navigationOptions: {
       title: 'Meus Restaurants',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../assets/home.png')}
-          style={[styles.icon, { tintColor }]}
-        />
-      )
-    }
+        <Image source={require('../assets/home.png')} style={[styles.icon, { tintColor }]} />
+      ),
+    },
   },
   Orders: {
     screen: Orders,
     navigationOptions: {
       title: 'Encomendas',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../assets/invoice.png')}
-          style={[styles.icon, { tintColor }]}
-        />
-      )
-    }
+        <Image source={require('../assets/invoice.png')} style={[styles.icon, { tintColor }]} />
+      ),
+    },
   },
   Profile: {
     screen: Profile,
@@ -46,14 +42,11 @@ const routes = {
       header: null,
       title: 'Perfil',
       tabBarIcon: ({ tintColor }) => (
-        <Image
-          source={require('../assets/boy.png')}
-          style={[styles.icon, { tintColor }]}
-        />
-      )
-    }
-  }
-}
+        <Image source={require('../assets/boy.png')} style={[styles.icon, { tintColor }]} />
+      ),
+    },
+  },
+};
 
 const routeConfig = {
   tabBarPosition: 'bottom',
@@ -63,15 +56,15 @@ const routeConfig = {
     inactiveTintColor: 'white',
     indicatorStyle: { backgroundColor: 'white' },
     labelStyle: {
-      fontSize: 12
+      fontSize: 12,
     },
     style: {
       backgroundColor: colors.primary,
       borderTopWidth: 0,
       paddingBottom: 3,
-      zIndex: 9999
+      zIndex: 9999,
     },
-  }
-}
+  },
+};
 
-export default {routes, routeConfig}
+export default { routes, routeConfig };

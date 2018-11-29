@@ -1,21 +1,14 @@
 import React from 'react'
+import gql from 'graphql-tag'
 import { View, Text, StyleSheet, Button, Image, ScrollView } from 'react-native';
 import { showMessage, hideMessage } from "react-native-flash-message";
-
-
 import { Query, graphql, ApolloConsumer } from "react-apollo";
-import gql from 'graphql-tag'
-
-
-import { connect } from 'redux-zero/react';
-import actions from '../../../store/actions';
 
 import CircleButton from '../../../components/CircleButton';
 import AddToCardButton from '../../../components/Button';
 import FoodItemCard from '../../../components/FoodItem';
 import Spinner from '../../../components/Spinner';
 import Error from '../../../components/Error';
-
 import { colors, fonts } from '../../../theme';
 import { getFood } from '../../../graphql/owner';
 
@@ -195,16 +188,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapToProps = ({
-  user,
-  addToCard,
-  card,
-  currentUser
-}) => ({
-  user,
-  addToCard,
-  card,
-  currentUser
-});
-
-export default connect(mapToProps, actions)(Foods);
+export default Foods;
