@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
 import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
-import { Query } from 'react-apollo';
+import { Query, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Avatar } from 'react-native-elements';
@@ -22,23 +22,13 @@ export const GET_LOCAL_USER = gql`
   }
 `;
 
-const signOut = cache => {
-  cache.writeData({
-    data: {
-      auth: {
-        isAuthed: false,
-        __typename: 'Auth',
-      },
-      user: {
-        __typename: 'User',
-      },
-    },
-  });
+const signOut = async cache => {
+  await cache.clearStore();
 };
 
-const Profile = ({ navigation }) => (
+const Profile = ({ navigation, client }) => (
   <Query query={GET_LOCAL_USER}>
-    {({ data: { user }, client }) => (
+    {({ data: { user } }) => (
       <View style={styles.container}>
         <View style={styles.info}>
           <Avatar
@@ -67,7 +57,7 @@ const Profile = ({ navigation }) => (
         <LogoutButton
           onPress={async () => {
             await AsyncStorage.clear();
-            signOut(client);
+            await signOut(client);
             navigation.navigate('Auth');
           }}
           buttonStyle={{ backgroundColor: colors.red }}
@@ -127,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default withApollo(Profile);
