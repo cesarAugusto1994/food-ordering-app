@@ -31,7 +31,7 @@ const icons = {
   }
 }
 export default ({ quantity, name, foodId, onDelete, status }) => (
-    <View style={styles.infoContainer}>
+    <View style={styles.infoContainer} key={foodId}>
       <View style={styles.quantityWrapper}>
         <Text style={styles.quantity}>{quantity}</Text>
       </View>
