@@ -1,23 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import {ApolloProvider} from 'react-apollo';
-import {Provider} from "redux-zero/react";
-import { Rehydrated } from 'aws-appsync-react';
-import FlashMessage from "react-native-flash-message";
-import { Modal, Portal } from 'react-native-paper';
+import { ApolloProvider } from 'react-apollo';
+import FlashMessage from 'react-native-flash-message';
+import { Portal } from 'react-native-paper';
 
-
-import App from './src/';
-import store from './src/store';
-import {client} from './src/apollo/index';
+import App from './src';
+import client from './src/apollo/index';
 
 export default () => (
-  <Provider store={store}>
-    <ApolloProvider client={client}>
-      <Portal.Host>
-        <App />
-      </Portal.Host>
-      <FlashMessage position="top" />
-    </ApolloProvider>
-  </Provider>
+  <ApolloProvider client={client}>
+    <Portal.Host>
+      <App />
+    </Portal.Host>
+    <FlashMessage position="top" />
+  </ApolloProvider>
 );

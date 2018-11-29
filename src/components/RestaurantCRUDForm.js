@@ -1,78 +1,92 @@
-'use strict';
+/* eslint-disable no-use-before-define */
 
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import { connect } from 'redux-zero/react';
-import { Button, TextInput, Switch } from 'react-native-paper';
-import {showMessage} from 'react-native-flash-message';
-import { Formik, ErrorMessage } from 'formik';
-import SaveButton from './Button'
-import {FormError} from './FormError'
+import { StyleSheet, Text, View } from 'react-native';
+import { TextInput, Switch } from 'react-native-paper';
+import { Formik } from 'formik';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Picker from 'react-native-picker-select';
-import {colors} from '../theme';
-import actions from '../store/actions'
+import { withApollo } from 'react-apollo';
+import gql from 'graphql-tag';
+import SaveButton from './Button';
+import { FormError } from './FormError';
+import { colors } from '../theme';
 
-const mapToProps = ({categoriesLabels}) => ({categoriesLabels})
-export default connect(mapToProps, actions)(({ value, onSave, text, formStyle, categoriesLabels }) => (
-  <Formik
-    initialValues={{ ...value, items: categoriesLabels}}
-    validate={values => validate(values)}
-    onSubmit={values => onSave(values)}>
-    {({ handleChange, handleSubmit, values, setFieldValue }) => (
-      <KeyboardAwareScrollView>
-        <View style={[styles.container, formStyle]}>
-          <View style={styles.form}>
-            <TextInput
-              style={styles.input}
-              mode='disabled'
-              label='Nome'
-              value={values.name}
-              onChangeText={handleChange('name')}
-              name='name'
-             />
-            <FormError name="name"/>
-            <TextInput
-              style={styles.input}
-              mode='disabled'
-              label='Descriçao'
-              value={values.description}
-              onChangeText={handleChange('description')}
-              name='description'
-            />
-            <FormError name='description'/>
-            <TextInput
-              style={styles.input}
-              mode='disabled'
-              label='Localizaçao'
-              value={values.location}
-              onChangeText={handleChange('location')}
-              name='location'
-            />
-            <FormError name='location'/>
-            <TextInput
-              style={styles.input}
-              mode='disabled'
-              label='Tempo de Espera'
-              value={values && values.waitTime ? values.waitTime.toString() : ''}
-              keyboardType='numeric'
-              onChangeText={handleChange('waitTime')}
-              name='waitTime'
-            />
-            <FormError name='waitTime'/>
-            <Picker
-              placeholder={{
-                label: 'Selecionar uma especialidade',
-                value: null,
-              }}
-              hideIcon={true}
-              items={values.items}
-              onValueChange={value => setFieldValue('speciality', value)}
-              style={{...pickerSelectStyles}}
-              value={values.speciality}
-            />
+const query = gql`
+  {
+    categories @client {
+      items {
+        label
+        value
+      }
+    }
+  }
+`;
 
-            {/* <TextInput
+const CRUDRestaurant = ({ value, onSave, text, formStyle, client }) => {
+  const {
+    categories: { items },
+  } = client.readQuery({ query });
+  return (
+    <Formik
+      initialValues={{ ...value, items }}
+      validate={values => validate(values)}
+      onSubmit={values => onSave(values)}
+    >
+      {({ handleChange, handleSubmit, values, setFieldValue }) => (
+        <KeyboardAwareScrollView>
+          <View style={[styles.container, formStyle]}>
+            <View style={styles.form}>
+              <TextInput
+                style={styles.input}
+                mode="disabled"
+                label="Nome"
+                value={values.name}
+                onChangeText={handleChange('name')}
+                name="name"
+              />
+              <FormError name="name" />
+              <TextInput
+                style={styles.input}
+                mode="disabled"
+                label="Descriçao"
+                value={values.description}
+                onChangeText={handleChange('description')}
+                name="description"
+              />
+              <FormError name="description" />
+              <TextInput
+                style={styles.input}
+                mode="disabled"
+                label="Localizaçao"
+                value={values.location}
+                onChangeText={handleChange('location')}
+                name="location"
+              />
+              <FormError name="location" />
+              <TextInput
+                style={styles.input}
+                mode="disabled"
+                label="Tempo de Espera"
+                value={values && values.waitTime ? values.waitTime.toString() : ''}
+                keyboardType="numeric"
+                onChangeText={handleChange('waitTime')}
+                name="waitTime"
+              />
+              <FormError name="waitTime" />
+              <Picker
+                placeholder={{
+                  label: 'Selecionar uma especialidade',
+                  value: null,
+                }}
+                hideIcon
+                items={values.items}
+                onValueChange={value => setFieldValue('speciality', value)}
+                style={{ ...pickerSelectStyles }}
+                value={values.speciality}
+              />
+
+              {/* <TextInput
               style={styles.input}
               mode='disabled'
               label='Especialidade'
@@ -80,62 +94,59 @@ export default connect(mapToProps, actions)(({ value, onSave, text, formStyle, c
               onChangeText={handleChange('speciality')}
               name='speciality'
             /> */}
-            <FormError name='speciality'/>
-            <TextInput
-              style={styles.input}
-              mode='disabled'
-              label='Tel'
-              value={values.phoneNumber}
-              onChangeText={handleChange('phoneNumber')}
-              keyboardType='numeric'
-              name='phoneNumber'
-            />
-            <FormError name='phoneNumber'/>
-            <TextInput
-              style={styles.input}
-              mode='disabled'
-              label='Imagem'
-              value={values.image}
-              onChangeText={handleChange('image')}
-              name='image'
-            />
-            <FormError name='image'/>
-            <TextInput
-              style={styles.input}
-              mode='disabled'
-              label='Abre as'
-              value={values.scheduleStart}
-              onChangeText={handleChange('scheduleStart')}
-              name='scheduleStart'
-            />
-            <FormError name='scheduleStart'/>
-            <TextInput
-              style={styles.input}
-              mode='disabled'
-              label='Fecha as'
-              value={values.scheduleEnd}
-              onChangeText={handleChange('scheduleEnd')}
-              name='scheduleEnd'
-            />
-            <FormError name='scheduleEnd'/>
-            <Switch
-              style={{margin: 10}}
-              value={values.isWeekendOpen}
-              onValueChange={value => setFieldValue('isWeekendOpen', value)}
-            />
-            <Text>Aberto aos fins de semana</Text>
-            <FormError name='isWeekendOpen'/>
+              <FormError name="speciality" />
+              <TextInput
+                style={styles.input}
+                mode="disabled"
+                label="Tel"
+                value={values.phoneNumber}
+                onChangeText={handleChange('phoneNumber')}
+                keyboardType="numeric"
+                name="phoneNumber"
+              />
+              <FormError name="phoneNumber" />
+              <TextInput
+                style={styles.input}
+                mode="disabled"
+                label="Imagem"
+                value={values.image}
+                onChangeText={handleChange('image')}
+                name="image"
+              />
+              <FormError name="image" />
+              <TextInput
+                style={styles.input}
+                mode="disabled"
+                label="Abre as"
+                value={values.scheduleStart}
+                onChangeText={handleChange('scheduleStart')}
+                name="scheduleStart"
+              />
+              <FormError name="scheduleStart" />
+              <TextInput
+                style={styles.input}
+                mode="disabled"
+                label="Fecha as"
+                value={values.scheduleEnd}
+                onChangeText={handleChange('scheduleEnd')}
+                name="scheduleEnd"
+              />
+              <FormError name="scheduleEnd" />
+              <Switch
+                style={{ margin: 10 }}
+                value={values.isWeekendOpen}
+                onValueChange={value => setFieldValue('isWeekendOpen', value)}
+              />
+              <Text>Aberto aos fins de semana</Text>
+              <FormError name="isWeekendOpen" />
+            </View>
+            <SaveButton onPress={handleSubmit} text={text} buttonStyle={styles.buttonStyle} />
           </View>
-          <SaveButton
-            onPress={handleSubmit}
-            text={text}
-            buttonStyle={styles.buttonStyle}
-          />
-        </View>
-      </KeyboardAwareScrollView>
-    )}
-  </Formik>
-));
+        </KeyboardAwareScrollView>
+      )}
+    </Formik>
+  );
+};
 
 const validate = values => {
   const errors = {};
@@ -177,19 +188,19 @@ const styles = StyleSheet.create({
   form: {
     justifyContent: 'center',
     width: '100%',
-    padding: 5
+    padding: 5,
   },
   buttonStyle: {
     backgroundColor: colors.green,
     marginLeft: 0,
-    marginTop: 10
+    marginTop: 10,
   },
   input: {
     borderWidth: 1,
     borderColor: colors.grey,
     borderRadius: 5,
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 const pickerSelectStyles = StyleSheet.create({
@@ -201,5 +212,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'white',
     color: 'black',
-  }
+  },
 });
+
+export default withApollo(CRUDRestaurant);

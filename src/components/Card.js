@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { colors } from '../theme';
 
 export default ({ onPress, key, description, name, image, price, foodId }) => (
   <TouchableOpacity onPress={onPress}>
     <View style={styles.infoContainer}>
-      <Image style={styles.image} source={{uri: image}} />
+      <Image style={styles.image} source={{ uri: image }} />
       <View style={styles.info}>
         <Text style={styles.nameText}>{name}</Text>
         <Text style={styles.description}>{description}</Text>
@@ -17,7 +17,6 @@ export default ({ onPress, key, description, name, image, price, foodId }) => (
     </View>
   </TouchableOpacity>
 );
-
 
 export const styles = StyleSheet.create({
   info: {
@@ -34,25 +33,25 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 0.3,
     borderColor: '#cccccc',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   description: {
     color: '#505050',
     padding: 5,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   image: {
     padding: 5,
     paddingLeft: 3,
     height: 70,
-    width: 80
+    width: 80,
   },
   nameText: {
     fontSize: 16,
     color: '#0c0e11',
-    textAlign: 'left'
+    textAlign: 'left',
   },
   priceText: {
-      color: colors.green,
-  }
+    color: colors.green,
+  },
 });

@@ -1,26 +1,65 @@
 import React from 'react'
+import gql from 'graphql-tag'
 import { View, Text, StyleSheet, Button, Image, ScrollView } from 'react-native';
 import { showMessage, hideMessage } from "react-native-flash-message";
-
-
-import { Query, graphql } from "react-apollo";
-import gql from 'graphql-tag'
-
-
-import { connect } from 'redux-zero/react';
-import actions from '../../../store/actions';
+import { Query, graphql, ApolloConsumer } from "react-apollo";
 
 import CircleButton from '../../../components/CircleButton';
 import AddToCardButton from '../../../components/Button';
 import FoodItemCard from '../../../components/FoodItem';
 import Spinner from '../../../components/Spinner';
 import Error from '../../../components/Error';
-
 import { colors, fonts } from '../../../theme';
 import { getFood } from '../../../graphql/owner';
 
+
+const addToCard = async (cache, card, {item, quantity}) => {
+  const allEqual = (card, restaurantId) => card.every(food => food.restaurantId === restaurantId);
+  const inArray = (arr, item) => arr.some(el => el.foodId === item.foodId);
+
+  const addOrMerge = (card, item) => {
+    if (inArray(card, item)) {
+      return card.map(el => {
+        if(el.foodId === item.foodId){
+          el.quantity += item.quantity;
+          return { ...el, __typename: 'CardItem'};
+        }
+        return { ...el, __typename: 'CardItem'};
+      })
+    }
+    card.push({ ...item, __typename: 'CardItem'});
+    return card
+  };
+
+  if(card.length === 0) {
+    console.log('iii', item)
+    return cache.writeData({
+      data: {
+        shopCard: {
+          items: [...card, { ...{ ...item, __typename: 'CardItem'}, quantity}],
+          __typename: 'Card'
+        }
+      }
+    });
+  }
+
+  if(allEqual(card, item.restaurantId)) {
+    return cache.writeData({
+      data: {
+        shopCard: {
+          items: [ ...addOrMerge(card, { ...item, quantity}) ],
+          __typename: 'Card'
+        }
+      }
+    });
+  }
+  return Promise.reject();
+};
+
 class Foods extends React.Component {
   addToCart = (
+    cache,
+    card,
     foodId,
     userId,
     itemName,
@@ -30,7 +69,9 @@ class Foods extends React.Component {
     restaurantPhoneNumber,
     quantity
     ) => {
-    this.props.addToCard(
+    addToCard(
+      cache,
+      card,
       {
         item: {
           foodId,
@@ -65,47 +106,74 @@ class Foods extends React.Component {
     this.setState(prevState => ({quantity: prevState.quantity - 1}))
   }
   render() {
-    const {user: {userId}, navigation} = this.props;
+    const {navigation} = this.props;
     const {goBack, state} = navigation;
     const {foodId, name, restaurantId, ownerId, price, description, image, restaurantPhoneNumber} = state.params;
     return (
-      <View style={styles.container}>
-          <ScrollView>
-            <FoodItemCard
-              description={description}
-              name={name}
-              price={price}
-              image={image}
-              quantity={this.state.quantity}
-              imagePath={{
-                add: require('../../../assets/add.png'),
-                substract: require('../../../assets/substract.png')
-              }}
-              onPress={{
-                add: this.addQuantity,
-                substract: this.substractQuantity
-              }}
-            />
-          </ScrollView>
-          <View style={styles.wrapper}>
-          <AddToCardButton
-            onPress={
-              () => this.addToCart(
-                  foodId,
-                  userId,
-                  name,
-                  price,
-                  restaurantId,
-                  ownerId,
-                  restaurantPhoneNumber,
-                  this.state.quantity
-                )
+      <ApolloConsumer>
+        {cache => {
+          const {shopCard, user} = cache.readQuery({query: gql`{
+            user {
+              id
             }
-            buttonStyle={{backgroundColor: colors.green}}
-            text=" Adicionar ao carrinho"
-          />
-          </View>
-      </View>
+            shopCard @client {
+              items {
+                quantity
+                foodId
+                itemName
+                itemPrice
+                ownerId
+                restaurantId
+                restaurantPhoneNumber
+                userId
+              }
+            }
+          }`})
+          console.log(shopCard)
+            return (
+              <View style={styles.container}>
+                  <ScrollView>
+                    <FoodItemCard
+                      description={description}
+                      name={name}
+                      price={price}
+                      image={image}
+                      quantity={this.state.quantity}
+                      imagePath={{
+                        add: require('../../../assets/add.png'),
+                        substract: require('../../../assets/substract.png')
+                      }}
+                      onPress={{
+                        add: this.addQuantity,
+                        substract: this.substractQuantity
+                      }}
+                    />
+                  </ScrollView>
+                  <View style={styles.wrapper}>
+                  <AddToCardButton
+                    onPress={
+                      () => this.addToCart(
+                          cache,
+                          shopCard.items,
+                          foodId,
+                          user.id,
+                          name,
+                          price,
+                          restaurantId,
+                          ownerId,
+                          restaurantPhoneNumber,
+                          this.state.quantity
+                        )
+                    }
+                    buttonStyle={{backgroundColor: colors.green}}
+                    text=" Adicionar ao carrinho"
+                  />
+                  </View>
+              </View>
+            )
+          }
+        }
+      </ApolloConsumer>
     )
   }
 }
@@ -120,16 +188,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapToProps = ({
-  user,
-  addToCard,
-  card,
-  currentUser
-}) => ({
-  user,
-  addToCard,
-  card,
-  currentUser
-});
-
-export default connect(mapToProps, actions)(Foods);
+export default Foods;

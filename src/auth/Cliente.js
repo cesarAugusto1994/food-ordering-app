@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from 'redux-zero/react';
-
-
-import actions from '../store/actions';
 import Layout from './Layout';
-import {CREATE_CLIENT, GET_CLIENT} from '../graphql/client';
+import { CREATE_CLIENT, GET_CLIENT } from '../graphql/client';
 
-const whoIs = {isUser: true, isOwner: false};
-const signOn = (props, fn) => user => fn({user, ...props})
-const mapToProps = ({ signOnUser }) => ({ signOnUser });
+const whoIs = { isUser: true, isOwner: false };
 const mutationName = 'createClient';
 const mutationModel = 'Client';
 const queryName = 'clients';
 
-const Cliente = ({signOnUser, navigation}) => (
+const Cliente = ({ navigation }) => (
   <Layout
     greeting="Bem-vindo ao espaço cliente"
     greeting2="conecte-se para continuar"
@@ -24,9 +18,8 @@ const Cliente = ({signOnUser, navigation}) => (
     mutationName={mutationName}
     mutationModel={mutationModel}
     navigation={navigation}
+    // eslint-disable-next-line global-require
     imagePath={require('../assets/logo.png')}
-    signOn={signOn({isAuthed: true, isOwner: false, isUser: true}, signOnUser)}
   />
 );
-
-export default connect(mapToProps, actions)(Cliente);
+export default Cliente;

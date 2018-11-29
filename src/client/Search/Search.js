@@ -1,19 +1,13 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet
-} from 'react-native';
+import gql from 'graphql-tag'
+import { View, Text, StyleSheet } from 'react-native';
 
 import { Query } from "react-apollo";
-import gql from 'graphql-tag'
-import { connect } from 'redux-zero/react'
 import { Header, SearchBar } from 'react-native-elements';
 import GridView from 'react-native-super-grid';
 
 import { colors, fonts } from '../../theme';
 import { GET_SPECIALITIES } from '../../graphql/client';
-import actions from '../../store/actions';
 import CardOverlay from '../../components/CardOverlay';
 import Spinner from '../../components/Spinner';
 import Error from '../../components/Error';
@@ -103,6 +97,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapToProps = ({ categories }) => ({ categories });
-
-export default connect(mapToProps, actions)(Search);
+export default Search;
