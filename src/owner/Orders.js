@@ -13,6 +13,7 @@ import { colors, fonts } from '../theme';
 import { Subscription, Query, ApolloConsumer } from 'react-apollo';
 import { ORDER_CREATE, GET_ORDER, UPDATE_ORDER } from '../graphql/owner';
 import {GET_LOCAL_USER} from '../client/Profile/Profile';
+import { showMessage } from 'react-native-flash-message';
 
 class OwnerOrder extends React.Component {
   openModal = (client, order) => {
@@ -101,20 +102,27 @@ class OwnerOrder extends React.Component {
           } = cache.readQuery({ query: GET_LOCAL_USER });
           return (
             <Subscription subscription={ORDER_CREATE} variables={{ownerId}}>
-              {({data: newOrder, loading}) => {
+              {(newOrder) => {
+                console.log('----->', {newOrder})
                 return (
                   <Query query={GET_ORDER} variables={{ownerId}} fetchPolicy='cache-and-network'>
                     {({data, loading, err, client}) => {
+                  console.log('1')
                       if(loading) return <Spinner text="Carregando os seus pedidos ..."/>
+                  console.log('2')
                       if(err) return (
                         <Error
                           emoji='😰'
                           text={`Sentimos muito, ocorreu-se algum error enquanto carregavamos a lista de seus pedidos. Feche e volte a abrir a aplicaçao!`}
                         />
                       )
+                  console.log('3')
                       let orders = data.orders;
-                      if(newOrder && newOrder.onCreateOrder){
-                        orders.unshift({...newOrder.onCreateOrder})
+                        console.log('uppps', orders)
+                      if(newOrder && newOrder.data && newOrder.data.order && newOrder.data.order.node){
+                        console.log('hhhererer', orders)
+                        orders.unshift({...newOrder.data.order.node})
+                        console.log('orders', orders)
                       }
                       return (
                         <View style={styles.container}>

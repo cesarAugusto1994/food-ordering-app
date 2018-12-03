@@ -24,6 +24,10 @@ class CheckAuth extends Component {
               isUser: user.isUser,
               __typename: 'User',
             },
+            // card: {
+            //   items: [],
+            //   __typename: 'Card',
+            // },
           },
         });
         this.props.navigation.navigate('Cliente');

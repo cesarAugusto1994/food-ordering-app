@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const myRestaurants = gql`
   query myRestaurants($ownerId: String!) {
-    restaurants(where: {ownerId: $ownerId }) {
+    restaurants(where: { ownerId: $ownerId }) {
       image
       restaurantId
       phoneNumber
@@ -21,33 +21,35 @@ export const myRestaurants = gql`
 
 export const CREATE_RESTAURANTE = gql`
   mutation createRestaurant(
-    $ownerId: String!,
-    $name: String!,
-    $image: String!,
-    $description: String!,
-    $waitTime: Int!,
-    $speciality: String!,
-    $location: String!,
-    $restaurantId: String!,
-    $phoneNumber: String!,
-    $scheduleStart: String!,
-    $scheduleEnd: String!,
+    $ownerId: String!
+    $name: String!
+    $image: String!
+    $description: String!
+    $waitTime: Int!
+    $speciality: String!
+    $location: String!
+    $restaurantId: String!
+    $phoneNumber: String!
+    $scheduleStart: String!
+    $scheduleEnd: String!
     $isWeekendOpen: Boolean!
   ) {
-    createRestaurant(data: {
-      ownerId: $ownerId,
-      name: $name,
-      image: $image,
-      description: $description,
-      waitTime: $waitTime,
-      speciality: $speciality,
-      location: $location,
-      restaurantId: $restaurantId,
-      phoneNumber: $phoneNumber,
-      scheduleStart: $scheduleStart
-      scheduleEnd: $scheduleEnd
-      isWeekendOpen: $isWeekendOpen
-    }) {
+    createRestaurant(
+      data: {
+        ownerId: $ownerId
+        name: $name
+        image: $image
+        description: $description
+        waitTime: $waitTime
+        speciality: $speciality
+        location: $location
+        restaurantId: $restaurantId
+        phoneNumber: $phoneNumber
+        scheduleStart: $scheduleStart
+        scheduleEnd: $scheduleEnd
+        isWeekendOpen: $isWeekendOpen
+      }
+    ) {
       image
       restaurantId
       phoneNumber
@@ -66,31 +68,34 @@ export const CREATE_RESTAURANTE = gql`
 
 export const EDIT_RESTAURANTE = gql`
   mutation updateRestaurant(
-    $name: String!,
-    $image: String!,
-    $description: String!,
-    $waitTime: Int!,
-    $speciality: String!,
-    $location: String!,
-    $restaurantId: String!,
-    $phoneNumber: String!,
-    $scheduleStart: String!,
-    $scheduleEnd: String!,
+    $name: String!
+    $image: String!
+    $description: String!
+    $waitTime: Int!
+    $speciality: String!
+    $location: String!
+    $restaurantId: String!
+    $phoneNumber: String!
+    $scheduleStart: String!
+    $scheduleEnd: String!
     $isWeekendOpen: Boolean!
   ) {
-    updateRestaurant(where: {restaurantId: $restaurantId}, data: {
-      name: $name,
-      image: $image,
-      description: $description,
-      waitTime: $waitTime,
-      speciality: $speciality,
-      location: $location,
-      restaurantId: $restaurantId,
-      phoneNumber: $phoneNumber,
-      scheduleStart: $scheduleStart
-      scheduleEnd: $scheduleEnd
-      isWeekendOpen: $isWeekendOpen
-    }) {
+    updateRestaurant(
+      where: { restaurantId: $restaurantId }
+      data: {
+        name: $name
+        image: $image
+        description: $description
+        waitTime: $waitTime
+        speciality: $speciality
+        location: $location
+        restaurantId: $restaurantId
+        phoneNumber: $phoneNumber
+        scheduleStart: $scheduleStart
+        scheduleEnd: $scheduleEnd
+        isWeekendOpen: $isWeekendOpen
+      }
+    ) {
       image
       restaurantId
       phoneNumber
@@ -109,16 +114,15 @@ export const EDIT_RESTAURANTE = gql`
 
 export const DELETE_RESTAURANTE = gql`
   mutation deleteRestaurant($restaurantId: String!) {
-    deleteRestaurant(where: {restaurantId: $restaurantId}) {
+    deleteRestaurant(where: { restaurantId: $restaurantId }) {
       name
     }
   }
 `;
 
-
 export const GET_OWNER = gql`
   query getOwner($email: String!) {
-    owners(where: {email: $email}) {
+    owners(where: { email: $email }) {
       ownerId
       email
       firstName
@@ -128,10 +132,9 @@ export const GET_OWNER = gql`
   }
 `;
 
-
 export const getRestaurantsFoods = gql`
   query getMyFoods($restaurantId: String!) {
-    foods(where: {restaurantId: $restaurantId}) {
+    foods(where: { restaurantId: $restaurantId }) {
       image
       name
       foodId
@@ -159,47 +162,51 @@ export const getFood = gql`
 
 export const CREATE_OWNER = gql`
   mutation createOwner(
-    $email: String!,
-    $ownerId: String!,
-    $firstName: String!,
-    $lastName: String!,
+    $email: String!
+    $ownerId: String!
+    $firstName: String!
+    $lastName: String!
     $image: String!
-    ) {
-      createOwner(data: {
+  ) {
+    createOwner(
+      data: {
         email: $email
         ownerId: $ownerId
         firstName: $firstName
         lastName: $lastName
         image: $image
-      }){
-        ownerId
-        email
-        firstName
-        lastName
-        image
       }
+    ) {
+      ownerId
+      email
+      firstName
+      lastName
+      image
+    }
   }
 `;
 
 export const CREATE_FOOD = gql`
   mutation createFood(
-    $name: String!,
-    $description: String!,
-    $price: Int!,
-    $image: String!,
-    $restaurantId: String!,
+    $name: String!
+    $description: String!
+    $price: Int!
+    $image: String!
+    $restaurantId: String!
     $foodId: String!
     $ownerId: String!
   ) {
-    createFood(data: {
-      name: $name
-      description: $description
-      price: $price
-      image: $image
-      restaurantId: $restaurantId
-      foodId: $foodId
-      ownerId: $ownerId
-    }){
+    createFood(
+      data: {
+        name: $name
+        description: $description
+        price: $price
+        image: $image
+        restaurantId: $restaurantId
+        foodId: $foodId
+        ownerId: $ownerId
+      }
+    ) {
       name
       description
       price
@@ -213,23 +220,26 @@ export const CREATE_FOOD = gql`
 
 export const EDIT_FOOD = gql`
   mutation updateFood(
-    $name: String!,
-    $description: String!,
-    $price: Int!,
-    $image: String!,
-    $restaurantId: String!,
+    $name: String!
+    $description: String!
+    $price: Int!
+    $image: String!
+    $restaurantId: String!
     $foodId: String!
     $ownerId: String!
   ) {
-    updateFood(where: {foodId: $foodId}, data: {
-      name: $name
-      description: $description
-      price: $price
-      image: $image
-      restaurantId: $restaurantId
-      foodId: $foodId
-      ownerId: $ownerId
-    }){
+    updateFood(
+      where: { foodId: $foodId }
+      data: {
+        name: $name
+        description: $description
+        price: $price
+        image: $image
+        restaurantId: $restaurantId
+        foodId: $foodId
+        ownerId: $ownerId
+      }
+    ) {
       name
       description
       price
@@ -250,34 +260,35 @@ const DeleteFoodInput = gql`
 
 export const DELETE_FOOD = gql`
   mutation deleteFood($foodId: String!, $restaurantId: String!) {
-    deleteFood(data: {foodId: $foodId, restaurantId: $restaurantId}) {
+    deleteFood(data: { foodId: $foodId, restaurantId: $restaurantId }) {
       name
     }
   }
 `;
 
-
 export const ORDER_CREATE = gql`
-  subscription onCreateOrder($ownerId: String!){
-    onCreateOrder(ownerId: $ownerId) {
-      quantity
-      orderId
-      userId
-      ownerId
-      restaurantId
-      itemName
-      itemPrice
-      userWillPay
-      additionalInfo
-      restaurantPhoneNumber
-      state
+  subscription order($ownerId: String!) {
+    order(where: { node: { ownerId: $ownerId } }) {
+      node {
+        quantity
+        orderId
+        userId
+        ownerId
+        restaurantId
+        itemName
+        itemPrice
+        userWillPay
+        additionalInfo
+        restaurantPhoneNumber
+        state
+      }
     }
   }
 `;
 
 export const GET_ORDER = gql`
   query getOrder($ownerId: String!) {
-    orders(where: {ownerId: $ownerId}) {
+    orders(where: { ownerId: $ownerId }) {
       orderId
       userId
       restaurantId
@@ -294,8 +305,8 @@ export const GET_ORDER = gql`
   }
 `;
 export const UPDATE_ORDER = gql`
-  mutation updateOrder($status: String!, $orderId: String!){
-    updateOrder(data: {state: $status, orderId: $orderId}) {
+  mutation updateOrder($status: String!, $orderId: String!) {
+    updateOrder(data: { state: $status }, where: { orderId: $orderId }) {
       orderId
       userId
       restaurantId

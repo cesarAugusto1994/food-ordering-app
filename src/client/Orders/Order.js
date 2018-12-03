@@ -22,16 +22,17 @@ const createOrder = async (mutationFn,mutation, state, {additionalInfo, userPhon
       userId: state.user.id,
       restaurantId: order.restaurantId,
       ownerId: order.ownerId,
-      itemPrice: order.itemPrice,
       itemName: order.itemName,
+      itemPrice: order.itemPrice,
+      userWillPay: order.quantity * order.itemPrice,
+      additionalInfo,
       userPhoneNumber,
       restaurantPhoneNumber: order.restaurantPhoneNumber,
       state: 'enviado',
-      additionalInfo,
-      quantity: order.quantity,
-      userWillPay: order.quantity * order.itemPrice
+      quantity: order.quantity
     };
 
+    console.log({variables})
     mutationFn({
       mutation,
       variables,
@@ -50,15 +51,22 @@ class Order extends React.Component {
       userPhoneNumber: 0
     }
   }
-  sendOrder = (fn, state, values) => {
+  sendOrder = (fn, cache, state, values) => {
     const {userPhoneNumber, additionalInfo} = values;
     createOrder(fn, CREATE_ORDER, state, {userPhoneNumber, additionalInfo})
       .then(success => {
         showMessage({type: 'success', message: 'A sua encomenda foi enviada ao restaurante!'});
-        this.props.resetCard();
+        cache.writeData({
+          data: {
+            shopCard: {
+              items: [],
+              __typename: 'Card'
+            }
+          }
+        });
         this.setState({isOpen: false});
       })
-      .catch(error => showMessage({
+      .catch(error => console.log({error}) || showMessage({
         type: 'danger',
         message: 'Ocorreu-se algum errro',
         description: 'Deve-se à um ou mais problemas com os dados do item',
@@ -157,7 +165,7 @@ class Order extends React.Component {
                     <Modal visible={this.state.isOpen} onDismiss={this.closeModal}>
                       <OrderForm
                         value={this.state.value}
-                        onOrder={values => this.sendOrder(mutationFn, {card: shopCard.items, user}, values)}
+                        onOrder={values => this.sendOrder(mutationFn, client, {card: shopCard.items, user}, values)}
                         amount={getTotalAmount(shopCard.items)}
                       />
                     </Modal>
