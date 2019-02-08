@@ -7,14 +7,14 @@ It's a WIP of an Uber-like(or any other food ordering app) that joins the custom
 
 # Workflow
 
-## Customer Interface
+### Customer Interface
   In this current version: 
   - The customer can sign-in via Google or Facebook(provided by Expo)
   - Order food(feature not complete): This takes a displayed food, and send your order request to the producer. Depending on which graphql service you use(such as AppSync) you can get subscriptions working well on this part
   - See all orders and their status
   - Consult their profile
    
-## Producer Interface
+### Producer Interface
  In this current version:
  - The customer can sign-in via Google or Facebook(provided by Expo)
  - The producer can CRUD(create, read, update & delete) food
@@ -28,7 +28,7 @@ This project uses:
   - Prisma(graphql backend)
   - Formik
   
-# Lauching the project
+## Lauching the project
 
 Make sure you have expo installed in your machine
 
